@@ -1,3 +1,6 @@
+import nbtlib
+from nbtlib import serialize_tag#可以使用nbtlib将Nbt标记序列化为它们的文字表示形式。
+from nbtlib.tag import String, List, Compound, IntArray
 from nbtlib import parse_nbt, Path #NBT分析库 https://github.com/vberlier/nbtlib
 
 s = '{Damage:34,Unbreakable:1b,Enchantments:[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}]}'
@@ -9,95 +12,109 @@ data = parse_nbt(s)
 #print(data.get('Damage'))#不存在则返回None
 
 
-def item_nbt_updata(nbtlib): #处理分析过的NBT(nbtlib)，更新后每个指令存在
+def item_nbt_updata(nbtlib_compound: nbtlib.tag.Compound): #处理分析过的NBT(nbtlib_compound)，更新后每个指令存在
     components_list = []
-    
     #Damage
-    if 'Damage' in nbtlib:
-        components_list = Damage_updata(components_list,nbtlib.get('Damage'))
-        del nbtlib['Damage']
+    if 'Damage' in nbtlib_compound:
+        components_list = Damage_updata(components_list,nbtlib_compound.get('Damage'))
+        del nbtlib_compound['Damage']
 
     #RepairCost
-    if 'RepairCost' in nbtlib:
-        components_list = RepairCost_updata(components_list,nbtlib.get('RepairCost'))
-        del nbtlib['RepairCost']
+    if 'RepairCost' in nbtlib_compound:
+        components_list = RepairCost_updata(components_list,nbtlib_compound.get('RepairCost'))
+        del nbtlib_compound['RepairCost']
     
     #Unbreakable
-    if 'Unbreakable' in nbtlib:
-        components_list = Unbreakable_updata(components_list,nbtlib.get('Unbreakable'),nbtlib.get('HideFlags',0))
-        del nbtlib['Unbreakable']
+    if 'Unbreakable' in nbtlib_compound:
+        components_list = Unbreakable_updata(components_list,nbtlib_compound.get('Unbreakable'),nbtlib_compound.get('HideFlags',0))
+        del nbtlib_compound['Unbreakable']
     
     #Enchantments
-    if 'Enchantments' in nbtlib:
-        components_list = Enchantments_updata(components_list,nbtlib.get('Enchantments'),nbtlib.get('HideFlags',0))
-        del nbtlib['Enchantments']
+    if 'Enchantments' in nbtlib_compound:
+        components_list = Enchantments_updata(components_list,nbtlib_compound.get('Enchantments'),nbtlib_compound.get('HideFlags',0))
+        del nbtlib_compound['Enchantments']
 
     #StoredEnchantments
-    if 'StoredEnchantments' in nbtlib:
-        components_list = StoredEnchantments_updata(components_list,nbtlib.get('StoredEnchantments'),nbtlib.get('HideFlags',0))
-        del nbtlib['StoredEnchantments']
+    if 'StoredEnchantments' in nbtlib_compound:
+        components_list = StoredEnchantments_updata(components_list,nbtlib_compound.get('StoredEnchantments'),nbtlib_compound.get('HideFlags',0))
+        del nbtlib_compound['StoredEnchantments']
 
     #display_Name
-    if 'Name' in nbtlib.get('display',{}):
-        components_list = display_Name_updata(components_list,nbtlib['display']['Name'])
-        del nbtlib['display']['Name']
+    if 'Name' in nbtlib_compound.get('display',{}):
+        components_list = display_Name_updata(components_list,nbtlib_compound['display']['Name'])
+        del nbtlib_compound['display']['Name']
 
     #display_Lore
-    if 'Lore' in nbtlib.get('display',{}):
-        components_list = display_Lore_updata(components_list,nbtlib['display']['Lore'])
-        del nbtlib['display']['Lore']
+    if 'Lore' in nbtlib_compound.get('display',{}):
+        components_list = display_Lore_updata(components_list,nbtlib_compound['display']['Lore'])
+        del nbtlib_compound['display']['Lore']
 
     #CanDestroy
-    if 'CanDestroy' in nbtlib:
-        components_list = CanDestroy_updata(components_list,nbtlib['CanDestroy'],nbtlib.get('HideFlags',0))
-        del nbtlib['CanDestroy']
+    if 'CanDestroy' in nbtlib_compound:
+        components_list = CanDestroy_updata(components_list,nbtlib_compound['CanDestroy'],nbtlib_compound.get('HideFlags',0))
+        del nbtlib_compound['CanDestroy']
 
     #CanPlaceOn
-    if 'CanPlaceOn' in nbtlib:
-        components_list = CanPlaceOn_updata(components_list,nbtlib['CanPlaceOn'],nbtlib.get('HideFlags',0))
-        del nbtlib['CanPlaceOn']
+    if 'CanPlaceOn' in nbtlib_compound:
+        components_list = CanPlaceOn_updata(components_list,nbtlib_compound['CanPlaceOn'],nbtlib_compound.get('HideFlags',0))
+        del nbtlib_compound['CanPlaceOn']
 
     #display_color
-    if 'color' in nbtlib.get('display',{}):
-        components_list = display_color_updata(components_list,nbtlib['display']['color'],nbtlib.get('HideFlags',0))
-        del nbtlib['display']['color']
+    if 'color' in nbtlib_compound.get('display',{}):
+        components_list = display_color_updata(components_list,nbtlib_compound['display']['color'],nbtlib_compound.get('HideFlags',0))
+        del nbtlib_compound['display']['color']
 
     #AttributeModifiers
-    if 'AttributeModifiers' in nbtlib:
-        components_list = AttributeModifiers_updata(components_list,nbtlib['AttributeModifiers'],nbtlib.get('HideFlags',0))
-        del nbtlib['AttributeModifiers']
+    if 'AttributeModifiers' in nbtlib_compound:
+        components_list = AttributeModifiers_updata(components_list,nbtlib_compound['AttributeModifiers'],nbtlib_compound.get('HideFlags',0))
+        del nbtlib_compound['AttributeModifiers']
 
     #ChargedProjectiles
-    if 'Charged' in nbtlib:
-        components_list = ChargedProjectiles_updata(components_list,nbtlib.get('ChargedProjectiles',[]))
-        del nbtlib['Charged']
-        del nbtlib['ChargedProjectiles']
+    if 'Charged' in nbtlib_compound:
+        components_list = ChargedProjectiles_updata(components_list,nbtlib_compound.get('ChargedProjectiles',[]))
+        del nbtlib_compound['Charged']
+        del nbtlib_compound['ChargedProjectiles']
 
     #Items
-    if 'Items' in nbtlib:
-        components_list = Items_updata(components_list,nbtlib['Items'])
-        del nbtlib['Items']
+    if 'Items' in nbtlib_compound:
+        components_list = Items_updata(components_list,nbtlib_compound['Items'])
+        del nbtlib_compound['Items']
 
     #display_MapColor
-    if 'MapColor' in nbtlib.get('display',{}):
-        components_list = display_MapColor_updata(components_list,nbtlib['display']['MapColor'])
-        del nbtlib['display']['MapColor']
+    if 'MapColor' in nbtlib_compound.get('display',{}):
+        components_list = display_MapColor_updata(components_list,nbtlib_compound['display']['MapColor'])
+        del nbtlib_compound['display']['MapColor']
 
     #Decorations
-    if 'Decorations' in nbtlib:
-        components_list = Decorations_updata(components_list,nbtlib['Decorations'])
-        del nbtlib['Decorations']
+    if 'Decorations' in nbtlib_compound:
+        components_list = Decorations_updata(components_list,nbtlib_compound['Decorations'])
+        del nbtlib_compound['Decorations']
     
     #map
-    if 'map' in nbtlib:
-        components_list = map_updata(components_list,nbtlib['map'])
-        del nbtlib['map']
+    if 'map' in nbtlib_compound:
+        components_list = map_updata(components_list,nbtlib_compound['map'])
+        del nbtlib_compound['map']
     
     #CustomModelData
-    if 'CustomModelData' in nbtlib:
-        components_list = CustomModelData_updata(components_list,nbtlib['CustomModelData'])
-        del nbtlib['CustomModelData']
+    if 'CustomModelData' in nbtlib_compound:
+        components_list = CustomModelData_updata(components_list,nbtlib_compound['CustomModelData'])
+        del nbtlib_compound['CustomModelData']
+    
+    #Potion
+    if 'Potion' in nbtlib_compound:
+        components_list = Potion_updata(components_list,nbtlib_compound['Potion'],nbtlib_compound.get("CustomPotionColor",None),nbtlib_compound.get("custom_potion_effects",None))
+        del nbtlib_compound['Potion']
+        if 'CustomPotionColor' in nbtlib_compound:
+            del nbtlib_compound['CustomPotionColor']
+        if 'custom_potion_effects' in nbtlib_compound:
+            del nbtlib_compound['custom_potion_effects']
+
+    #pages
+    if 'pages' in nbtlib_compound:
+        components_list = pages_updata(components_list,nbtlib_compound['pages'],nbtlib_compound.get("filtered_pages",nbtlib.Compound({})))
+        del nbtlib_compound['pages']
     return components_list
+
 
 def Damage_updata(components_list: list,value:int):
     if value != None:
@@ -396,6 +413,33 @@ def CustomModelData_updata(components_list: list,value: int):
     except Exception:
         pass
     return components_list
+
+def Potion_updata(components_list: list,Potion: String,CustomPotionColor: int,custom_potion_effects: list):
+    try:
+        potion_contents_str = "potion_contents={potion:'"+Potion+"',"
+        try:
+            potion_contents_str +="custom_color:"+str(CustomPotionColor+0)+","
+        except Exception:
+            pass
+        try:
+            potion_contents_str +="custom_effects:"+serialize_tag(custom_potion_effects)+","
+        except Exception:
+            pass
+        potion_contents_str=potion_contents_str.rstrip(",")+"}"
+        components_list.append(potion_contents_str)
+    except Exception:
+        pass
+    return components_list
+
+def pages_updata(components_list: list,pages,filtered_pages):#过滤页面暂未处理
+    try:
+        if type(pages) is nbtlib.tag.List[String]:
+            components_list.append("writable_book_content={pages:"+serialize_tag(pages)+"}")
+        if type(pages) is nbtlib.tag.List[Compound]:
+            components_list.append("writable_book_content={pages:"+serialize_tag(pages)+"}")
+    except Exception:
+        pass
+    return components_list
 '''
 s = '{Damage:34,Unbreakable:False,Enchantments:[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}],display:{Name:\'{\"text\":\"§e治疗不死图腾\"}\',Lore:[\'{\"text\":\"§7死亡不掉落一次，带在身上即可。\"}\',\'{\"text\":\"§7（注意，如果游戏设置未开启 死亡掉落物品保护，则该物品无效）\"}\']}}'
 print(parse_nbt(s))  # 输出：{'Enchantments': '[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}]'}
@@ -407,6 +451,10 @@ print("===")
 s = '{ChargedProjectiles:[{id:"minecraft:arrow",Count:1b},{id:"minecraft:arrow",Count:1b},{id:"minecraft:arrow",Count:1b}],Charged:1b}'
 print(item_nbt_updata(parse_nbt(s)))
 '''
-s = '{Decorations:[{x:2.0d,z:3.0d,type:2b,rot:180.0d,id:"123"}]}'
-print(parse_nbt(s))
+#s = '{Decorations:[{x:2.0d,z:3.0d,type:2b,rot:180.0d,id:"123"}]}'
+s = '{pages:["123\n123","213"]}'
+d = '{pages:[{text:\'你好，世界！\'}]}'
+#print(parse_nbt(s))
 print(item_nbt_updata(parse_nbt(s)))
+#print(parse_nbt(d))
+print(item_nbt_updata(parse_nbt(d)))
