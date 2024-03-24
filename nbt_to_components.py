@@ -113,6 +113,12 @@ def item_nbt_updata(id: String,nbtlib_compound: nbtlib.tag.Compound): #处理分
     if 'pages' in nbtlib_compound:
         components_list = pages_updata(components_list,id,nbtlib_compound['pages'],nbtlib_compound.pop("filtered_pages",nbtlib.Compound({})),nbtlib_compound.pop("title",None),nbtlib_compound.pop("author",None),nbtlib_compound.pop("generation",None),nbtlib_compound.pop("resolved",None))
         del nbtlib_compound['pages']
+    
+    #Trim
+    if 'Trim' in nbtlib_compound:
+        components_list = Trim_updata(components_list,nbtlib_compound['Trim'])
+        del nbtlib_compound['Trim']
+
     return components_list
 
 
@@ -453,6 +459,13 @@ def pages_updata(components_list: list,id:String,pages:list,filtered_pages,title
         pass
     return components_list
 
+def Trim_updata(components_list: list,value: int):
+    try:
+        components_list.append("trim="+serialize_tag(value))
+    except Exception:
+        pass
+    return components_list
+
 s = '{Damage:34,Unbreakable:False,Enchantments:[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}],display:{Name:\'{\"text\":\"§e治疗不死图腾\"}\',Lore:[\'{\"text\":\"§7死亡不掉落一次，带在身上即可。\"}\',\'{\"text\":\"§7（注意，如果游戏设置未开启 死亡掉落物品保护，则该物品无效）\"}\']}}'
 print(parse_nbt(s))  # 输出：{'Enchantments': '[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}]'}
 print(item_nbt_updata("bow",parse_nbt(s))) # 输出：['damage=34']
@@ -466,7 +479,7 @@ print(item_nbt_updata(parse_nbt(s)))
 '''
 #s = '{Decorations:[{x:2.0d,z:3.0d,type:2b,rot:180.0d,id:"123"}]}'
 s = '{pages:["123\n123","213"]}'
-d = '{title:"233",author:"666",generation:0,resolved:1b,pages:[\'{"text":"123"}\',\'{"text":"456","hoverEvent":{"action":"show_text","value":[{"text":"","color":"blue"}]}}\']}'
+d = '{Trim:{material:"minecraft:gold",pattern:"minecraft:eye"}}'
 #print(parse_nbt(s))
 print(item_nbt_updata("writable_book",parse_nbt(s)))
 #print(parse_nbt(d))
