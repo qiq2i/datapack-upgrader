@@ -12,7 +12,7 @@ data = parse_nbt(s)
 #print(data.get('Damage'))#不存在则返回None
 
 
-def item_nbt_updata(nbtlib_compound: nbtlib.tag.Compound): #处理分析过的NBT(nbtlib_compound)，更新后每个指令存在
+def item_nbt_updata(id: String,nbtlib_compound: nbtlib.tag.Compound): #处理分析过的NBT(nbtlib_compound)，更新后每个指令存在
     components_list = []
     #Damage
     if 'Damage' in nbtlib_compound:
@@ -111,7 +111,7 @@ def item_nbt_updata(nbtlib_compound: nbtlib.tag.Compound): #处理分析过的NB
 
     #pages
     if 'pages' in nbtlib_compound:
-        components_list = pages_updata(components_list,nbtlib_compound['pages'],nbtlib_compound.get("filtered_pages",nbtlib.Compound({})))
+        components_list = pages_updata(components_list,id,nbtlib_compound['pages'],nbtlib_compound.pop("filtered_pages",nbtlib.Compound({})),nbtlib_compound.pop("title",None),nbtlib_compound.pop("author",None),nbtlib_compound.pop("generation",None),nbtlib_compound.pop("resolved",None))
         del nbtlib_compound['pages']
     return components_list
 
@@ -431,12 +431,24 @@ def Potion_updata(components_list: list,Potion: String,CustomPotionColor: int,cu
         pass
     return components_list
 
-def pages_updata(components_list: list,pages,filtered_pages):#过滤页面暂未处理
+def pages_updata(components_list: list,id:String,pages:list,filtered_pages,title:String,author:String,generation:int,resolved:bool):#过滤页面暂未处理
     try:
-        if type(pages) is nbtlib.tag.List[String]:
-            components_list.append("writable_book_content={pages:"+serialize_tag(pages)+"}")
-        if type(pages) is nbtlib.tag.List[Compound]:
-            components_list.append("writable_book_content={pages:"+serialize_tag(pages)+"}")
+        if id == 'writable_book' or id == 'written_book':
+            if type(pages) is nbtlib.tag.List[String]:
+                pages_str=id+"_content={pages:"+serialize_tag(pages)+","
+            if type(pages) is nbtlib.tag.List[Compound]:
+                pages_str=components_list.append(id+"_content={pages:"+serialize_tag(pages))+","
+        if id == 'written_book':
+            if title != None:
+                pages_str+="title:'"+serialize_tag(title)+"',"
+            if author != None:
+                pages_str+="author:'"+serialize_tag(author)+"',"
+            if generation != None:
+                pages_str+="generation:'"+serialize_tag(generation)+"',"
+            if resolved != None:
+                pages_str+="resolved:'"+serialize_tag(resolved)+"',"
+        pages_str=pages_str.rstrip(",")+"}"
+
     except Exception:
         pass
     return components_list
@@ -453,8 +465,8 @@ print(item_nbt_updata(parse_nbt(s)))
 '''
 #s = '{Decorations:[{x:2.0d,z:3.0d,type:2b,rot:180.0d,id:"123"}]}'
 s = '{pages:["123\n123","213"]}'
-d = '{pages:[{text:\'你好，世界！\'}]}'
+d = '{pages:[{text:\'你好，世界！\'},{text:\'233\'},{text:\'1\'}]}'
 #print(parse_nbt(s))
-print(item_nbt_updata(parse_nbt(s)))
+print(item_nbt_updata("writable_book",parse_nbt(s)))
 #print(parse_nbt(d))
-print(item_nbt_updata(parse_nbt(d)))
+print(item_nbt_updata("written_book",parse_nbt(d)))
