@@ -93,7 +93,7 @@ def item_nbt_updata(nbtlib): #处理分析过的NBT(nbtlib)，更新后每个指
         components_list = map_updata(components_list,nbtlib['map'])
         del nbtlib['map']
     
-    #map
+    #CustomModelData
     if 'CustomModelData' in nbtlib:
         components_list = CustomModelData_updata(components_list,nbtlib['CustomModelData'])
         del nbtlib['CustomModelData']
