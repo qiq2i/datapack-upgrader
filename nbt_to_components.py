@@ -116,9 +116,41 @@ def item_nbt_updata(id: String,nbtlib_compound: nbtlib.tag.Compound): #处理分
     
     #Trim
     if 'Trim' in nbtlib_compound:
-        components_list = Trim_updata(components_list,nbtlib_compound['Trim'])
+        components_list = Trim_updata(components_list,nbtlib_compound['Trim'],nbtlib_compound.get('HideFlags',0))
         del nbtlib_compound['Trim']
 
+    #effects
+    if 'effects' in nbtlib_compound:
+        components_list = effects_updata(components_list,nbtlib_compound['effects'])
+        del nbtlib_compound['effects']
+
+    #HideFlags
+    if 'HideFlags' in nbtlib_compound:
+        components_list = HideFlags_updata(components_list,nbtlib_compound['HideFlags'])
+        del nbtlib_compound['HideFlags']
+
+    #DebugProperty
+    if 'DebugProperty' in nbtlib_compound:
+        components_list = DebugProperty_updata(components_list,nbtlib_compound['DebugProperty'])
+        del nbtlib_compound['DebugProperty']
+
+    #EntityTag
+    if 'EntityTag' in nbtlib_compound:
+        components_list = EntityTag_updata(components_list,nbtlib_compound['EntityTag'])
+        del nbtlib_compound['EntityTag']
+
+    #bucket_entity_data
+    components_list = bucket_entity_data_updata(components_list,nbtlib_compound.pop("NoAI",None),nbtlib_compound.pop("Silent",None),nbtlib_compound.pop("NoGravity",None),nbtlib_compound.pop("Glowing",None),nbtlib_compound.pop("Invulnerable",None),nbtlib_compound.pop("Health",None),nbtlib_compound.pop("Age",None),nbtlib_compound.pop("Variant",None),nbtlib_compound.pop("HuntingCooldown",None),nbtlib_compound.pop("BucketVariantTag",None))
+
+    #instrument
+    if 'instrument' in nbtlib_compound:
+        components_list = instrument_updata(components_list,nbtlib_compound['instrument'])
+        del nbtlib_compound['instrument']
+
+    #Recipes
+    if 'Recipes' in nbtlib_compound:
+        components_list = Recipes_updata(components_list,nbtlib_compound['Recipes'])
+        del nbtlib_compound['Recipes']
     return components_list
 
 
@@ -459,14 +491,110 @@ def pages_updata(components_list: list,id:String,pages:list,filtered_pages,title
         pass
     return components_list
 
-def Trim_updata(components_list: list,value: int):
+def Trim_updata(components_list: list,value: nbtlib.tag.Compound,HideFlags: int):
     try:
-        components_list.append("trim="+serialize_tag(value))
+        if HideFlags == None:
+            HideFlags=0
+        try:
+            HideFlags += 0
+        except Exception:
+            HideFlags=0
+        bit = (HideFlags >> 7) & 1 #获取第8个二进制位，为1则隐藏
+        if bit == 1:
+            components_list.append("trim="+serialize_tag(value).rstrip("}")+",show_in_tooltip:false}")
+        else:
+            components_list.append("trim="+serialize_tag(value))
     except Exception:
         pass
     return components_list
 
-s = '{Damage:34,Unbreakable:False,Enchantments:[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}],display:{Name:\'{\"text\":\"§e治疗不死图腾\"}\',Lore:[\'{\"text\":\"§7死亡不掉落一次，带在身上即可。\"}\',\'{\"text\":\"§7（注意，如果游戏设置未开启 死亡掉落物品保护，则该物品无效）\"}\']}}'
+def effects_updata(components_list: list,value: nbtlib.tag.Compound):
+    try:
+        components_list.append("suspicious_stew_effects="+serialize_tag(value))
+    except Exception:
+        pass
+    return components_list
+
+def HideFlags_updata(components_list: list,HideFlags: int):
+    try:
+        if HideFlags == None:
+            HideFlags=0
+        try:
+            HideFlags += 0
+        except Exception:
+            HideFlags=0
+        bit = (HideFlags >> 5) & 1 #获取第6个二进制位，为1则隐藏
+        if bit == 1:
+            components_list.append("hide_additional_tooltip={}")
+        else:
+            pass
+    except Exception:
+        pass
+    return components_list
+
+def DebugProperty_updata(components_list: list,value: nbtlib.tag.Compound):
+    try:
+        components_list.append("debug_stick_state="+serialize_tag(value))
+    except Exception:
+        pass
+    return components_list
+
+def EntityTag_updata(components_list: list,value: nbtlib.tag.Compound):
+    try:
+        components_list.append("entity_data="+serialize_tag(value))
+    except Exception:
+        pass
+    return components_list
+
+def bucket_entity_data_updata(components_list: list,NoAI:nbtlib.tag.Byte,Silent:nbtlib.tag.Byte,NoGravity:nbtlib.tag.Byte,Glowing:nbtlib.tag.Byte,Invulnerable:nbtlib.tag.Byte,Health:nbtlib.tag.Float,Age:nbtlib.tag.Int,Variant:nbtlib.tag.Int,HuntingCooldown:nbtlib.tag.Long,BucketVariantTag:nbtlib.tag.Int):
+    try:
+        bucket_entity_str="bucket_entity_data={"
+        if NoAI != None:
+            bucket_entity_str+="NoAI:"+serialize_tag(NoAI)+","
+        if Silent != None:
+            bucket_entity_str+="Silent:"+serialize_tag(Silent)+","
+        if NoGravity != None:
+            bucket_entity_str+="NoGravity:"+serialize_tag(NoGravity)+","
+        if Glowing != None:
+            bucket_entity_str+="Glowing:"+serialize_tag(Glowing)+","
+        if Invulnerable != None:
+            bucket_entity_str+="Invulnerable:"+serialize_tag(Invulnerable)+","
+        if Health != None:
+            bucket_entity_str+="Health:"+serialize_tag(Health)+","
+        if Age != None:
+            bucket_entity_str+="Age:"+serialize_tag(Age)+","
+        if Variant != None:
+            bucket_entity_str+="Variant:"+serialize_tag(Variant)+","
+        if HuntingCooldown != None:
+            bucket_entity_str+="HuntingCooldown:"+serialize_tag(HuntingCooldown)+","
+        if BucketVariantTag != None:
+            bucket_entity_str+="BucketVariantTag:"+serialize_tag(BucketVariantTag)+","
+        bucket_entity_str=bucket_entity_str.rstrip(",")+"}"
+        components_list.append(bucket_entity_str)
+    except Exception:
+        pass
+    return components_list
+
+def instrument_updata(components_list: list,value: nbtlib.tag.Compound):
+    try:
+        components_list.append("instrument="+serialize_tag(value))
+    except Exception:
+        pass
+    return components_list
+
+def instrument_updata(components_list: list,value: nbtlib.tag.String):
+    try:
+        components_list.append("instrument="+serialize_tag(value))
+    except Exception:
+        pass
+    return components_list
+def Recipes_updata(components_list: list,value: nbtlib.tag.List):
+    try:
+        components_list.append("recipes="+serialize_tag(value))
+    except Exception:
+        pass
+    return components_list
+s = '{NoAI:True,Health:10.2f,HuntingCooldown:233,Damage:34,Unbreakable:False,Enchantments:[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}],display:{Name:\'{\"text\":\"§e治疗不死图腾\"}\',Lore:[\'{\"text\":\"§7死亡不掉落一次，带在身上即可。\"}\',\'{\"text\":\"§7（注意，如果游戏设置未开启 死亡掉落物品保护，则该物品无效）\"}\']}}'
 print(parse_nbt(s))  # 输出：{'Enchantments': '[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}]'}
 print(item_nbt_updata("bow",parse_nbt(s))) # 输出：['damage=34']
 '''
