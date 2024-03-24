@@ -118,11 +118,11 @@ def item_nbt_updata(id: String,nbtlib_compound: nbtlib.tag.Compound): #处理分
 
 def Damage_updata(components_list: list,value:int):
     if value != None:
-        components_list.append("damage=" + str(value + 0))
+        components_list.append("damage=" + serialize_tag(value))
     return components_list
 def RepairCost_updata(components_list: list,value:int):
     if value != None:
-        components_list.append("repair_cost=" + str(value + 0))
+        components_list.append("repair_cost=" + serialize_tag(value))
     return components_list
 def Unbreakable_updata(components_list: list,value,HideFlags:int):
     if value != None:
@@ -178,14 +178,14 @@ def StoredEnchantments_updata(components_list: list,value:list,HideFlags:int):
     return components_list
 def display_Name_updata(components_list: list,value: str):
     try:
-        components_list.append("custom_name='"+value+"'")
+        components_list.append("custom_name="+serialize_tag(value))
     except Exception:
         pass
     return components_list
 def display_Lore_updata(components_list: list,value: list):
     #print("','".join(value)) #value为列表
     try:
-        components_list.append("lore=['"+"','".join(value)+"']")
+        components_list.append("lore="+serialize_tag(value))
     except Exception:
         pass
     return components_list
@@ -200,9 +200,9 @@ def CanDestroy_updata(components_list: list,value: list,HideFlags: int):
             HideFlags=0
         bit = (HideFlags >> 3) & 1 #获取第4个二进制位，为1则隐藏
         if bit == 1:
-            components_list.append('can_break={predicates:{blocks:[\''+"','".join(value)+"\']},show_in_tooltip:false}")
+            components_list.append('can_break={predicates:{blocks:'+serialize_tag(value)+"},show_in_tooltip:false}")
         else:
-            components_list.append('can_break={predicates:{blocks:[\''+"','".join(value)+"\']}")
+            components_list.append('can_break={predicates:{blocks:'+serialize_tag(value)+"}")
     except Exception:
         pass
     return components_list
@@ -216,9 +216,9 @@ def CanPlaceOn_updata(components_list: list,value: list,HideFlags: int):
             HideFlags=0
         bit = (HideFlags >> 4) & 1 #获取第4个二进制位，为1则隐藏
         if bit == 1:
-            components_list.append('can_place_on={predicates:{blocks:[\''+"','".join(value)+"\']},show_in_tooltip:false}")
+            components_list.append('can_place_on={predicates:{blocks:'+serialize_tag(value)+"},show_in_tooltip:false}")
         else:
-            components_list.append('can_place_on={predicates:{blocks:[\''+"','".join(value)+"\']}")
+            components_list.append('can_place_on={predicates:{blocks:'+serialize_tag(value)+"}")
     except Exception:
         pass
     return components_list
@@ -232,9 +232,9 @@ def display_color_updata(components_list: list,value: int,HideFlags: int):
             HideFlags=0
         bit = (HideFlags >> 6) & 1 #获取第7个二进制位，为1则隐藏
         if bit == 1:
-            components_list.append("dyed_color={rgb:"+str(value+0)+",show_in_tooltip:false}")
+            components_list.append("dyed_color={rgb:"+serialize_tag(value)+",show_in_tooltip:false}")
         else:
-            components_list.append("dyed_color={rgb:"+str(value+0)+"}")
+            components_list.append("dyed_color={rgb:"+serialize_tag(value)+"}")
     except Exception:
         pass
     return components_list
@@ -433,7 +433,6 @@ def Potion_updata(components_list: list,Potion: String,CustomPotionColor: int,cu
 
 def pages_updata(components_list: list,id:String,pages:list,filtered_pages,title:String,author:String,generation:int,resolved:bool):#过滤页面暂未处理
     try:
-        print(pages)
         if id == 'writable_book' or id == 'written_book':
             if type(pages) is nbtlib.tag.List[String]:
                 pages_str=id+"_content={pages:"+serialize_tag(pages)+","
@@ -453,10 +452,11 @@ def pages_updata(components_list: list,id:String,pages:list,filtered_pages,title
     except Exception:
         pass
     return components_list
-'''
+
 s = '{Damage:34,Unbreakable:False,Enchantments:[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}],display:{Name:\'{\"text\":\"§e治疗不死图腾\"}\',Lore:[\'{\"text\":\"§7死亡不掉落一次，带在身上即可。\"}\',\'{\"text\":\"§7（注意，如果游戏设置未开启 死亡掉落物品保护，则该物品无效）\"}\']}}'
 print(parse_nbt(s))  # 输出：{'Enchantments': '[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}]'}
-print(item_nbt_updata(parse_nbt(s))) # 输出：['damage=34']
+print(item_nbt_updata("bow",parse_nbt(s))) # 输出：['damage=34']
+'''
 print("===")
 s = '{Unbreakable:1b,AttributeModifiers:[{AttributeName:"generic.max_health",Name:"generic.max_health",Amount:1,Operation:0,UUID:[I;487516678,559893762,-1722137402,-1908663762]}]}'
 print(item_nbt_updata(parse_nbt(s)))
