@@ -87,6 +87,16 @@ def item_nbt_updata(nbtlib): #处理分析过的NBT(nbtlib)，更新后每个指
     if 'Decorations' in nbtlib:
         components_list = Decorations_updata(components_list,nbtlib['Decorations'])
         del nbtlib['Decorations']
+    
+    #map
+    if 'map' in nbtlib:
+        components_list = map_updata(components_list,nbtlib['map'])
+        del nbtlib['map']
+    
+    #map
+    if 'CustomModelData' in nbtlib:
+        components_list = CustomModelData_updata(components_list,nbtlib['CustomModelData'])
+        del nbtlib['CustomModelData']
     return components_list
 
 def Damage_updata(components_list: list,value:int):
@@ -282,12 +292,12 @@ def Items_updata(components_list: list,value: list):#收纳袋value:[] component
     return components_list
 def display_MapColor_updata(components_list: list,value: int):
     try:
-        components_list.append("map_color:"+str(value+0))
+        components_list.append("map_color="+str(value+0))
     except Exception:
         pass
     return components_list
 
-def Decorations_updata(components_list: list,value):
+def Decorations_updata(components_list: list,value: list):
     try:
         map_decorations_str = "map_decorations:{"
         for i in value:
@@ -373,6 +383,19 @@ def Decorations_updata(components_list: list,value):
         pass
     return components_list
 
+def map_updata(components_list: list,value: int):
+    try:
+        components_list.append("map_id="+str(value+0))
+    except Exception:
+        pass
+    return components_list
+
+def CustomModelData_updata(components_list: list,value: int):
+    try:
+        components_list.append("custom_model_data="+str(value+0))
+    except Exception:
+        pass
+    return components_list
 '''
 s = '{Damage:34,Unbreakable:False,Enchantments:[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}],display:{Name:\'{\"text\":\"§e治疗不死图腾\"}\',Lore:[\'{\"text\":\"§7死亡不掉落一次，带在身上即可。\"}\',\'{\"text\":\"§7（注意，如果游戏设置未开启 死亡掉落物品保护，则该物品无效）\"}\']}}'
 print(parse_nbt(s))  # 输出：{'Enchantments': '[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}]'}
