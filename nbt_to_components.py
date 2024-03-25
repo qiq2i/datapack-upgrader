@@ -707,13 +707,16 @@ def Fireworks_updata(components_list: list,Explosions: nbtlib.tag.Compound,Fligh
 def SkullOwner_updata(components_list: list,SkullOwner: nbtlib.tag.Compound):
     try:
         profile_str="profile={"
-        if SkullOwner.get("Name",None)!=None:
-            profile_str+="name:"+serialize_tag(SkullOwner.get("Name"))+","
-        if SkullOwner.get("Id",None)!=None:
-            profile_str+="id:"+serialize_tag(SkullOwner.get("Id"))+","
-        if SkullOwner.get("Properties",None)!=None:
-            print("玩家头颅处理中，暂未处理玩家档案配置属性Properties")
-        profile_str=profile_str.rstrip(",")+"}"
+        if type(SkullOwner) is nbtlib.tag.String:
+            profile_str+="name:"+serialize_tag(SkullOwner)+"}"
+        else:
+            if SkullOwner.get("Name",None)!=None:
+                profile_str+="name:"+serialize_tag(SkullOwner.get("Name"))+","
+            if SkullOwner.get("Id",None)!=None:
+                profile_str+="id:"+serialize_tag(SkullOwner.get("Id"))+","
+            if SkullOwner.get("Properties",None)!=None:
+                print("玩家头颅处理中，暂未处理玩家档案配置属性Properties")
+            profile_str=profile_str.rstrip(",")+"}"
         components_list.append(profile_str)
     except Exception:
         pass
@@ -855,3 +858,8 @@ print(item_nbt_updata("firework_star",parse_nbt(s)))
 print("测试5")
 s = '{Fireworks:{Flight:233b,Explosions:[{Type:1,Flicker:1b,Trail:1b,Colors:[I;7553279],FadeColors:[I;16770503]},{Type:0,Trail:1b}]}}'
 print(item_nbt_updata("firework_rocket",parse_nbt(s)))
+
+#测试6 - 头颅
+print("测试6")
+s = '{SkullOwner:"xiao_qi_zi",BlockEntityTag:{note_block_sound:"minecraft:ambient.cave"}}'
+print(item_nbt_updata("player_head",parse_nbt(s)))
