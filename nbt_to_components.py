@@ -60,7 +60,7 @@ def item_nbt_updata(id: String,nbtlib_compound: nbtlib.tag.Compound): #处理分
 
     #ChargedProjectiles
     if 'Charged' in nbtlib_compound:
-        components_list = ChargedProjectiles_updata(components_list,nbtlib_compound.pop('ChargedProjectiles',[]))
+        components_list = ChargedProjectiles_updata(components_list,nbtlib_compound.pop('ChargedProjectiles',None))
         del nbtlib_compound['Charged']
 
     #Items
@@ -325,10 +325,15 @@ def AttributeModifiers_updata(components_list: list,value: list,HideFlags: int):
     return components_list
 def ChargedProjectiles_updata(components_list: list,value: list):#value为列表。
     try:
-        #print(value)
         charged_projectiles_str="charged_projectiles=["
         for i in value:
-            charged_projectiles_str+="{id:'"+i.get("id")+"'},"
+            if i.get("id")!=None:
+                charged_projectiles_str+="{id:"+serialize_tag(i.get("id"))+","
+                if i.get("Count")!=None:
+                    charged_projectiles_str+="count:"+serialize_tag(i.get("Count"))+","
+                if i.get("tag")!=None:
+                    print("tag转组件暂未处理")
+                charged_projectiles_str=charged_projectiles_str.rstrip(",")+"},"
         charged_projectiles_str=charged_projectiles_str.rstrip(",")+"]"
         components_list.append(charged_projectiles_str)
     except Exception:
@@ -807,7 +812,7 @@ def BlockStateTag_updata(components_list: list,BlockStateTag: nbtlib.tag.Compoun
 
 #例子1-可染色物品，及通用NBT
 print("测试1")
-s = '''{CanPlaceOn:["minecraft:ice","minecraft:mud"],CanDestroy:["minecraft:fern","minecraft:lava"],display:{Name:'[{"text":"233","color":"gold","bold":true,"italic":true,"underlined":true,"strikethrough":true,"obfuscated":true},{"text":"666777","font":"6","bold":true}]',Lore:['{"text":"112233","bold":true,"italic":true}']},HideFlags:129,CustomModelData:12345678,Enchantments:[{id:"minecraft:protection",lvl:3s},{id:"minecraft:thorns",lvl:11s}],AttributeModifiers:[{AttributeName:"generic.max_health",Name:"generic.max_health",Amount:10,Operation:0,UUID:[I;317531815,114708043,-1774063036,1637657640]},{AttributeName:"generic.knockback_resistance",Name:"generic.knockback_resistance",Amount:23,Operation:1,UUID:[I;-1554795033,723864717,-1969707662,611632905],Slot:"mainhand"}]}'''
+s = '''{CanPlaceOn:["minecraft:ice","minecraft:mud"],CanDestroy:["minecraft:fern","minecraft:lava"],display:{Name:'[{"text":"233","color":"gold","bold":true,"italic":true,"underlined":true,"strikethrough":true,"obfuscated":true},{"text":"666777","font":"6","bold":true}]',Lore:['{"text":"112233","bold":true,"italic":true}'],color:1011},HideFlags:129,CustomModelData:12345678,Enchantments:[{id:"minecraft:protection",lvl:3s},{id:"minecraft:thorns",lvl:11s}],AttributeModifiers:[{AttributeName:"generic.max_health",Name:"generic.max_health",Amount:10,Operation:0,UUID:[I;317531815,114708043,-1774063036,1637657640]},{AttributeName:"generic.knockback_resistance",Name:"generic.knockback_resistance",Amount:23,Operation:1,UUID:[I;-1554795033,723864717,-1969707662,611632905],Slot:"mainhand"}]}'''
 #print(parse_nbt(s))
 print(item_nbt_updata("leather",parse_nbt(s)))
 
@@ -844,3 +849,8 @@ print(item_nbt_updata("player_head",parse_nbt(s)))
 print("测试7")
 s = '{BlockEntityTag:{sherds:["minecraft:archer_pottery_sherd","minecraft:brick","minecraft:brick","minecraft:brick"]}}'
 print(item_nbt_updata("decorated_pot",parse_nbt(s)))
+
+#测试8 - 弩
+print("测试8")
+s = '{RepairCost:233,Unbreakable:1b,Damage:3,ChargedProjectiles:[{id:"minecraft:firework_rocket",Count:1b,tag:{Fireworks:{Flight:233b,Explosions:[{Type:0}]}}},{id:"minecraft:arrow",Count:1b},{}],Charged:1b}'
+print(item_nbt_updata("crossbow",parse_nbt(s)))
