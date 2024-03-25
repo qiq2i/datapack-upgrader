@@ -602,14 +602,14 @@ def Recipes_updata(components_list: list,value: nbtlib.tag.List):
 
 def Lodestone_updata(components_list: list,LodestoneDimension: nbtlib.tag.String,LodestonePos:nbtlib.tag.Compound,LodestoneTracked:nbtlib.tag.Byte):
     try:
-        lodestone_target_str="lodestone_target={"
+        lodestone_target_str="lodestone_tracker={target:{"
         if LodestoneDimension!=None:
             lodestone_target_str+="dimension:"+serialize_tag(LodestoneDimension)+","
         if LodestonePos!=None:
             lodestone_target_str+="pos:["+serialize_tag(LodestonePos.get("X"))+","+serialize_tag(LodestonePos.get("Y"))+","+serialize_tag(LodestonePos.get("Z"))+"],"
         if LodestoneTracked!=None:
             lodestone_target_str+="tracked:"+serialize_tag(LodestoneTracked)+","
-        lodestone_target_str=lodestone_target_str.rstrip(",")+"}"
+        lodestone_target_str=lodestone_target_str.rstrip(",")+"}}"
         components_list.append(lodestone_target_str)
     except Exception:
         pass
