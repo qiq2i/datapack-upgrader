@@ -151,6 +151,30 @@ def item_nbt_updata(id: String,nbtlib_compound: nbtlib.tag.Compound): #处理分
     if 'Recipes' in nbtlib_compound:
         components_list = Recipes_updata(components_list,nbtlib_compound['Recipes'])
         del nbtlib_compound['Recipes']
+    
+    #Lodestone
+    if 'Recipes' in nbtlib_compound:
+        components_list = Lodestone_updata(components_list,nbtlib_compound.pop("LodestoneDimension"),nbtlib_compound.pop("LodestonePos"),nbtlib_compound.pop("LodestoneTracked"))
+    
+    #Explosion
+    if 'Recipes' in nbtlib_compound:
+        components_list = Explosion_updata(components_list,nbtlib_compound.pop("Explosion"))
+
+    #Fireworks
+    if 'Fireworks' in nbtlib_compound:
+        components_list = Fireworks_updata(components_list,nbtlib_compound["Fireworks"].pop("Explosions"),nbtlib_compound["Fireworks"].pop("Flight"))
+
+    #SkullOwner
+    if 'SkullOwner' in nbtlib_compound:
+        components_list = SkullOwner_updata(components_list,nbtlib_compound.pop("SkullOwner"))
+
+    #BlockEntityTag
+    if 'BlockEntityTag' in nbtlib_compound:
+        components_list = BlockEntityTag_updata(components_list,nbtlib_compound.pop("BlockEntityTag"))
+
+    #BlockStateTag
+    if 'BlockStateTag' in nbtlib_compound:
+        components_list = BlockStateTag_updata(components_list,nbtlib_compound.pop("BlockStateTag"))
     return components_list
 
 
@@ -588,12 +612,214 @@ def instrument_updata(components_list: list,value: nbtlib.tag.String):
     except Exception:
         pass
     return components_list
+
 def Recipes_updata(components_list: list,value: nbtlib.tag.List):
     try:
         components_list.append("recipes="+serialize_tag(value))
     except Exception:
         pass
     return components_list
+
+def Lodestone_updata(components_list: list,LodestoneDimension: nbtlib.tag.String,LodestonePos:nbtlib.tag.Compound,LodestoneTracked:nbtlib.tag.Byte):
+    try:
+        lodestone_target_str="lodestone_target={"
+        if LodestoneDimension!=None:
+            lodestone_target_str+="dimension:"+serialize_tag(LodestoneDimension)+","
+        if LodestonePos!=None:
+            lodestone_target_str+="pos:["+serialize_tag(LodestonePos.get("X"))+","+serialize_tag(LodestonePos.get("Y"))+","+serialize_tag(LodestonePos.get("Z"))+"],"
+        if LodestoneTracked!=None:
+            lodestone_target_str+="tracked:"+serialize_tag(LodestoneTracked)+","
+        bucket_entity_str=bucket_entity_str.rstrip(",")+"}"
+        components_list.append(bucket_entity_str)
+    except Exception:
+        pass
+    return components_list
+
+def Explosion_updata(components_list: list,Explosion: nbtlib.tag.Compound):
+    try:
+        firework_explosion_str="firework_explosion={"
+        if Explosion.get("Type",None)!=None:
+            if Explosion.get("Type",None) == 0:
+                firework_explosion_str+="shape:'small_ball',"
+            if Explosion.get("Type",None) == 1:
+                firework_explosion_str+="shape:'large_ball',"
+            if Explosion.get("Type",None) == 2:
+                firework_explosion_str+="shape:'star',"
+            if Explosion.get("Type",None) == 3:
+                firework_explosion_str+="shape:'creeper',"
+            if Explosion.get("Type",None) == 4:
+                firework_explosion_str+="shape:'burst',"
+        if Explosion.get("Colors",None)!=None:
+            firework_explosion_str+="colors:["+serialize_tag(Explosion.get("Colors",None))+"],"
+        if Explosion.get("FadeColors",None)!=None:
+            firework_explosion_str+="fade_colors:["+serialize_tag(Explosion.get("FadeColors",None))+"],"
+        if Explosion.get("Trail",None)!=None:
+            firework_explosion_str+="has_trail:"+serialize_tag(Explosion.get("Trail",None))+","
+        if Explosion.get("Flicker",None)!=None:
+            firework_explosion_str+="has_twinkle:"+serialize_tag(Explosion.get("Flicker",None))+","
+        firework_explosion_str=firework_explosion_str.rstrip(",")+"}"
+        components_list.append(firework_explosion_str)
+    except Exception:
+        pass
+    return components_list
+
+def Fireworks_updata(components_list: list,Explosions: nbtlib.tag.Compound,Flight:nbtlib.tag.Byte):
+    try:
+        fireworks_str="fireworks={"
+        if Explosions != None:
+            fireworks_str+="explosions:["
+            for i in Explosions:
+                fireworks_str+="{"
+                if i.get("Type",None)!=None:
+                    if i.get("Type",None) == 0:
+                        fireworks_str+="shape:'small_ball',"
+                    if i.get("Type",None) == 1:
+                        fireworks_str+="shape:'large_ball',"
+                    if i.get("Type",None) == 2:
+                        fireworks_str+="shape:'star',"
+                    if i.get("Type",None) == 3:
+                        fireworks_str+="shape:'creeper',"
+                    if i.get("Type",None) == 4:
+                        fireworks_str+="shape:'burst',"
+                if i.get("Colors",None)!=None:
+                    fireworks_str+="colors:["+serialize_tag(i.get("Colors",None))+"],"
+                if i.get("FadeColors",None)!=None:
+                    fireworks_str+="fade_colors:["+serialize_tag(i.get("FadeColors",None))+"],"
+                if i.get("Trail",None)!=None:
+                    fireworks_str+="has_trail:"+serialize_tag(i.get("Trail",None))+","
+                if i.get("Flicker",None)!=None:
+                    fireworks_str+="has_twinkle:"+serialize_tag(i.get("Flicker",None))+","
+                fireworks_str+="},"
+            fireworks_str=fireworks_str.rstrip(",")+"},"
+
+        if Flight != None:
+            fireworks_str+="flight_duration:"+serialize_tag(Flight)
+        fireworks_str=fireworks_str.rstrip(",")+"}"
+        components_list.append(fireworks_str)
+    except Exception:
+        pass
+    return components_list
+
+def SkullOwner_updata(components_list: list,SkullOwner: nbtlib.tag.Compound):
+    try:
+        profile_str="profile={"
+        if SkullOwner.get("Name",None)!=None:
+            profile_str+="name:"+serialize_tag(SkullOwner.get("Name"))+","
+        if SkullOwner.get("Id",None)!=None:
+            profile_str+="id:"+serialize_tag(SkullOwner.get("Id"))+","
+        if SkullOwner.get("Properties",None)!=None:
+            print("玩家头颅处理中，暂未处理玩家档案配置属性Properties")
+        profile_str=profile_str.rstrip(",")+"}"
+        components_list.append(profile_str)
+    except Exception:
+        pass
+    return components_list
+
+def BlockEntityTag_updata(components_list: list,BlockEntityTag: nbtlib.tag.Compound):
+    try:
+        BlockEntityTag_str=""
+        #note_block_sound
+        if BlockEntityTag.get("note_block_sound",None)!=None:
+            BlockEntityTag_str+="note_block_sound="+serialize_tag(BlockEntityTag.pop("note_block_sound",None))+","
+        #Base
+        if BlockEntityTag.get("Base",None)!=None:
+            if BlockEntityTag.pop("Base",None)==0:
+                BlockEntityTag_str+="base_color='white',"
+            if BlockEntityTag.pop("Base",None)==1:
+                BlockEntityTag_str+="base_color='orange',"
+            if BlockEntityTag.pop("Base",None)==2:
+                BlockEntityTag_str+="base_color='magenta',"
+            if BlockEntityTag.pop("Base",None)==3:
+                BlockEntityTag_str+="base_color='light_blue',"
+            if BlockEntityTag.pop("Base",None)==4:
+                BlockEntityTag_str+="base_color='yellow',"
+            if BlockEntityTag.pop("Base",None)==5:
+                BlockEntityTag_str+="base_color='lime',"
+            if BlockEntityTag.pop("Base",None)==6:
+                BlockEntityTag_str+="base_color='pink',"
+            if BlockEntityTag.pop("Base",None)==7:
+                BlockEntityTag_str+="base_color='gray',"
+            if BlockEntityTag.pop("Base",None)==8:
+                BlockEntityTag_str+="base_color='light_gray',"
+            if BlockEntityTag.pop("Base",None)==9:
+                BlockEntityTag_str+="base_color='cyan',"
+            if BlockEntityTag.pop("Base",None)==10:
+                BlockEntityTag_str+="base_color='purple',"
+            if BlockEntityTag.pop("Base",None)==11:
+                BlockEntityTag_str+="base_color='blue',"
+            if BlockEntityTag.pop("Base",None)==12:
+                BlockEntityTag_str+="base_color='brown',"
+            if BlockEntityTag.pop("Base",None)==13:
+                BlockEntityTag_str+="base_color='green',"
+            if BlockEntityTag.pop("Base",None)==14:
+                BlockEntityTag_str+="base_color='red',"
+            if BlockEntityTag.pop("Base",None)==15:
+                BlockEntityTag_str+="base_color='black',"
+        #Patterns
+        if BlockEntityTag.get("Patterns",None)!=None:
+            BlockEntityTag_str+="banner_patterns=["
+            for i in BlockEntityTag.get("Patterns"):
+                BlockEntityTag_str+="{pattern:"+serialize_tag(i.pop("Pattern"))+","
+                if i.get("Color",None)!= None:
+                    BlockEntityTag_str+="color:"+serialize_tag(i.pop("Color"))+"},"
+            BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"],"
+        #sherds
+        if BlockEntityTag.get("sherds",None)!=None:
+            BlockEntityTag_str+="pot_decorations="+serialize_tag(BlockEntityTag.pop("sherds"))+","
+        #Items
+        if BlockEntityTag.get("Items",None)!=None:
+            BlockEntityTag_str+="container=["
+            for i in BlockEntityTag.get("Items"):
+                BlockEntityTag_str+="{"
+                if i.get("Slot",None)!= None:
+                    BlockEntityTag_str+="slot:"+serialize_tag(i.pop("Slot"))+","
+                BlockEntityTag_str+="item:{"
+                if i.get("id",None)!= None:
+                    BlockEntityTag_str+="id:"+serialize_tag(i.pop("id"))+","
+                if i.get("Count",None)!= None:
+                    BlockEntityTag_str+="count:"+serialize_tag(i.pop("Count"))+","
+                if i.get("tag",None)!= None:
+                    print("tag处理")
+                BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"}},"
+            BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"],"
+        #Bees
+        if BlockEntityTag.get("Bees",None)!=None:
+            BlockEntityTag_str+="bees=["
+            for i in BlockEntityTag.get("Bees"):
+                BlockEntityTag_str+="{"
+                if i.get("EntityData",None)!=None:
+                    BlockEntityTag_str+="entity_data:"+serialize_tag(i.pop("EntityData"))+","
+                if i.get("MinOccupationTicks",None)!=None:
+                    BlockEntityTag_str+="min_ticks_in_hive:"+serialize_tag(i.pop("MinOccupationTicks"))+","
+                if i.get("TicksInHive",None)!=None:
+                    BlockEntityTag_str+="ticks_in_hive:"+serialize_tag(i.pop("TicksInHive"))+","
+                BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"},"
+            BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"],"
+        #Lock
+        if BlockEntityTag.get("Lock",None)!=None:
+            BlockEntityTag_str+="lock="+serialize_tag(BlockEntityTag.pop("Lock"))+","
+        #LootTable
+        if BlockEntityTag.get("LootTable",None)!=None:
+            BlockEntityTag_str+="container_loot={loot_table:"+serialize_tag(BlockEntityTag.pop("LootTable"))
+            if BlockEntityTag.get("LootTableSeed",None)!=None:
+                BlockEntityTag_str+=",seed:"+serialize_tag(BlockEntityTag.pop("LootTableSeed"))
+            BlockEntityTag_str+="},"
+        #其余内容变为block_entity_data
+        if BlockEntityTag.key():
+            BlockEntityTag_str+="block_entity_data="+serialize_tag(BlockEntityTag)
+        BlockEntityTag_str=BlockEntityTag_str.rstrip(",")
+        components_list.append(BlockEntityTag_str)
+    except Exception:
+        pass
+    return components_list
+
+def BlockStateTag_updata(components_list: list,BlockStateTag: nbtlib.tag.Compound):
+    try:
+        components_list.append("block_state="+serialize_tag(BlockStateTag))
+    except Exception:
+        pass
+    return components_list
+
 s = '{NoAI:True,Health:10.2f,HuntingCooldown:233,Damage:34,Unbreakable:False,Enchantments:[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}],display:{Name:\'{\"text\":\"§e治疗不死图腾\"}\',Lore:[\'{\"text\":\"§7死亡不掉落一次，带在身上即可。\"}\',\'{\"text\":\"§7（注意，如果游戏设置未开启 死亡掉落物品保护，则该物品无效）\"}\']}}'
 print(parse_nbt(s))  # 输出：{'Enchantments': '[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}]'}
 print(item_nbt_updata("bow",parse_nbt(s))) # 输出：['damage=34']
