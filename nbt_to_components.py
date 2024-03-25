@@ -812,7 +812,7 @@ def BlockEntityTag_updata(components_list: list,BlockEntityTag: nbtlib.tag.Compo
                 BlockEntityTag_str+=",seed:"+serialize_tag(BlockEntityTag.pop("LootTableSeed"))
             BlockEntityTag_str+="},"
         #其余内容变为block_entity_data
-        if BlockEntityTag.key():
+        if BlockEntityTag.items():
             BlockEntityTag_str+="block_entity_data="+serialize_tag(BlockEntityTag)
         BlockEntityTag_str=BlockEntityTag_str.rstrip(",")
         components_list.append(BlockEntityTag_str)
