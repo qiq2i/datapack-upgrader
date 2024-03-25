@@ -682,18 +682,22 @@ def Fireworks_updata(components_list: list,Explosions: nbtlib.tag.Compound,Fligh
                     if i.get("Type",None) == 4:
                         fireworks_str+="shape:'burst',"
                 if i.get("Colors",None)!=None:
-                    fireworks_str+="colors:["+serialize_tag(i.get("Colors",None))+"],"
+                    fireworks_str+="colors:"+serialize_tag(i.get("Colors",None))+","
                 if i.get("FadeColors",None)!=None:
-                    fireworks_str+="fade_colors:["+serialize_tag(i.get("FadeColors",None))+"],"
+                    fireworks_str+="fade_colors:"+serialize_tag(i.get("FadeColors",None))+","
                 if i.get("Trail",None)!=None:
                     fireworks_str+="has_trail:"+serialize_tag(i.get("Trail",None))+","
                 if i.get("Flicker",None)!=None:
                     fireworks_str+="has_twinkle:"+serialize_tag(i.get("Flicker",None))+","
-                fireworks_str+="},"
-            fireworks_str=fireworks_str.rstrip(",")+"},"
+                fireworks_str=fireworks_str.rstrip(",")+"},"
+            fireworks_str=fireworks_str.rstrip(",")+"],"
 
         if Flight != None:
-            fireworks_str+="flight_duration:"+serialize_tag(Flight)
+            if type(Flight) == nbtlib.tag.String:#去除前后的"
+                Flight_str = serialize_tag(Flight)[1:-1]
+            else:
+                Flight_str = serialize_tag(Flight)
+            fireworks_str+="flight_duration:"+Flight_str
         fireworks_str=fireworks_str.rstrip(",")+"}"
         components_list.append(fireworks_str)
     except Exception:
@@ -841,3 +845,13 @@ print(item_nbt_updata("written_book",parse_nbt(d)))
 print("测试3")
 s = '{LodestoneDimension:"minecraft:overworld",LodestoneTracked:1b,LodestonePos:{X:1,Y:2,Z:3}}'
 print(item_nbt_updata("compass",parse_nbt(s)))
+
+#测试4 - 烟火之星
+print("测试4")
+s = '{Explosion:{Type:1,Flicker:1b,Trail:1b,Colors:[I;5057023],FadeColors:[I;9895769]}}'
+print(item_nbt_updata("firework_star",parse_nbt(s)))
+
+#测试5 - 烟花火箭
+print("测试5")
+s = '{Fireworks:{Flight:233b,Explosions:[{Type:1,Flicker:1b,Trail:1b,Colors:[I;7553279],FadeColors:[I;16770503]},{Type:0,Trail:1b}]}}'
+print(item_nbt_updata("firework_rocket",parse_nbt(s)))
