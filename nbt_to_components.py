@@ -133,6 +133,7 @@ def item_nbt_updata(id: String,nbtlib_compound: nbtlib.tag.Compound): #处理分
     #Fireworks
     if 'Fireworks' in nbtlib_compound:
         components_list = Fireworks_updata(components_list,nbtlib_compound["Fireworks"].pop("Explosions",None),nbtlib_compound["Fireworks"].pop("Flight",None))
+        del nbtlib_compound["Fireworks"]
 
     #SkullOwner
     if 'SkullOwner' in nbtlib_compound:
