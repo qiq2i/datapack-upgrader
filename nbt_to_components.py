@@ -239,9 +239,9 @@ def CanDestroy_updata(components_list: list,value: list,HideFlags: int):
             HideFlags=0
         bit = (HideFlags >> 3) & 1 #获取第4个二进制位，为1则隐藏
         if bit == 1:
-            components_list.append('can_break={predicates:{blocks:'+serialize_tag(value)+"},show_in_tooltip:false}")
+            components_list.append('can_break={blocks:'+serialize_tag(value)+",show_in_tooltip:false}")
         else:
-            components_list.append('can_break={predicates:{blocks:'+serialize_tag(value)+"}}")
+            components_list.append('can_break={blocks:'+serialize_tag(value)+"}")
     except Exception:
         pass
     return components_list
@@ -255,9 +255,9 @@ def CanPlaceOn_updata(components_list: list,value: list,HideFlags: int):
             HideFlags=0
         bit = (HideFlags >> 4) & 1 #获取第4个二进制位，为1则隐藏
         if bit == 1:
-            components_list.append('can_place_on={predicates:{blocks:'+serialize_tag(value)+"},show_in_tooltip:false}")
+            components_list.append('can_place_on={blocks:'+serialize_tag(value)+",show_in_tooltip:false}")
         else:
-            components_list.append('can_place_on={predicates:{blocks:'+serialize_tag(value)+"}}")
+            components_list.append('can_place_on={blocks:'+serialize_tag(value)+"}")
     except Exception:
         pass
     return components_list
@@ -295,7 +295,7 @@ def AttributeModifiers_updata(components_list: list,value: list,HideFlags: int):
                 components_str +="name:'"+i.get("Name")+"',"
                 #print(i.get("Name"))
             if "Amount" in i:
-                components_str +="amount:'"+str(i.get("Amount",0)+0)+"',"
+                components_str +="amount:"+str(i.get("Amount",0)+0)+","
                 #print(i.get("Amount"))
             if "Operation" in i:
                 if i.get("Operation",0) == 0:
@@ -309,7 +309,7 @@ def AttributeModifiers_updata(components_list: list,value: list,HideFlags: int):
                 #print(i.get("Operation"))
                 
             components_str=components_str.rstrip(",")+"},"
-        components_str=components_str.rstrip(",")+"]"
+        components_str=components_str.rstrip(",")
         if HideFlags == None:
             HideFlags=0
         try:
