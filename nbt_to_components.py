@@ -16,153 +16,123 @@ def item_nbt_updata(id: String,nbtlib_compound: nbtlib.tag.Compound): #处理分
     components_list = []
     #Damage
     if 'Damage' in nbtlib_compound:
-        components_list = Damage_updata(components_list,nbtlib_compound.get('Damage'))
-        del nbtlib_compound['Damage']
+        components_list = Damage_updata(components_list,nbtlib_compound.pop('Damage',None))
 
     #RepairCost
     if 'RepairCost' in nbtlib_compound:
-        components_list = RepairCost_updata(components_list,nbtlib_compound.get('RepairCost'))
-        del nbtlib_compound['RepairCost']
+        components_list = RepairCost_updata(components_list,nbtlib_compound.pop('RepairCost'))
     
     #Unbreakable
     if 'Unbreakable' in nbtlib_compound:
-        components_list = Unbreakable_updata(components_list,nbtlib_compound.get('Unbreakable'),nbtlib_compound.get('HideFlags',0))
-        del nbtlib_compound['Unbreakable']
+        components_list = Unbreakable_updata(components_list,nbtlib_compound.pop('Unbreakable',0),nbtlib_compound.get('HideFlags',0))
     
     #Enchantments
     if 'Enchantments' in nbtlib_compound:
-        components_list = Enchantments_updata(components_list,nbtlib_compound.get('Enchantments'),nbtlib_compound.get('HideFlags',0))
-        del nbtlib_compound['Enchantments']
+        components_list = Enchantments_updata(components_list,nbtlib_compound.pop('Enchantments',None),nbtlib_compound.get('HideFlags',0))
 
     #StoredEnchantments
     if 'StoredEnchantments' in nbtlib_compound:
-        components_list = StoredEnchantments_updata(components_list,nbtlib_compound.get('StoredEnchantments'),nbtlib_compound.get('HideFlags',0))
-        del nbtlib_compound['StoredEnchantments']
+        components_list = StoredEnchantments_updata(components_list,nbtlib_compound.pop('StoredEnchantments',None),nbtlib_compound.get('HideFlags',0))
 
     #display_Name
     if 'Name' in nbtlib_compound.get('display',{}):
-        components_list = display_Name_updata(components_list,nbtlib_compound['display']['Name'])
-        del nbtlib_compound['display']['Name']
+        components_list = display_Name_updata(components_list,nbtlib_compound.get('display').pop('Name'))
 
     #display_Lore
     if 'Lore' in nbtlib_compound.get('display',{}):
-        components_list = display_Lore_updata(components_list,nbtlib_compound['display']['Lore'])
-        del nbtlib_compound['display']['Lore']
+        components_list = display_Lore_updata(components_list,nbtlib_compound.get('display').pop('Lore'))
 
     #CanDestroy
     if 'CanDestroy' in nbtlib_compound:
-        components_list = CanDestroy_updata(components_list,nbtlib_compound['CanDestroy'],nbtlib_compound.get('HideFlags',0))
-        del nbtlib_compound['CanDestroy']
+        components_list = CanDestroy_updata(components_list,nbtlib_compound.pop('CanDestroy',None),nbtlib_compound.get('HideFlags',0))
 
     #CanPlaceOn
     if 'CanPlaceOn' in nbtlib_compound:
-        components_list = CanPlaceOn_updata(components_list,nbtlib_compound['CanPlaceOn'],nbtlib_compound.get('HideFlags',0))
-        del nbtlib_compound['CanPlaceOn']
+        components_list = CanPlaceOn_updata(components_list,nbtlib_compound.pop('CanPlaceOn',None),nbtlib_compound.get('HideFlags',0))
 
     #display_color
     if 'color' in nbtlib_compound.get('display',{}):
-        components_list = display_color_updata(components_list,nbtlib_compound['display']['color'],nbtlib_compound.get('HideFlags',0))
-        del nbtlib_compound['display']['color']
+        components_list = display_color_updata(components_list,nbtlib_compound.get('display').pop('color',None),nbtlib_compound.get('HideFlags',0))
 
     #AttributeModifiers
     if 'AttributeModifiers' in nbtlib_compound:
-        components_list = AttributeModifiers_updata(components_list,nbtlib_compound['AttributeModifiers'],nbtlib_compound.get('HideFlags',0))
-        del nbtlib_compound['AttributeModifiers']
+        components_list = AttributeModifiers_updata(components_list,nbtlib_compound.pop('AttributeModifiers',None),nbtlib_compound.get('HideFlags',0))
 
     #ChargedProjectiles
     if 'Charged' in nbtlib_compound:
-        components_list = ChargedProjectiles_updata(components_list,nbtlib_compound.get('ChargedProjectiles',[]))
+        components_list = ChargedProjectiles_updata(components_list,nbtlib_compound.pop('ChargedProjectiles',[]))
         del nbtlib_compound['Charged']
-        del nbtlib_compound['ChargedProjectiles']
 
     #Items
     if 'Items' in nbtlib_compound:
-        components_list = Items_updata(components_list,nbtlib_compound['Items'])
-        del nbtlib_compound['Items']
+        components_list = Items_updata(components_list,nbtlib_compound.pop('Items',None))
 
     #display_MapColor
     if 'MapColor' in nbtlib_compound.get('display',{}):
-        components_list = display_MapColor_updata(components_list,nbtlib_compound['display']['MapColor'])
-        del nbtlib_compound['display']['MapColor']
+        components_list = display_MapColor_updata(components_list,nbtlib_compound.get('display').pop('MapColor',None))
 
     #Decorations
     if 'Decorations' in nbtlib_compound:
-        components_list = Decorations_updata(components_list,nbtlib_compound['Decorations'])
-        del nbtlib_compound['Decorations']
+        components_list = Decorations_updata(components_list,nbtlib_compound.pop('Decorations',None))
     
     #map
     if 'map' in nbtlib_compound:
-        components_list = map_updata(components_list,nbtlib_compound['map'])
-        del nbtlib_compound['map']
+        components_list = map_updata(components_list,nbtlib_compound.pop('map'))
     
     #CustomModelData
     if 'CustomModelData' in nbtlib_compound:
-        components_list = CustomModelData_updata(components_list,nbtlib_compound['CustomModelData'])
-        del nbtlib_compound['CustomModelData']
-    
+        components_list = CustomModelData_updata(components_list,nbtlib_compound.pop('CustomModelData'))
+
     #Potion
     if 'Potion' in nbtlib_compound:
-        components_list = Potion_updata(components_list,nbtlib_compound['Potion'],nbtlib_compound.get("CustomPotionColor",None),nbtlib_compound.get("custom_potion_effects",None))
-        del nbtlib_compound['Potion']
-        if 'CustomPotionColor' in nbtlib_compound:
-            del nbtlib_compound['CustomPotionColor']
-        if 'custom_potion_effects' in nbtlib_compound:
-            del nbtlib_compound['custom_potion_effects']
+        components_list = Potion_updata(components_list,nbtlib_compound.pop('Potion',None),nbtlib_compound.pop("CustomPotionColor",None),nbtlib_compound.pop("custom_potion_effects",None))
 
     #pages
     if 'pages' in nbtlib_compound:
-        components_list = pages_updata(components_list,id,nbtlib_compound['pages'],nbtlib_compound.pop("filtered_pages",nbtlib.Compound({})),nbtlib_compound.pop("title",None),nbtlib_compound.pop("author",None),nbtlib_compound.pop("generation",None),nbtlib_compound.pop("resolved",None))
-        del nbtlib_compound['pages']
+        components_list = pages_updata(components_list,id,nbtlib_compound.pop('pages',None),nbtlib_compound.pop("filtered_pages",nbtlib.Compound({})),nbtlib_compound.pop("title",None),nbtlib_compound.pop("author",None),nbtlib_compound.pop("generation",None),nbtlib_compound.pop("resolved",None))
     
     #Trim
     if 'Trim' in nbtlib_compound:
-        components_list = Trim_updata(components_list,nbtlib_compound['Trim'],nbtlib_compound.get('HideFlags',0))
-        del nbtlib_compound['Trim']
+        components_list = Trim_updata(components_list,nbtlib_compound.pop('Trim',None),nbtlib_compound.get('HideFlags',0))
 
     #effects
     if 'effects' in nbtlib_compound:
-        components_list = effects_updata(components_list,nbtlib_compound['effects'])
-        del nbtlib_compound['effects']
+        components_list = effects_updata(components_list,nbtlib_compound.pop('effects',None))
 
     #HideFlags
     if 'HideFlags' in nbtlib_compound:
-        components_list = HideFlags_updata(components_list,nbtlib_compound['HideFlags'])
-        del nbtlib_compound['HideFlags']
+        components_list = HideFlags_updata(components_list,nbtlib_compound.pop('HideFlags',0))
 
     #DebugProperty
     if 'DebugProperty' in nbtlib_compound:
-        components_list = DebugProperty_updata(components_list,nbtlib_compound['DebugProperty'])
-        del nbtlib_compound['DebugProperty']
+        components_list = DebugProperty_updata(components_list,nbtlib_compound.pop('DebugProperty',None))
 
     #EntityTag
     if 'EntityTag' in nbtlib_compound:
-        components_list = EntityTag_updata(components_list,nbtlib_compound['EntityTag'])
-        del nbtlib_compound['EntityTag']
+        components_list = EntityTag_updata(components_list,nbtlib_compound.pop('EntityTag',None))
 
     #bucket_entity_data
     components_list = bucket_entity_data_updata(components_list,nbtlib_compound.pop("NoAI",None),nbtlib_compound.pop("Silent",None),nbtlib_compound.pop("NoGravity",None),nbtlib_compound.pop("Glowing",None),nbtlib_compound.pop("Invulnerable",None),nbtlib_compound.pop("Health",None),nbtlib_compound.pop("Age",None),nbtlib_compound.pop("Variant",None),nbtlib_compound.pop("HuntingCooldown",None),nbtlib_compound.pop("BucketVariantTag",None))
 
     #instrument
     if 'instrument' in nbtlib_compound:
-        components_list = instrument_updata(components_list,nbtlib_compound['instrument'])
-        del nbtlib_compound['instrument']
+        components_list = instrument_updata(components_list,nbtlib_compound.pop('instrument',None))
 
     #Recipes
     if 'Recipes' in nbtlib_compound:
-        components_list = Recipes_updata(components_list,nbtlib_compound['Recipes'])
-        del nbtlib_compound['Recipes']
+        components_list = Recipes_updata(components_list,nbtlib_compound.pop('Recipes',None))
     
     #Lodestone
     if 'LodestonePos' in nbtlib_compound:
-        components_list = Lodestone_updata(components_list,nbtlib_compound.pop("LodestoneDimension"),nbtlib_compound.pop("LodestonePos"),nbtlib_compound.pop("LodestoneTracked"))
+        components_list = Lodestone_updata(components_list,nbtlib_compound.pop("LodestoneDimension",None),nbtlib_compound.pop("LodestonePos",None),nbtlib_compound.pop("LodestoneTracked",None))
     
     #Explosion
     if 'Explosion' in nbtlib_compound:
-        components_list = Explosion_updata(components_list,nbtlib_compound.pop("Explosion"))
+        components_list = Explosion_updata(components_list,nbtlib_compound.pop("Explosion",None))
 
     #Fireworks
     if 'Fireworks' in nbtlib_compound:
-        components_list = Fireworks_updata(components_list,nbtlib_compound["Fireworks"].pop("Explosions"),nbtlib_compound["Fireworks"].pop("Flight"))
+        components_list = Fireworks_updata(components_list,nbtlib_compound["Fireworks"].pop("Explosions",None),nbtlib_compound["Fireworks"].pop("Flight",None))
 
     #SkullOwner
     if 'SkullOwner' in nbtlib_compound:
@@ -175,7 +145,14 @@ def item_nbt_updata(id: String,nbtlib_compound: nbtlib.tag.Compound): #处理分
     #BlockStateTag
     if 'BlockStateTag' in nbtlib_compound:
         components_list = BlockStateTag_updata(components_list,nbtlib_compound.pop("BlockStateTag"))
-    return components_list
+
+    #清理门户
+    if 'display' in nbtlib_compound:
+        del nbtlib_compound["display"]
+    #剩余NBT置入custom_data中
+    components_list.append("custom_data="+serialize_tag(nbtlib_compound))
+
+    return "["+",".join(components_list)+"]"
 
 
 def Damage_updata(components_list: list,value:int):
@@ -264,7 +241,7 @@ def CanDestroy_updata(components_list: list,value: list,HideFlags: int):
         if bit == 1:
             components_list.append('can_break={predicates:{blocks:'+serialize_tag(value)+"},show_in_tooltip:false}")
         else:
-            components_list.append('can_break={predicates:{blocks:'+serialize_tag(value)+"}")
+            components_list.append('can_break={predicates:{blocks:'+serialize_tag(value)+"}}")
     except Exception:
         pass
     return components_list
@@ -280,7 +257,7 @@ def CanPlaceOn_updata(components_list: list,value: list,HideFlags: int):
         if bit == 1:
             components_list.append('can_place_on={predicates:{blocks:'+serialize_tag(value)+"},show_in_tooltip:false}")
         else:
-            components_list.append('can_place_on={predicates:{blocks:'+serialize_tag(value)+"}")
+            components_list.append('can_place_on={predicates:{blocks:'+serialize_tag(value)+"}}")
     except Exception:
         pass
     return components_list
@@ -638,25 +615,25 @@ def Lodestone_updata(components_list: list,LodestoneDimension: nbtlib.tag.String
 def Explosion_updata(components_list: list,Explosion: nbtlib.tag.Compound):
     try:
         firework_explosion_str="firework_explosion={"
-        if Explosion.get("Type",None)!=None:
-            if Explosion.get("Type",None) == 0:
+        if Explosion.get("Type")!=None:
+            if Explosion.get("Type") == 0:
                 firework_explosion_str+="shape:'small_ball',"
-            if Explosion.get("Type",None) == 1:
+            if Explosion.get("Type") == 1:
                 firework_explosion_str+="shape:'large_ball',"
-            if Explosion.get("Type",None) == 2:
+            if Explosion.get("Type") == 2:
                 firework_explosion_str+="shape:'star',"
-            if Explosion.get("Type",None) == 3:
+            if Explosion.get("Type") == 3:
                 firework_explosion_str+="shape:'creeper',"
-            if Explosion.get("Type",None) == 4:
+            if Explosion.get("Type") == 4:
                 firework_explosion_str+="shape:'burst',"
-        if Explosion.get("Colors",None)!=None:
-            firework_explosion_str+="colors:["+serialize_tag(Explosion.get("Colors",None))+"],"
-        if Explosion.get("FadeColors",None)!=None:
-            firework_explosion_str+="fade_colors:["+serialize_tag(Explosion.get("FadeColors",None))+"],"
-        if Explosion.get("Trail",None)!=None:
-            firework_explosion_str+="has_trail:"+serialize_tag(Explosion.get("Trail",None))+","
-        if Explosion.get("Flicker",None)!=None:
-            firework_explosion_str+="has_twinkle:"+serialize_tag(Explosion.get("Flicker",None))+","
+        if Explosion.get("Colors")!=None:
+            firework_explosion_str+="colors:["+serialize_tag(Explosion.get("Colors"))+"],"
+        if Explosion.get("FadeColors")!=None:
+            firework_explosion_str+="fade_colors:["+serialize_tag(Explosion.get("FadeColors"))+"],"
+        if Explosion.get("Trail")!=None:
+            firework_explosion_str+="has_trail:"+serialize_tag(Explosion.get("Trail"))+","
+        if Explosion.get("Flicker")!=None:
+            firework_explosion_str+="has_twinkle:"+serialize_tag(Explosion.get("Flicker"))+","
         firework_explosion_str=firework_explosion_str.rstrip(",")+"}"
         components_list.append(firework_explosion_str)
     except Exception:
@@ -670,25 +647,25 @@ def Fireworks_updata(components_list: list,Explosions: nbtlib.tag.Compound,Fligh
             fireworks_str+="explosions:["
             for i in Explosions:
                 fireworks_str+="{"
-                if i.get("Type",None)!=None:
-                    if i.get("Type",None) == 0:
+                if i.get("Type")!=None:
+                    if i.get("Type") == 0:
                         fireworks_str+="shape:'small_ball',"
-                    if i.get("Type",None) == 1:
+                    if i.get("Type") == 1:
                         fireworks_str+="shape:'large_ball',"
-                    if i.get("Type",None) == 2:
+                    if i.get("Type") == 2:
                         fireworks_str+="shape:'star',"
-                    if i.get("Type",None) == 3:
+                    if i.get("Type") == 3:
                         fireworks_str+="shape:'creeper',"
-                    if i.get("Type",None) == 4:
+                    if i.get("Type") == 4:
                         fireworks_str+="shape:'burst',"
-                if i.get("Colors",None)!=None:
-                    fireworks_str+="colors:"+serialize_tag(i.get("Colors",None))+","
-                if i.get("FadeColors",None)!=None:
-                    fireworks_str+="fade_colors:"+serialize_tag(i.get("FadeColors",None))+","
-                if i.get("Trail",None)!=None:
-                    fireworks_str+="has_trail:"+serialize_tag(i.get("Trail",None))+","
-                if i.get("Flicker",None)!=None:
-                    fireworks_str+="has_twinkle:"+serialize_tag(i.get("Flicker",None))+","
+                if i.get("Colors")!=None:
+                    fireworks_str+="colors:"+serialize_tag(i.get("Colors"))+","
+                if i.get("FadeColors")!=None:
+                    fireworks_str+="fade_colors:"+serialize_tag(i.get("FadeColors"))+","
+                if i.get("Trail")!=None:
+                    fireworks_str+="has_trail:"+serialize_tag(i.get("Trail"))+","
+                if i.get("Flicker")!=None:
+                    fireworks_str+="has_twinkle:"+serialize_tag(i.get("Flicker"))+","
                 fireworks_str=fireworks_str.rstrip(",")+"},"
             fireworks_str=fireworks_str.rstrip(",")+"],"
 
@@ -710,11 +687,11 @@ def SkullOwner_updata(components_list: list,SkullOwner: nbtlib.tag.Compound):
         if type(SkullOwner) is nbtlib.tag.String:
             profile_str+="name:"+serialize_tag(SkullOwner)+"}"
         else:
-            if SkullOwner.get("Name",None)!=None:
+            if SkullOwner.get("Name")!=None:
                 profile_str+="name:"+serialize_tag(SkullOwner.get("Name"))+","
-            if SkullOwner.get("Id",None)!=None:
+            if SkullOwner.get("Id")!=None:
                 profile_str+="id:"+serialize_tag(SkullOwner.get("Id"))+","
-            if SkullOwner.get("Properties",None)!=None:
+            if SkullOwner.get("Properties")!=None:
                 print("玩家头颅处理中，暂未处理玩家档案配置属性Properties")
             profile_str=profile_str.rstrip(",")+"}"
         components_list.append(profile_str)
@@ -726,89 +703,90 @@ def BlockEntityTag_updata(components_list: list,BlockEntityTag: nbtlib.tag.Compo
     try:
         BlockEntityTag_str=""
         #note_block_sound
-        if BlockEntityTag.get("note_block_sound",None)!=None:
-            BlockEntityTag_str+="note_block_sound="+serialize_tag(BlockEntityTag.pop("note_block_sound",None))+","
+        if BlockEntityTag.get("note_block_sound")!=None:
+            BlockEntityTag_str+="note_block_sound="+serialize_tag(BlockEntityTag.pop("note_block_sound"))+","
         #Base
-        if BlockEntityTag.get("Base",None)!=None:
-            if BlockEntityTag.pop("Base",None)==0:
+        if BlockEntityTag.get("Base")!=None:
+            if BlockEntityTag.get("Base")==0:
                 BlockEntityTag_str+="base_color='white',"
-            if BlockEntityTag.pop("Base",None)==1:
+            if BlockEntityTag.get("Base")==1:
                 BlockEntityTag_str+="base_color='orange',"
-            if BlockEntityTag.pop("Base",None)==2:
+            if BlockEntityTag.get("Base")==2:
                 BlockEntityTag_str+="base_color='magenta',"
-            if BlockEntityTag.pop("Base",None)==3:
+            if BlockEntityTag.get("Base")==3:
                 BlockEntityTag_str+="base_color='light_blue',"
-            if BlockEntityTag.pop("Base",None)==4:
+            if BlockEntityTag.get("Base")==4:
                 BlockEntityTag_str+="base_color='yellow',"
-            if BlockEntityTag.pop("Base",None)==5:
+            if BlockEntityTag.get("Base")==5:
                 BlockEntityTag_str+="base_color='lime',"
-            if BlockEntityTag.pop("Base",None)==6:
+            if BlockEntityTag.get("Base")==6:
                 BlockEntityTag_str+="base_color='pink',"
-            if BlockEntityTag.pop("Base",None)==7:
+            if BlockEntityTag.get("Base")==7:
                 BlockEntityTag_str+="base_color='gray',"
-            if BlockEntityTag.pop("Base",None)==8:
+            if BlockEntityTag.get("Base")==8:
                 BlockEntityTag_str+="base_color='light_gray',"
-            if BlockEntityTag.pop("Base",None)==9:
+            if BlockEntityTag.get("Base")==9:
                 BlockEntityTag_str+="base_color='cyan',"
-            if BlockEntityTag.pop("Base",None)==10:
+            if BlockEntityTag.get("Base")==10:
                 BlockEntityTag_str+="base_color='purple',"
-            if BlockEntityTag.pop("Base",None)==11:
+            if BlockEntityTag.get("Base")==11:
                 BlockEntityTag_str+="base_color='blue',"
-            if BlockEntityTag.pop("Base",None)==12:
+            if BlockEntityTag.get("Base")==12:
                 BlockEntityTag_str+="base_color='brown',"
-            if BlockEntityTag.pop("Base",None)==13:
+            if BlockEntityTag.get("Base")==13:
                 BlockEntityTag_str+="base_color='green',"
-            if BlockEntityTag.pop("Base",None)==14:
+            if BlockEntityTag.get("Base")==14:
                 BlockEntityTag_str+="base_color='red',"
-            if BlockEntityTag.pop("Base",None)==15:
+            if BlockEntityTag.get("Base")==15:
                 BlockEntityTag_str+="base_color='black',"
+            BlockEntityTag_Base=BlockEntityTag.pop("Base")
         #Patterns
-        if BlockEntityTag.get("Patterns",None)!=None:
+        if BlockEntityTag.get("Patterns")!=None:
             BlockEntityTag_str+="banner_patterns=["
             for i in BlockEntityTag.get("Patterns"):
                 BlockEntityTag_str+="{pattern:"+serialize_tag(i.pop("Pattern"))+","
-                if i.get("Color",None)!= None:
+                if i.get("Color")!= None:
                     BlockEntityTag_str+="color:"+serialize_tag(i.pop("Color"))+"},"
             BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"],"
         #sherds
-        if BlockEntityTag.get("sherds",None)!=None:
+        if BlockEntityTag.get("sherds")!=None:
             BlockEntityTag_str+="pot_decorations="+serialize_tag(BlockEntityTag.pop("sherds"))+","
         #Items
-        if BlockEntityTag.get("Items",None)!=None:
+        if BlockEntityTag.get("Items")!=None:
             BlockEntityTag_str+="container=["
             for i in BlockEntityTag.get("Items"):
                 BlockEntityTag_str+="{"
-                if i.get("Slot",None)!= None:
+                if i.get("Slot")!= None:
                     BlockEntityTag_str+="slot:"+serialize_tag(i.pop("Slot"))+","
                 BlockEntityTag_str+="item:{"
-                if i.get("id",None)!= None:
+                if i.get("id")!= None:
                     BlockEntityTag_str+="id:"+serialize_tag(i.pop("id"))+","
-                if i.get("Count",None)!= None:
+                if i.get("Count")!= None:
                     BlockEntityTag_str+="count:"+serialize_tag(i.pop("Count"))+","
-                if i.get("tag",None)!= None:
+                if i.get("tag")!= None:
                     print("tag处理")
                 BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"}},"
             BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"],"
         #Bees
-        if BlockEntityTag.get("Bees",None)!=None:
+        if BlockEntityTag.get("Bees")!=None:
             BlockEntityTag_str+="bees=["
             for i in BlockEntityTag.get("Bees"):
                 BlockEntityTag_str+="{"
-                if i.get("EntityData",None)!=None:
+                if i.get("EntityData")!=None:
                     BlockEntityTag_str+="entity_data:"+serialize_tag(i.pop("EntityData"))+","
-                if i.get("MinOccupationTicks",None)!=None:
+                if i.get("MinOccupationTicks")!=None:
                     BlockEntityTag_str+="min_ticks_in_hive:"+serialize_tag(i.pop("MinOccupationTicks"))+","
-                if i.get("TicksInHive",None)!=None:
+                if i.get("TicksInHive")!=None:
                     BlockEntityTag_str+="ticks_in_hive:"+serialize_tag(i.pop("TicksInHive"))+","
                 BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"},"
             BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"],"
         #Lock
-        if BlockEntityTag.get("Lock",None)!=None:
+        if BlockEntityTag.get("Lock")!=None:
             BlockEntityTag_str+="lock="+serialize_tag(BlockEntityTag.pop("Lock"))+","
         #LootTable
-        if BlockEntityTag.get("LootTable",None)!=None:
+        if BlockEntityTag.get("LootTable")!=None:
             BlockEntityTag_str+="container_loot={loot_table:"+serialize_tag(BlockEntityTag.pop("LootTable"))
-            if BlockEntityTag.get("LootTableSeed",None)!=None:
+            if BlockEntityTag.get("LootTableSeed")!=None:
                 BlockEntityTag_str+=",seed:"+serialize_tag(BlockEntityTag.pop("LootTableSeed"))
             BlockEntityTag_str+="},"
         #其余内容变为block_entity_data
@@ -829,11 +807,11 @@ def BlockStateTag_updata(components_list: list,BlockStateTag: nbtlib.tag.Compoun
 
 ##测试命令
 
-#例子1-不死图腾
+#例子1-可染色物品，及通用NBT
 print("测试1")
-s = '{NoAI:True,Health:10.2f,HuntingCooldown:233,Damage:34,Unbreakable:False,Enchantments:[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}],display:{Name:\'{\"text\":\"§e治疗不死图腾\"}\',Lore:[\'{\"text\":\"§7死亡不掉落一次，带在身上即可。\"}\',\'{\"text\":\"§7（注意，如果游戏设置未开启 死亡掉落物品保护，则该物品无效）\"}\']}}'
-print(parse_nbt(s))
-print(item_nbt_updata("bow",parse_nbt(s)))
+s = '''{CanPlaceOn:["minecraft:ice","minecraft:mud"],CanDestroy:["minecraft:fern","minecraft:lava"],display:{Name:'[{"text":"233","color":"gold","bold":true,"italic":true,"underlined":true,"strikethrough":true,"obfuscated":true},{"text":"666777","font":"6","bold":true}]',Lore:['{"text":"112233","bold":true,"italic":true}']},HideFlags:129,CustomModelData:12345678,Enchantments:[{id:"minecraft:protection",lvl:3s},{id:"minecraft:thorns",lvl:11s}],AttributeModifiers:[{AttributeName:"generic.max_health",Name:"generic.max_health",Amount:10,Operation:0,UUID:[I;317531815,114708043,-1774063036,1637657640]},{AttributeName:"generic.knockback_resistance",Name:"generic.knockback_resistance",Amount:23,Operation:1,UUID:[I;-1554795033,723864717,-1969707662,611632905],Slot:"mainhand"}]}'''
+#print(parse_nbt(s))
+print(item_nbt_updata("leather",parse_nbt(s)))
 
 #测试2 - 书与笔 和 成书
 print("测试2")
@@ -863,3 +841,8 @@ print(item_nbt_updata("firework_rocket",parse_nbt(s)))
 print("测试6")
 s = '{SkullOwner:"xiao_qi_zi",BlockEntityTag:{note_block_sound:"minecraft:ambient.cave"}}'
 print(item_nbt_updata("player_head",parse_nbt(s)))
+
+#测试7 - 陶罐
+print("测试7")
+s = '{BlockEntityTag:{sherds:["minecraft:archer_pottery_sherd","minecraft:brick","minecraft:brick","minecraft:brick"]}}'
+print(item_nbt_updata("decorated_pot",parse_nbt(s)))
