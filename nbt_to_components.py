@@ -222,14 +222,12 @@ def display_Name_updata(components_list: list,value: str):
         pass
     return components_list
 def display_Lore_updata(components_list: list,value: list):
-    #print("','".join(value)) #value为列表
     try:
         components_list.append("lore="+serialize_tag(value))
     except Exception:
         pass
     return components_list
 def CanDestroy_updata(components_list: list,value: list,HideFlags: int):
-    print(value)
     try:
         if HideFlags == None:
             HideFlags=0
