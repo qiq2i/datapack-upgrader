@@ -600,7 +600,7 @@ def Recipes_updata(components_list: list,value: nbtlib.tag.List):
         pass
     return components_list
 
-def Lodestone_updata(components_list: list,LodestoneDimension: nbtlib.tag.String,LodestonePos:nbtlib.tag.Compound,LodestoneTracked:nbtlib.tag.Byte):
+def Lodestone_updata(components_list: list,LodestoneDimension: nbtlib.tag.String,LodestonePos:nbtlib.tag.Compound,LodestoneTracked:nbtlib.tag.Byte):#MC目前未能识别，暂不处理
     try:
         lodestone_target_str="lodestone_tracker={target:{"
         if LodestoneDimension!=None:
@@ -630,9 +630,9 @@ def Explosion_updata(components_list: list,Explosion: nbtlib.tag.Compound):
             if Explosion.get("Type") == 4:
                 firework_explosion_str+="shape:'burst',"
         if Explosion.get("Colors")!=None:
-            firework_explosion_str+="colors:["+serialize_tag(Explosion.get("Colors"))+"],"
+            firework_explosion_str+="colors:"+serialize_tag(Explosion.get("Colors"))+","
         if Explosion.get("FadeColors")!=None:
-            firework_explosion_str+="fade_colors:["+serialize_tag(Explosion.get("FadeColors"))+"],"
+            firework_explosion_str+="fade_colors:"+serialize_tag(Explosion.get("FadeColors"))+","
         if Explosion.get("Trail")!=None:
             firework_explosion_str+="has_trail:"+serialize_tag(Explosion.get("Trail"))+","
         if Explosion.get("Flicker")!=None:
