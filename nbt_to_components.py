@@ -153,11 +153,11 @@ def item_nbt_updata(id: String,nbtlib_compound: nbtlib.tag.Compound): #处理分
         del nbtlib_compound['Recipes']
     
     #Lodestone
-    if 'Recipes' in nbtlib_compound:
+    if 'LodestonePos' in nbtlib_compound:
         components_list = Lodestone_updata(components_list,nbtlib_compound.pop("LodestoneDimension"),nbtlib_compound.pop("LodestonePos"),nbtlib_compound.pop("LodestoneTracked"))
     
     #Explosion
-    if 'Recipes' in nbtlib_compound:
+    if 'Explosion' in nbtlib_compound:
         components_list = Explosion_updata(components_list,nbtlib_compound.pop("Explosion"))
 
     #Fireworks
@@ -629,8 +629,8 @@ def Lodestone_updata(components_list: list,LodestoneDimension: nbtlib.tag.String
             lodestone_target_str+="pos:["+serialize_tag(LodestonePos.get("X"))+","+serialize_tag(LodestonePos.get("Y"))+","+serialize_tag(LodestonePos.get("Z"))+"],"
         if LodestoneTracked!=None:
             lodestone_target_str+="tracked:"+serialize_tag(LodestoneTracked)+","
-        bucket_entity_str=bucket_entity_str.rstrip(",")+"}"
-        components_list.append(bucket_entity_str)
+        lodestone_target_str=lodestone_target_str.rstrip(",")+"}"
+        components_list.append(lodestone_target_str)
     except Exception:
         pass
     return components_list
@@ -820,21 +820,24 @@ def BlockStateTag_updata(components_list: list,BlockStateTag: nbtlib.tag.Compoun
         pass
     return components_list
 
+##测试命令
+
+#例子1-不死图腾
+print("测试1")
 s = '{NoAI:True,Health:10.2f,HuntingCooldown:233,Damage:34,Unbreakable:False,Enchantments:[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}],display:{Name:\'{\"text\":\"§e治疗不死图腾\"}\',Lore:[\'{\"text\":\"§7死亡不掉落一次，带在身上即可。\"}\',\'{\"text\":\"§7（注意，如果游戏设置未开启 死亡掉落物品保护，则该物品无效）\"}\']}}'
-print(parse_nbt(s))  # 输出：{'Enchantments': '[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}]'}
-print(item_nbt_updata("bow",parse_nbt(s))) # 输出：['damage=34']
-'''
-print("===")
-s = '{Unbreakable:1b,AttributeModifiers:[{AttributeName:"generic.max_health",Name:"generic.max_health",Amount:1,Operation:0,UUID:[I;487516678,559893762,-1722137402,-1908663762]}]}'
-print(item_nbt_updata(parse_nbt(s)))
-print("===")
-s = '{ChargedProjectiles:[{id:"minecraft:arrow",Count:1b},{id:"minecraft:arrow",Count:1b},{id:"minecraft:arrow",Count:1b}],Charged:1b}'
-print(item_nbt_updata(parse_nbt(s)))
-'''
-#s = '{Decorations:[{x:2.0d,z:3.0d,type:2b,rot:180.0d,id:"123"}]}'
+print(parse_nbt(s))
+print(item_nbt_updata("bow",parse_nbt(s)))
+
+#测试2 - 书与笔 和 成书
+print("测试2")
 s = '{pages:["123\n123","213"]}'
 d = '{Trim:{material:"minecraft:gold",pattern:"minecraft:eye"}}'
 #print(parse_nbt(s))
 print(item_nbt_updata("writable_book",parse_nbt(s)))
 #print(parse_nbt(d))
 print(item_nbt_updata("written_book",parse_nbt(d)))
+
+#测试3 - 磁石指针
+print("测试3")
+s = '{LodestoneDimension:"minecraft:overworld",LodestoneTracked:1b,LodestonePos:{X:1,Y:2,Z:3}}'
+print(item_nbt_updata("compass",parse_nbt(s)))
