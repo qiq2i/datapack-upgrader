@@ -35,7 +35,7 @@ PS E:\python\Python小作品\datapack_upgrader>  e:; cd 'e:\python\Python小作�
 测试4
 [firework_explosion={shape:'large_ball',colors:[I; 5057023],fade_colors:[I; 9895769],has_trail:1b,has_twinkle:1b},custom_data={}]
 测试5
-[fireworks={explosions:[{shape:'large_ball',colors:[I; 7553279],fade_colors:[I; 16770503],has_trail:1b,has_twinkle:1b},{shape:'small_ball',has_trail:1b}],flight_duration:233b},custom_data={}]    
+[fireworks={explosions:[{shape:'large_ball',colors:[I; 7553279],fade_colors:[I; 16770503],has_trail:1b,has_twinkle:1b},{shape:'small_ball',has_trail:1b}],flight_duration:10b},custom_data={}]    
 测试6
 [profile={name:"xiao_qi_zi"},note_block_sound="minecraft:ambient.cave",custom_data={}]
 测试7

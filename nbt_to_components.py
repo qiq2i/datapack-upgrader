@@ -66,7 +66,7 @@ def item_nbt_updata_to_dict(id: String,nbtlib_compound: nbtlib.tag.Compound): #�
 
     #Items
     if 'Items' in nbtlib_compound:
-        components_dict = Items_updata(components_dict,nbtlib_compound.pop('Items',None))
+        components_dict = Items_updata(components_dict,id,nbtlib_compound.pop('Items',None))
 
     #display_MapColor
     if 'MapColor' in nbtlib_compound.get('display',{}):
@@ -142,7 +142,7 @@ def item_nbt_updata_to_dict(id: String,nbtlib_compound: nbtlib.tag.Compound): #�
 
     #BlockEntityTag
     if 'BlockEntityTag' in nbtlib_compound:
-        components_dict = BlockEntityTag_updata(components_dict,nbtlib_compound.pop("BlockEntityTag"))
+        components_dict = BlockEntityTag_updata(components_dict,id,nbtlib_compound.pop("BlockEntityTag"))
 
     #BlockStateTag
     if 'BlockStateTag' in nbtlib_compound:
@@ -336,13 +336,14 @@ def ChargedProjectiles_updata(components_dict: dict,value: nbtlib.tag.List):#val
     except Exception:
         pass
     return components_dict
-def Items_updata(components_dict: dict,value: nbtlib.tag.List):#收纳袋value:[] components待处理
+def Items_updata(components_dict: dict,id:String,value: nbtlib.tag.List):#收纳袋value:[]
     try:
-        bundle_contents_str="["
-        for i in value:
-            bundle_contents_str+=Item_Common_tags_updata(i)+","
-        bundle_contents_str=bundle_contents_str.rstrip(",")+"]"
-        components_dict["bundle_contents"]=bundle_contents_str
+        if id == "bundle":#收纳袋
+            bundle_contents_str="["
+            for i in value:
+                bundle_contents_str+=Item_Common_tags_updata(i)+","
+            bundle_contents_str=bundle_contents_str.rstrip(",")+"]"
+            components_dict["bundle_contents"]=bundle_contents_str
     except Exception:
         pass
     return components_dict
@@ -693,7 +694,7 @@ def SkullOwner_updata(components_dict: dict,SkullOwner: nbtlib.tag.Compound):
         pass
     return components_dict
 
-def BlockEntityTag_updata(components_dict: dict,BlockEntityTag: nbtlib.tag.Compound):
+def BlockEntityTag_updata(components_dict: dict,id:String,BlockEntityTag: nbtlib.tag.Compound):
     try:
         if BlockEntityTag.get("note_block_sound")!=None:
             components_dict["note_block_sound"]=serialize_tag(BlockEntityTag.pop("note_block_sound"))
@@ -747,13 +748,16 @@ def BlockEntityTag_updata(components_dict: dict,BlockEntityTag: nbtlib.tag.Compo
         #Items
         if BlockEntityTag.get("Items")!=None:
             Items_str="["
-            for i in BlockEntityTag.get("Items"):
+            for i in BlockEntityTag.pop("Items"):
                 Items_str+="{"
                 if i.get("Slot")!= None:
                     Items_str+="slot:"+serialize_tag(i.pop("Slot"))+","
                 Items_str+="item:"+Item_Common_tags_updata(i)
                 Items_str=Items_str.rstrip(",")+"},"
             Items_str=Items_str.rstrip(",")+"]"
+
+            #shulker_boxes = ["shulker_box","white_shulker_box","orange_shulker_box","magenta_shulker_box","light_blue_shulker_box","yellow_shulker_box","lime_shulker_box","pink_shulker_box","gray_shulker_box","light_gray_shulker_box","cyan_shulker_box","purple_shulker_box","brown_shulker_box", "blue_shulker_box","green_shulker_box","red_shulker_box","black_shulker_box"]
+            #if id in shulker_boxes:#潜影盒
             components_dict["container"]=Items_str
         #Bees
         if BlockEntityTag.get("Bees")!=None:
@@ -849,7 +853,7 @@ print(updata_dict_to_str_1(item_nbt_updata_to_dict("firework_star",parse_nbt(s))
 
 #测试5 - 烟花火箭
 print("测试5")
-s = '{Fireworks:{Flight:233b,Explosions:[{Type:1,Flicker:1b,Trail:1b,Colors:[I;7553279],FadeColors:[I;16770503]},{Type:0,Trail:1b}]}}'
+s = '{Fireworks:{Flight:10b,Explosions:[{Type:1,Flicker:1b,Trail:1b,Colors:[I;7553279],FadeColors:[I;16770503]},{Type:0,Trail:1b}]}}'
 print(updata_dict_to_str_1(item_nbt_updata_to_dict("firework_rocket",parse_nbt(s))))
 
 #测试6 - 头颅
@@ -866,3 +870,13 @@ print(updata_dict_to_str_1(item_nbt_updata_to_dict("decorated_pot",parse_nbt(s))
 print("测试8")
 s = '{RepairCost:233,Unbreakable:1b,Damage:3,ChargedProjectiles:[{id:"minecraft:firework_rocket",Count:1b,tag:{Fireworks:{Flight:233b,Explosions:[{Type:0}]}}},{id:"minecraft:arrow",Count:1b},{}],Charged:1b}'
 print(updata_dict_to_str_1(item_nbt_updata_to_dict("crossbow",parse_nbt(s))))
+
+#测试9 - 收纳袋
+print("测试9")
+s = '''{Items:[{id:"minecraft:bow",Count:1b,tag:{Damage:233}},{id:"minecraft:egg",Count:3b,tag:{display:{Name:'{"text":"nihao"}'}}}]}'''
+print(updata_dict_to_str_1(item_nbt_updata_to_dict("bundle",parse_nbt(s))))
+
+#测试10 - 箱子
+print("测试10")
+s = '''{BlockEntityTag:{Items:[{Slot:2b,id:"minecraft:bow",Count:1b,tag:{Damage:3}},{Slot:9b,id:"minecraft:egg",Count:12b}]}}'''
+print(updata_dict_to_str_1(item_nbt_updata_to_dict("bundle",parse_nbt(s))))
