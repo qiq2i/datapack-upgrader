@@ -12,159 +12,159 @@ data = parse_nbt(s)
 #print(data.get('Damage'))#不存在则返回None
 
 
-def item_nbt_updata(id: String,nbtlib_compound: nbtlib.tag.Compound): #处理分析过的NBT(nbtlib_compound)，更新后每个指令存在
-    components_list = []
+def item_nbt_updata_to_dict(id: String,nbtlib_compound: nbtlib.tag.Compound): #处理分析过的NBT(nbtlib_compound)，更新后每个指令存在
+    #components_list = []
+    components_dict = {}
     #Damage
     if 'Damage' in nbtlib_compound:
-        components_list = Damage_updata(components_list,nbtlib_compound.pop('Damage',None))
+        components_dict = Damage_updata(components_dict,nbtlib_compound.pop('Damage',None))
 
     #RepairCost
     if 'RepairCost' in nbtlib_compound:
-        components_list = RepairCost_updata(components_list,nbtlib_compound.pop('RepairCost'))
+        components_dict = RepairCost_updata(components_dict,nbtlib_compound.pop('RepairCost'))
     
     #Unbreakable
     if 'Unbreakable' in nbtlib_compound:
-        components_list = Unbreakable_updata(components_list,nbtlib_compound.pop('Unbreakable',0),nbtlib_compound.get('HideFlags',0))
+        components_dict = Unbreakable_updata(components_dict,nbtlib_compound.pop('Unbreakable',0),nbtlib_compound.get('HideFlags',0))
     
     #Enchantments
     if 'Enchantments' in nbtlib_compound:
-        components_list = Enchantments_updata(components_list,nbtlib_compound.pop('Enchantments',None),nbtlib_compound.get('HideFlags',0))
+        components_dict = Enchantments_updata(components_dict,nbtlib_compound.pop('Enchantments',None),nbtlib_compound.get('HideFlags',0))
 
     #StoredEnchantments
     if 'StoredEnchantments' in nbtlib_compound:
-        components_list = StoredEnchantments_updata(components_list,nbtlib_compound.pop('StoredEnchantments',None),nbtlib_compound.get('HideFlags',0))
+        components_dict = StoredEnchantments_updata(components_dict,nbtlib_compound.pop('StoredEnchantments',None),nbtlib_compound.get('HideFlags',0))
 
     #display_Name
     if 'Name' in nbtlib_compound.get('display',{}):
-        components_list = display_Name_updata(components_list,nbtlib_compound.get('display').pop('Name'))
+        components_dict = display_Name_updata(components_dict,nbtlib_compound.get('display').pop('Name'))
 
     #display_Lore
     if 'Lore' in nbtlib_compound.get('display',{}):
-        components_list = display_Lore_updata(components_list,nbtlib_compound.get('display').pop('Lore'))
+        components_dict = display_Lore_updata(components_dict,nbtlib_compound.get('display').pop('Lore'))
 
     #CanDestroy
     if 'CanDestroy' in nbtlib_compound:
-        components_list = CanDestroy_updata(components_list,nbtlib_compound.pop('CanDestroy',None),nbtlib_compound.get('HideFlags',0))
+        components_dict = CanDestroy_updata(components_dict,nbtlib_compound.pop('CanDestroy',None),nbtlib_compound.get('HideFlags',0))
 
     #CanPlaceOn
     if 'CanPlaceOn' in nbtlib_compound:
-        components_list = CanPlaceOn_updata(components_list,nbtlib_compound.pop('CanPlaceOn',None),nbtlib_compound.get('HideFlags',0))
+        components_dict = CanPlaceOn_updata(components_dict,nbtlib_compound.pop('CanPlaceOn',None),nbtlib_compound.get('HideFlags',0))
 
     #display_color
     if 'color' in nbtlib_compound.get('display',{}):
-        components_list = display_color_updata(components_list,nbtlib_compound.get('display').pop('color',None),nbtlib_compound.get('HideFlags',0))
+        components_dict = display_color_updata(components_dict,nbtlib_compound.get('display').pop('color',None),nbtlib_compound.get('HideFlags',0))
 
     #AttributeModifiers
     if 'AttributeModifiers' in nbtlib_compound:
-        components_list = AttributeModifiers_updata(components_list,nbtlib_compound.pop('AttributeModifiers',None),nbtlib_compound.get('HideFlags',0))
+        components_dict = AttributeModifiers_updata(components_dict,nbtlib_compound.pop('AttributeModifiers',None),nbtlib_compound.get('HideFlags',0))
 
     #ChargedProjectiles
     if 'Charged' in nbtlib_compound:
-        components_list = ChargedProjectiles_updata(components_list,nbtlib_compound.pop('ChargedProjectiles',None))
+        components_dict = ChargedProjectiles_updata(components_dict,nbtlib_compound.pop('ChargedProjectiles',None))
         del nbtlib_compound['Charged']
 
     #Items
     if 'Items' in nbtlib_compound:
-        components_list = Items_updata(components_list,nbtlib_compound.pop('Items',None))
+        components_dict = Items_updata(components_dict,nbtlib_compound.pop('Items',None))
 
     #display_MapColor
     if 'MapColor' in nbtlib_compound.get('display',{}):
-        components_list = display_MapColor_updata(components_list,nbtlib_compound.get('display').pop('MapColor',None))
+        components_dict = display_MapColor_updata(components_dict,nbtlib_compound.get('display').pop('MapColor',None))
 
     #Decorations
     if 'Decorations' in nbtlib_compound:
-        components_list = Decorations_updata(components_list,nbtlib_compound.pop('Decorations',None))
+        components_dict = Decorations_updata(components_dict,nbtlib_compound.pop('Decorations',None))
     
     #map
     if 'map' in nbtlib_compound:
-        components_list = map_updata(components_list,nbtlib_compound.pop('map'))
+        components_dict = map_updata(components_dict,nbtlib_compound.pop('map'))
     
     #CustomModelData
     if 'CustomModelData' in nbtlib_compound:
-        components_list = CustomModelData_updata(components_list,nbtlib_compound.pop('CustomModelData'))
+        components_dict = CustomModelData_updata(components_dict,nbtlib_compound.pop('CustomModelData'))
 
     #Potion
     if 'Potion' in nbtlib_compound:
-        components_list = Potion_updata(components_list,nbtlib_compound.pop('Potion',None),nbtlib_compound.pop("CustomPotionColor",None),nbtlib_compound.pop("custom_potion_effects",None))
+        components_dict = Potion_updata(components_dict,nbtlib_compound.pop('Potion',None),nbtlib_compound.pop("CustomPotionColor",None),nbtlib_compound.pop("custom_potion_effects",None))
 
     #pages
     if 'pages' in nbtlib_compound:
-        components_list = pages_updata(components_list,id,nbtlib_compound.pop('pages',None),nbtlib_compound.pop("filtered_pages",nbtlib.Compound({})),nbtlib_compound.pop("title",None),nbtlib_compound.pop("author",None),nbtlib_compound.pop("generation",None),nbtlib_compound.pop("resolved",None))
+        components_dict = pages_updata(components_dict,id,nbtlib_compound.pop('pages',None),nbtlib_compound.pop("filtered_pages",nbtlib.Compound({})),nbtlib_compound.pop("title",None),nbtlib_compound.pop("author",None),nbtlib_compound.pop("generation",None),nbtlib_compound.pop("resolved",None))
     
     #Trim
     if 'Trim' in nbtlib_compound:
-        components_list = Trim_updata(components_list,nbtlib_compound.pop('Trim',None),nbtlib_compound.get('HideFlags',0))
+        components_dict = Trim_updata(components_dict,nbtlib_compound.pop('Trim',None),nbtlib_compound.get('HideFlags',0))
 
     #effects
     if 'effects' in nbtlib_compound:
-        components_list = effects_updata(components_list,nbtlib_compound.pop('effects',None))
+        components_dict = effects_updata(components_dict,nbtlib_compound.pop('effects',None))
 
     #HideFlags
     if 'HideFlags' in nbtlib_compound:
-        components_list = HideFlags_updata(components_list,nbtlib_compound.pop('HideFlags',0))
+        components_dict = HideFlags_updata(components_dict,nbtlib_compound.pop('HideFlags',0))
 
     #DebugProperty
     if 'DebugProperty' in nbtlib_compound:
-        components_list = DebugProperty_updata(components_list,nbtlib_compound.pop('DebugProperty',None))
+        components_dict = DebugProperty_updata(components_dict,nbtlib_compound.pop('DebugProperty',None))
 
     #EntityTag
     if 'EntityTag' in nbtlib_compound:
-        components_list = EntityTag_updata(components_list,nbtlib_compound.pop('EntityTag',None))
+        components_dict = EntityTag_updata(components_dict,nbtlib_compound.pop('EntityTag',None))
 
     #bucket_entity_data
-    components_list = bucket_entity_data_updata(components_list,nbtlib_compound.pop("NoAI",None),nbtlib_compound.pop("Silent",None),nbtlib_compound.pop("NoGravity",None),nbtlib_compound.pop("Glowing",None),nbtlib_compound.pop("Invulnerable",None),nbtlib_compound.pop("Health",None),nbtlib_compound.pop("Age",None),nbtlib_compound.pop("Variant",None),nbtlib_compound.pop("HuntingCooldown",None),nbtlib_compound.pop("BucketVariantTag",None))
+    components_dict = bucket_entity_data_updata(components_dict,nbtlib_compound.pop("NoAI",None),nbtlib_compound.pop("Silent",None),nbtlib_compound.pop("NoGravity",None),nbtlib_compound.pop("Glowing",None),nbtlib_compound.pop("Invulnerable",None),nbtlib_compound.pop("Health",None),nbtlib_compound.pop("Age",None),nbtlib_compound.pop("Variant",None),nbtlib_compound.pop("HuntingCooldown",None),nbtlib_compound.pop("BucketVariantTag",None))
 
     #instrument
     if 'instrument' in nbtlib_compound:
-        components_list = instrument_updata(components_list,nbtlib_compound.pop('instrument',None))
+        components_dict = instrument_updata(components_dict,nbtlib_compound.pop('instrument',None))
 
     #Recipes
     if 'Recipes' in nbtlib_compound:
-        components_list = Recipes_updata(components_list,nbtlib_compound.pop('Recipes',None))
+        components_dict = Recipes_updata(components_dict,nbtlib_compound.pop('Recipes',None))
     
     #Lodestone
     if 'LodestonePos' in nbtlib_compound:
-        components_list = Lodestone_updata(components_list,nbtlib_compound.pop("LodestoneDimension",None),nbtlib_compound.pop("LodestonePos",None),nbtlib_compound.pop("LodestoneTracked",None))
+        components_dict = Lodestone_updata(components_dict,nbtlib_compound.pop("LodestoneDimension",None),nbtlib_compound.pop("LodestonePos",None),nbtlib_compound.pop("LodestoneTracked",None))
     
     #Explosion
     if 'Explosion' in nbtlib_compound:
-        components_list = Explosion_updata(components_list,nbtlib_compound.pop("Explosion",None))
+        components_dict = Explosion_updata(components_dict,nbtlib_compound.pop("Explosion",None))
 
     #Fireworks
     if 'Fireworks' in nbtlib_compound:
-        components_list = Fireworks_updata(components_list,nbtlib_compound["Fireworks"].pop("Explosions",None),nbtlib_compound["Fireworks"].pop("Flight",None))
+        components_dict = Fireworks_updata(components_dict,nbtlib_compound["Fireworks"].pop("Explosions",None),nbtlib_compound["Fireworks"].pop("Flight",None))
         del nbtlib_compound["Fireworks"]
 
     #SkullOwner
     if 'SkullOwner' in nbtlib_compound:
-        components_list = SkullOwner_updata(components_list,nbtlib_compound.pop("SkullOwner"))
+        components_dict = SkullOwner_updata(components_dict,nbtlib_compound.pop("SkullOwner"))
 
     #BlockEntityTag
     if 'BlockEntityTag' in nbtlib_compound:
-        components_list = BlockEntityTag_updata(components_list,nbtlib_compound.pop("BlockEntityTag"))
+        components_dict = BlockEntityTag_updata(components_dict,nbtlib_compound.pop("BlockEntityTag"))
 
     #BlockStateTag
     if 'BlockStateTag' in nbtlib_compound:
-        components_list = BlockStateTag_updata(components_list,nbtlib_compound.pop("BlockStateTag"))
+        components_dict = BlockStateTag_updata(components_dict,nbtlib_compound.pop("BlockStateTag"))
 
     #清理门户
     if 'display' in nbtlib_compound:
         del nbtlib_compound["display"]
     #剩余NBT置入custom_data中
-    components_list.append("custom_data="+serialize_tag(nbtlib_compound))
+    components_dict["custom_data"]=serialize_tag(nbtlib_compound)
 
-    return "["+",".join(components_list)+"]"
+    return components_dict
 
-
-def Damage_updata(components_list: list,value:int):
+def Damage_updata(components_dict: dict,value:nbtlib.tag.Int):
     if value != None:
-        components_list.append("damage=" + serialize_tag(value))
-    return components_list
-def RepairCost_updata(components_list: list,value:int):
+        components_dict["damage"] = serialize_tag(value)
+    return components_dict
+def RepairCost_updata(components_dict: dict,value:nbtlib.tag.Int):
     if value != None:
-        components_list.append("repair_cost=" + serialize_tag(value))
-    return components_list
-def Unbreakable_updata(components_list: list,value,HideFlags:int):
+        components_dict["repair_cost"] = serialize_tag(value)
+    return components_dict
+def Unbreakable_updata(components_dict: dict,value,HideFlags:nbtlib.tag.Int):
     if value != None:
         if HideFlags == None:
             HideFlags=0
@@ -176,11 +176,11 @@ def Unbreakable_updata(components_list: list,value,HideFlags:int):
         if value == 1:
             bit = (HideFlags >> 2) & 1 #获取第3个二进制位，为1则隐藏
             if bit == 1:
-                components_list.append("unbreakable={show_in_tooltip:false}")
+                components_dict["unbreakable"]="{show_in_tooltip:false}"
             else:
-                components_list.append("unbreakable={}")
-    return components_list
-def Enchantments_updata(components_list: list,value:list,HideFlags:int):
+                components_dict["unbreakable"]="{}"
+    return components_dict
+def Enchantments_updata(components_dict: dict,value:nbtlib.tag.List,HideFlags:nbtlib.tag.Int):
     if value != None:
         levels_str= "{"
         for i in value:
@@ -194,11 +194,11 @@ def Enchantments_updata(components_list: list,value:list,HideFlags:int):
             HideFlags=0
         bit = HideFlags & 1 #获取第1个二进制位，为1则隐藏
         if bit == 1:
-            components_list.append("enchantments={levels:"+levels_str+",show_in_tooltip:false}")
+            components_dict["enchantments"]="{levels:"+levels_str+",show_in_tooltip:false}"
         else:
-            components_list.append("enchantments={levels:"+levels_str+"}")
-    return components_list
-def StoredEnchantments_updata(components_list: list,value:list,HideFlags:int):
+            components_dict.append["enchantments"]="{levels:"+levels_str+"}"
+    return components_dict
+def StoredEnchantments_updata(components_dict: dict,value:nbtlib.tag.List,HideFlags:nbtlib.tag.Int):
     if value != None:
         levels_str= "{"
         for i in value:
@@ -212,23 +212,23 @@ def StoredEnchantments_updata(components_list: list,value:list,HideFlags:int):
             HideFlags=0
         bit = HideFlags & (1 << 6) #获取第6个二进制位，为1则隐藏
         if bit == 1:
-            components_list.append("stored_enchantments={levels:"+levels_str+",show_in_tooltip:false}")
+            components_dict["stored_enchantments"]="{levels:"+levels_str+",show_in_tooltip:false}"
         else:
-            components_list.append("stored_enchantments={levels:"+levels_str+"}")
-    return components_list
-def display_Name_updata(components_list: list,value: str):
+            components_dict["stored_enchantments"]="{levels:"+levels_str+"}"
+    return components_dict
+def display_Name_updata(components_dict: dict,value: nbtlib.tag.String):
     try:
-        components_list.append("custom_name="+serialize_tag(value))
+        components_dict["custom_name"] = serialize_tag(value)
     except Exception:
         pass
-    return components_list
-def display_Lore_updata(components_list: list,value: list):
+    return components_dict
+def display_Lore_updata(components_dict: dict,value: nbtlib.tag.List):
     try:
-        components_list.append("lore="+serialize_tag(value))
+        components_dict["lore"]=serialize_tag(value)
     except Exception:
         pass
-    return components_list
-def CanDestroy_updata(components_list: list,value: list,HideFlags: int):
+    return components_dict
+def CanDestroy_updata(components_dict: dict,value: nbtlib.tag.List,HideFlags: nbtlib.tag.Int):
     try:
         if HideFlags == None:
             HideFlags=0
@@ -238,13 +238,13 @@ def CanDestroy_updata(components_list: list,value: list,HideFlags: int):
             HideFlags=0
         bit = (HideFlags >> 3) & 1 #获取第4个二进制位，为1则隐藏
         if bit == 1:
-            components_list.append('can_break={blocks:'+serialize_tag(value)+",show_in_tooltip:false}")
+            components_dict['can_break']="{blocks:"+serialize_tag(value)+",show_in_tooltip:false}"
         else:
-            components_list.append('can_break={blocks:'+serialize_tag(value)+"}")
+            components_dict['can_break']="{blocks:"+serialize_tag(value)+"}"
     except Exception:
         pass
-    return components_list
-def CanPlaceOn_updata(components_list: list,value: list,HideFlags: int):
+    return components_dict
+def CanPlaceOn_updata(components_dict: dict,value: nbtlib.tag.List,HideFlags: nbtlib.tag.Int):
     try:
         if HideFlags == None:
             HideFlags=0
@@ -254,13 +254,13 @@ def CanPlaceOn_updata(components_list: list,value: list,HideFlags: int):
             HideFlags=0
         bit = (HideFlags >> 4) & 1 #获取第4个二进制位，为1则隐藏
         if bit == 1:
-            components_list.append('can_place_on={blocks:'+serialize_tag(value)+",show_in_tooltip:false}")
+            components_dict['can_place_on']='{blocks:'+serialize_tag(value)+",show_in_tooltip:false}"
         else:
-            components_list.append('can_place_on={blocks:'+serialize_tag(value)+"}")
+            components_dict['can_place_on']='{blocks:'+serialize_tag(value)+"}"
     except Exception:
         pass
-    return components_list
-def display_color_updata(components_list: list,value: int,HideFlags: int):
+    return components_dict
+def display_color_updata(components_dict: dict,value: nbtlib.tag.Int,HideFlags: nbtlib.tag.Int):
     try:
         if HideFlags == None:
             HideFlags=0
@@ -270,16 +270,16 @@ def display_color_updata(components_list: list,value: int,HideFlags: int):
             HideFlags=0
         bit = (HideFlags >> 6) & 1 #获取第7个二进制位，为1则隐藏
         if bit == 1:
-            components_list.append("dyed_color={rgb:"+serialize_tag(value)+",show_in_tooltip:false}")
+            components_dict["dyed_color"]="{rgb:"+serialize_tag(value)+",show_in_tooltip:false}"
         else:
-            components_list.append("dyed_color={rgb:"+serialize_tag(value)+"}")
+            components_dict["dyed_color"]="{rgb:"+serialize_tag(value)+"}"
     except Exception:
         pass
-    return components_list
-def AttributeModifiers_updata(components_list: list,value: list,HideFlags: int):
+    return components_dict
+def AttributeModifiers_updata(components_dict: dict,value: nbtlib.tag.List,HideFlags: nbtlib.tag.Int):
     #value [{},{}]
     try:
-        components_str = "attribute_modifiers={modifiers:["
+        components_str = "{modifiers:["
         for i in value:#{}
             #print(i.get("UUID"))
             components_str +="{"
@@ -320,46 +320,47 @@ def AttributeModifiers_updata(components_list: list,value: list,HideFlags: int):
             components_str+="],show_in_tooltip:false}"
         else:
             components_str+="]}"
-        components_list.append(components_str)
+        components_dict["attribute_modifiers"] = components_str
     except Exception:
-        return components_list
-    return components_list
-def ChargedProjectiles_updata(components_list: list,value: list):#value为列表。
+        return components_dict
+    return components_dict
+def ChargedProjectiles_updata(components_dict: dict,value: nbtlib.tag.List):#value为列表。
     try:
-        charged_projectiles_str="charged_projectiles=["
+        charged_projectiles_str="["
         for i in value:
             if i.get("id")!=None:
                 charged_projectiles_str+="{id:"+serialize_tag(i.get("id"))+","
                 if i.get("Count")!=None:
                     charged_projectiles_str+="count:"+serialize_tag(i.get("Count"))+","
                 if i.get("tag")!=None:
+                    print(i.get("tag"))
                     print("tag转组件暂未处理")
                 charged_projectiles_str=charged_projectiles_str.rstrip(",")+"},"
         charged_projectiles_str=charged_projectiles_str.rstrip(",")+"]"
-        components_list.append(charged_projectiles_str)
+        components_dict["charged_projectiles"]=charged_projectiles_str
     except Exception:
         pass
-    return components_list
-def Items_updata(components_list: list,value: list):#收纳袋value:[] components待处理
+    return components_dict
+def Items_updata(components_dict: dict,value: nbtlib.tag.List):#收纳袋value:[] components待处理
     try:
-        bundle_contents_str="bundle_contents=["
+        bundle_contents_str="["
         for i in value:
             bundle_contents_str+="{id:'"+i.get("id")+"',count:"+str(i.get("Count")+0)+",components:[]"+"},"
         bundle_contents_str=bundle_contents_str.rstrip(",")+"]"
-        components_list.append(bundle_contents_str)
+        components_dict["bundle_contents"]=bundle_contents_str
     except Exception:
         pass
-    return components_list
-def display_MapColor_updata(components_list: list,value: int):
+    return components_dict
+def display_MapColor_updata(components_dict: dict,value: nbtlib.tag.Int):
     try:
-        components_list.append("map_color="+str(value+0))
+        components_dict["map_color="]+serialize_tag(value)
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def Decorations_updata(components_list: list,value: list):
+def Decorations_updata(components_dict: dict,value: nbtlib.tag.List):
     try:
-        map_decorations_str = "map_decorations:{"
+        map_decorations_str = "{"
         for i in value:
             id = i.get("id")#String
             type_B = i.get("type")#Byte
@@ -438,28 +439,28 @@ def Decorations_updata(components_list: list,value: list):
                 type = "player"
             map_decorations_str += "'"+id+"':{type:'"+type+"',x:"+str(x+0)+",z:"+str(z+0)+",rotation:"+str(rot+0)+"f},"
         map_decorations_str=map_decorations_str.rstrip(",")+"}"
-        components_list.append(map_decorations_str)
+        components_dict["map_decorations"] = map_decorations_str
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def map_updata(components_list: list,value: int):
+def map_updata(components_dict: dict,value: nbtlib.tag.Int):
     try:
-        components_list.append("map_id="+str(value+0))
+        components_dict["map_id"]=serialize_tag(value)
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def CustomModelData_updata(components_list: list,value: int):
+def CustomModelData_updata(components_dict: dict,value: nbtlib.tag.Int):
     try:
-        components_list.append("custom_model_data="+str(value+0))
+        components_dict["custom_model_data"]=serialize_tag(value)
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def Potion_updata(components_list: list,Potion: String,CustomPotionColor: int,custom_potion_effects: list):
+def Potion_updata(components_dict: dict,Potion: String,CustomPotionColor: nbtlib.tag.Int,custom_potion_effects: nbtlib.tag.List):
     try:
-        potion_contents_str = "potion_contents={potion:'"+Potion+"',"
+        potion_contents_str = "{potion:'"+Potion+"',"
         try:
             potion_contents_str +="custom_color:"+str(CustomPotionColor+0)+","
         except Exception:
@@ -469,18 +470,18 @@ def Potion_updata(components_list: list,Potion: String,CustomPotionColor: int,cu
         except Exception:
             pass
         potion_contents_str=potion_contents_str.rstrip(",")+"}"
-        components_list.append(potion_contents_str)
+        components_dict["potion_contents"]=potion_contents_str
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def pages_updata(components_list: list,id:String,pages:list,filtered_pages,title:String,author:String,generation:int,resolved:bool):#过滤页面暂未处理
+def pages_updata(components_dict: dict,id:nbtlib.tag.String,pages:nbtlib.tag.List,filtered_pages,title:nbtlib.tag.String,author:nbtlib.tag.String,generation:nbtlib.tag.Int,resolved:nbtlib.tag.Byte):#过滤页面暂未处理
     try:
         if id == 'writable_book' or id == 'written_book':
             if type(pages) is nbtlib.tag.List[String]:
-                pages_str=id+"_content={pages:"+serialize_tag(pages)+","
+                pages_str="{pages:"+serialize_tag(pages)+","
             if type(pages) is nbtlib.tag.List[Compound]:
-                pages_str=components_list.append(id+"_content={pages:"+serialize_tag(pages))+","
+                pages_str="{pages:"+serialize_tag(pages)+","
         if id == 'written_book':
             if title != None:
                 pages_str+="title:'"+serialize_tag(title)+"',"
@@ -491,12 +492,12 @@ def pages_updata(components_list: list,id:String,pages:list,filtered_pages,title
             if resolved != None:
                 pages_str+="resolved:'"+serialize_tag(resolved)+"',"
         pages_str=pages_str.rstrip(",")+"}"
-        components_list.append(pages_str)
+        components_dict[id+"_content"]=pages_str
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def Trim_updata(components_list: list,value: nbtlib.tag.Compound,HideFlags: int):
+def Trim_updata(components_dict: dict,value: nbtlib.tag.Compound,HideFlags: nbtlib.tag.Int):
     try:
         if HideFlags == None:
             HideFlags=0
@@ -506,21 +507,21 @@ def Trim_updata(components_list: list,value: nbtlib.tag.Compound,HideFlags: int)
             HideFlags=0
         bit = (HideFlags >> 7) & 1 #获取第8个二进制位，为1则隐藏
         if bit == 1:
-            components_list.append("trim="+serialize_tag(value).rstrip("}")+",show_in_tooltip:false}")
+            components_dict["trim"]=serialize_tag(value).rstrip("}")+",show_in_tooltip:false}"
         else:
-            components_list.append("trim="+serialize_tag(value))
+            components_dict["trim"]=serialize_tag(value)
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def effects_updata(components_list: list,value: nbtlib.tag.Compound):
+def effects_updata(components_dict: dict,value: nbtlib.tag.Compound):
     try:
-        components_list.append("suspicious_stew_effects="+serialize_tag(value))
+        components_dict["suspicious_stew_effects"]=serialize_tag(value)
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def HideFlags_updata(components_list: list,HideFlags: int):
+def HideFlags_updata(components_dict: dict,HideFlags: nbtlib.tag.Int):
     try:
         if HideFlags == None:
             HideFlags=0
@@ -530,30 +531,30 @@ def HideFlags_updata(components_list: list,HideFlags: int):
             HideFlags=0
         bit = (HideFlags >> 5) & 1 #获取第6个二进制位，为1则隐藏
         if bit == 1:
-            components_list.append("hide_additional_tooltip={}")
+            components_dict["hide_additional_tooltip"]="{}"
         else:
             pass
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def DebugProperty_updata(components_list: list,value: nbtlib.tag.Compound):
+def DebugProperty_updata(components_dict: dict,value: nbtlib.tag.Compound):
     try:
-        components_list.append("debug_stick_state="+serialize_tag(value))
+        components_dict["debug_stick_state"]=serialize_tag(value)
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def EntityTag_updata(components_list: list,value: nbtlib.tag.Compound):
+def EntityTag_updata(components_dict: dict,value: nbtlib.tag.Compound):
     try:
-        components_list.append("entity_data="+serialize_tag(value))
+        components_dict["entity_data"]=serialize_tag(value)
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def bucket_entity_data_updata(components_list: list,NoAI:nbtlib.tag.Byte,Silent:nbtlib.tag.Byte,NoGravity:nbtlib.tag.Byte,Glowing:nbtlib.tag.Byte,Invulnerable:nbtlib.tag.Byte,Health:nbtlib.tag.Float,Age:nbtlib.tag.Int,Variant:nbtlib.tag.Int,HuntingCooldown:nbtlib.tag.Long,BucketVariantTag:nbtlib.tag.Int):
+def bucket_entity_data_updata(components_dict: dict,NoAI:nbtlib.tag.Byte,Silent:nbtlib.tag.Byte,NoGravity:nbtlib.tag.Byte,Glowing:nbtlib.tag.Byte,Invulnerable:nbtlib.tag.Byte,Health:nbtlib.tag.Float,Age:nbtlib.tag.Int,Variant:nbtlib.tag.Int,HuntingCooldown:nbtlib.tag.Long,BucketVariantTag:nbtlib.tag.Int):
     try:
-        bucket_entity_str="bucket_entity_data={"
+        bucket_entity_str="{"
         if NoAI != None:
             bucket_entity_str+="NoAI:"+serialize_tag(NoAI)+","
         if Silent != None:
@@ -575,35 +576,29 @@ def bucket_entity_data_updata(components_list: list,NoAI:nbtlib.tag.Byte,Silent:
         if BucketVariantTag != None:
             bucket_entity_str+="BucketVariantTag:"+serialize_tag(BucketVariantTag)+","
         bucket_entity_str=bucket_entity_str.rstrip(",")+"}"
-        components_list.append(bucket_entity_str)
+        if bucket_entity_str != "{}":
+            components_dict["bucket_entity_data"]=bucket_entity_str
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def instrument_updata(components_list: list,value: nbtlib.tag.Compound):
+def instrument_updata(components_dict: dict,value: nbtlib.tag.Compound):
     try:
-        components_list.append("instrument="+serialize_tag(value))
+        components_dict["instrument"]=serialize_tag(value)
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def instrument_updata(components_list: list,value: nbtlib.tag.String):
+def Recipes_updata(components_dict: dict,value: nbtlib.tag.List):
     try:
-        components_list.append("instrument="+serialize_tag(value))
+        components_dict["recipes"]=serialize_tag(value)
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def Recipes_updata(components_list: list,value: nbtlib.tag.List):
+def Lodestone_updata(components_dict: dict,LodestoneDimension: nbtlib.tag.String,LodestonePos:nbtlib.tag.Compound,LodestoneTracked:nbtlib.tag.Byte):#MC目前未能识别，暂不处理
     try:
-        components_list.append("recipes="+serialize_tag(value))
-    except Exception:
-        pass
-    return components_list
-
-def Lodestone_updata(components_list: list,LodestoneDimension: nbtlib.tag.String,LodestonePos:nbtlib.tag.Compound,LodestoneTracked:nbtlib.tag.Byte):#MC目前未能识别，暂不处理
-    try:
-        lodestone_target_str="lodestone_tracker={target:{"
+        lodestone_target_str="{target:{"
         if LodestoneDimension!=None:
             lodestone_target_str+="dimension:"+serialize_tag(LodestoneDimension)+","
         if LodestonePos!=None:
@@ -611,14 +606,14 @@ def Lodestone_updata(components_list: list,LodestoneDimension: nbtlib.tag.String
         if LodestoneTracked!=None:
             lodestone_target_str+="tracked:"+serialize_tag(LodestoneTracked)+","
         lodestone_target_str=lodestone_target_str.rstrip(",")+"}}"
-        components_list.append(lodestone_target_str)
+        components_dict["lodestone_tracker"]=lodestone_target_str
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def Explosion_updata(components_list: list,Explosion: nbtlib.tag.Compound):
+def Explosion_updata(components_dict: dict,Explosion: nbtlib.tag.Compound):
     try:
-        firework_explosion_str="firework_explosion={"
+        firework_explosion_str="{"
         if Explosion.get("Type")!=None:
             if Explosion.get("Type") == 0:
                 firework_explosion_str+="shape:'small_ball',"
@@ -639,14 +634,14 @@ def Explosion_updata(components_list: list,Explosion: nbtlib.tag.Compound):
         if Explosion.get("Flicker")!=None:
             firework_explosion_str+="has_twinkle:"+serialize_tag(Explosion.get("Flicker"))+","
         firework_explosion_str=firework_explosion_str.rstrip(",")+"}"
-        components_list.append(firework_explosion_str)
+        components_dict["firework_explosion"]=firework_explosion_str
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def Fireworks_updata(components_list: list,Explosions: nbtlib.tag.Compound,Flight:nbtlib.tag.Byte):
+def Fireworks_updata(components_dict: dict,Explosions: nbtlib.tag.Compound,Flight:nbtlib.tag.Byte):
     try:
-        fireworks_str="fireworks={"
+        fireworks_str="{"
         if Explosions != None:
             fireworks_str+="explosions:["
             for i in Explosions:
@@ -680,14 +675,14 @@ def Fireworks_updata(components_list: list,Explosions: nbtlib.tag.Compound,Fligh
                 Flight_str = serialize_tag(Flight)
             fireworks_str+="flight_duration:"+Flight_str
         fireworks_str=fireworks_str.rstrip(",")+"}"
-        components_list.append(fireworks_str)
+        components_dict["fireworks="]=fireworks_str
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def SkullOwner_updata(components_list: list,SkullOwner: nbtlib.tag.Compound):
+def SkullOwner_updata(components_dict: dict,SkullOwner: nbtlib.tag.Compound):
     try:
-        profile_str="profile={"
+        profile_str="{"
         if type(SkullOwner) is nbtlib.tag.String:
             profile_str+="name:"+serialize_tag(SkullOwner)+"}"
         else:
@@ -698,160 +693,175 @@ def SkullOwner_updata(components_list: list,SkullOwner: nbtlib.tag.Compound):
             if SkullOwner.get("Properties")!=None:
                 print("玩家头颅处理中，暂未处理玩家档案配置属性Properties")
             profile_str=profile_str.rstrip(",")+"}"
-        components_list.append(profile_str)
+        components_dict["profile"]=profile_str
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def BlockEntityTag_updata(components_list: list,BlockEntityTag: nbtlib.tag.Compound):
+def BlockEntityTag_updata(components_dict: dict,BlockEntityTag: nbtlib.tag.Compound):
     try:
-        BlockEntityTag_str=""
-        #note_block_sound
         if BlockEntityTag.get("note_block_sound")!=None:
-            BlockEntityTag_str+="note_block_sound="+serialize_tag(BlockEntityTag.pop("note_block_sound"))+","
+            components_dict["note_block_sound"]=serialize_tag(BlockEntityTag.pop("note_block_sound"))
         #Base
         if BlockEntityTag.get("Base")!=None:
             if BlockEntityTag.get("Base")==0:
-                BlockEntityTag_str+="base_color='white',"
-            if BlockEntityTag.get("Base")==1:
-                BlockEntityTag_str+="base_color='orange',"
-            if BlockEntityTag.get("Base")==2:
-                BlockEntityTag_str+="base_color='magenta',"
-            if BlockEntityTag.get("Base")==3:
-                BlockEntityTag_str+="base_color='light_blue',"
-            if BlockEntityTag.get("Base")==4:
-                BlockEntityTag_str+="base_color='yellow',"
-            if BlockEntityTag.get("Base")==5:
-                BlockEntityTag_str+="base_color='lime',"
-            if BlockEntityTag.get("Base")==6:
-                BlockEntityTag_str+="base_color='pink',"
-            if BlockEntityTag.get("Base")==7:
-                BlockEntityTag_str+="base_color='gray',"
-            if BlockEntityTag.get("Base")==8:
-                BlockEntityTag_str+="base_color='light_gray',"
-            if BlockEntityTag.get("Base")==9:
-                BlockEntityTag_str+="base_color='cyan',"
-            if BlockEntityTag.get("Base")==10:
-                BlockEntityTag_str+="base_color='purple',"
-            if BlockEntityTag.get("Base")==11:
-                BlockEntityTag_str+="base_color='blue',"
-            if BlockEntityTag.get("Base")==12:
-                BlockEntityTag_str+="base_color='brown',"
-            if BlockEntityTag.get("Base")==13:
-                BlockEntityTag_str+="base_color='green',"
-            if BlockEntityTag.get("Base")==14:
-                BlockEntityTag_str+="base_color='red',"
-            if BlockEntityTag.get("Base")==15:
-                BlockEntityTag_str+="base_color='black',"
+                components_dict["base_color"]='white'
+            elif BlockEntityTag.get("Base")==1:
+                components_dict["base_color"]='orange'
+            elif BlockEntityTag.get("Base")==2:
+                components_dict["base_color"]='magenta'
+            elif BlockEntityTag.get("Base")==3:
+                components_dict["base_color"]='light_blue'
+            elif BlockEntityTag.get("Base")==4:
+                components_dict["base_color"]='yellow'
+            elif BlockEntityTag.get("Base")==5:
+                components_dict["base_color"]='lime'
+            elif BlockEntityTag.get("Base")==6:
+                components_dict["base_color"]='pink'
+            elif BlockEntityTag.get("Base")==7:
+                components_dict["base_color"]='gray'
+            elif BlockEntityTag.get("Base")==8:
+                components_dict["base_color"]='light_gray'
+            elif BlockEntityTag.get("Base")==9:
+                components_dict["base_color"]='cyan'
+            elif BlockEntityTag.get("Base")==10:
+                components_dict["base_color"]='purple'
+            elif BlockEntityTag.get("Base")==11:
+                components_dict["base_color"]='blue'
+            elif BlockEntityTag.get("Base")==12:
+                components_dict["base_color"]='brown'
+            elif BlockEntityTag.get("Base")==13:
+                components_dict["base_color"]='green'
+            elif BlockEntityTag.get("Base")==14:
+                components_dict["base_color"]='red'
+            elif BlockEntityTag.get("Base")==15:
+                components_dict["base_color"]='black'
             BlockEntityTag_Base=BlockEntityTag.pop("Base")
         #Patterns
         if BlockEntityTag.get("Patterns")!=None:
-            BlockEntityTag_str+="banner_patterns=["
+            Patterns_str="["
             for i in BlockEntityTag.get("Patterns"):
-                BlockEntityTag_str+="{pattern:"+serialize_tag(i.pop("Pattern"))+","
+                Patterns_str+="{pattern:"+serialize_tag(i.pop("Pattern"))+","
                 if i.get("Color")!= None:
-                    BlockEntityTag_str+="color:"+serialize_tag(i.pop("Color"))+"},"
-            BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"],"
+                    Patterns_str+="color:"+serialize_tag(i.pop("Color"))+"},"
+            Patterns_str=Patterns_str.rstrip(",")+"]"
+            components_dict["banner_patterns"]=Patterns_str
         #sherds
         if BlockEntityTag.get("sherds")!=None:
-            BlockEntityTag_str+="pot_decorations="+serialize_tag(BlockEntityTag.pop("sherds"))+","
+            components_dict["pot_decorations"]=serialize_tag(BlockEntityTag.pop("sherds"))
         #Items
         if BlockEntityTag.get("Items")!=None:
-            BlockEntityTag_str+="container=["
+            Items_str="["
             for i in BlockEntityTag.get("Items"):
-                BlockEntityTag_str+="{"
+                Items_str+="{"
                 if i.get("Slot")!= None:
-                    BlockEntityTag_str+="slot:"+serialize_tag(i.pop("Slot"))+","
-                BlockEntityTag_str+="item:{"
-                if i.get("id")!= None:
-                    BlockEntityTag_str+="id:"+serialize_tag(i.pop("id"))+","
-                if i.get("Count")!= None:
-                    BlockEntityTag_str+="count:"+serialize_tag(i.pop("Count"))+","
-                if i.get("tag")!= None:
-                    print("tag处理")
-                BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"}},"
-            BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"],"
+                    Items_str+="slot:"+serialize_tag(i.pop("Slot"))+","
+                Items_str+="item:"+Item_Common_tags_updata(i)
+                Items_str=Items_str.rstrip(",")+"},"
+            Items_str=Items_str.rstrip(",")+"]"
+            components_dict["container"]=Items_str
         #Bees
         if BlockEntityTag.get("Bees")!=None:
-            BlockEntityTag_str+="bees=["
+            Bees_str="["
             for i in BlockEntityTag.get("Bees"):
-                BlockEntityTag_str+="{"
+                Bees_str+="{"
                 if i.get("EntityData")!=None:
-                    BlockEntityTag_str+="entity_data:"+serialize_tag(i.pop("EntityData"))+","
+                    Bees_str+="entity_data:"+serialize_tag(i.pop("EntityData"))+","
                 if i.get("MinOccupationTicks")!=None:
-                    BlockEntityTag_str+="min_ticks_in_hive:"+serialize_tag(i.pop("MinOccupationTicks"))+","
+                    Bees_str+="min_ticks_in_hive:"+serialize_tag(i.pop("MinOccupationTicks"))+","
                 if i.get("TicksInHive")!=None:
-                    BlockEntityTag_str+="ticks_in_hive:"+serialize_tag(i.pop("TicksInHive"))+","
-                BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"},"
-            BlockEntityTag_str=BlockEntityTag_str.rstrip(",")+"],"
+                    Bees_str+="ticks_in_hive:"+serialize_tag(i.pop("TicksInHive"))+","
+                Bees_str=Bees_str.rstrip(",")+"},"
+            Bees_str=Bees_str.rstrip(",")+"]"
+            components_dict["bees"]=Bees_str
         #Lock
         if BlockEntityTag.get("Lock")!=None:
-            BlockEntityTag_str+="lock="+serialize_tag(BlockEntityTag.pop("Lock"))+","
+            components_dict["lock"]=serialize_tag(BlockEntityTag.pop("Lock"))
         #LootTable
         if BlockEntityTag.get("LootTable")!=None:
-            BlockEntityTag_str+="container_loot={loot_table:"+serialize_tag(BlockEntityTag.pop("LootTable"))
+            LootTable_str="{loot_table:"+serialize_tag(BlockEntityTag.pop("LootTable"))
             if BlockEntityTag.get("LootTableSeed")!=None:
-                BlockEntityTag_str+=",seed:"+serialize_tag(BlockEntityTag.pop("LootTableSeed"))
-            BlockEntityTag_str+="},"
+                LootTable_str+=",seed:"+serialize_tag(BlockEntityTag.pop("LootTableSeed"))
+            LootTable_str+="}"
+            components_dict["container_loot"]=LootTable_str
         #其余内容变为block_entity_data
         if BlockEntityTag.items():
-            BlockEntityTag_str+="block_entity_data="+serialize_tag(BlockEntityTag)
-        BlockEntityTag_str=BlockEntityTag_str.rstrip(",")
-        components_list.append(BlockEntityTag_str)
+            components_dict["block_entity_data"]=serialize_tag(BlockEntityTag)
     except Exception:
         pass
-    return components_list
+    return components_dict
 
-def BlockStateTag_updata(components_list: list,BlockStateTag: nbtlib.tag.Compound):
+def BlockStateTag_updata(components_dict: dict,BlockStateTag: nbtlib.tag.Compound):
     try:
-        components_list.append("block_state="+serialize_tag(BlockStateTag))
+        components_dict["block_state"]=serialize_tag(BlockStateTag)
     except Exception:
         pass
-    return components_list
+    return components_dict
 
+def Item_Common_tags_updata(Item:nbtlib.tag.Compound):#变为'{id:xx,count:1b,components:物品堆叠组件}'
+    Item_str="{"
+    id=Item.get("id",None)
+    Count=Item.get("Id",None)
+    tag=Item.get("tag",None)#Compound
+    if id!=None:
+        Item_str+="id:"+serialize_tag(id)+","
+    if Count!=None:
+        Item_str+="count:"+serialize_tag(Count)+","
+    if tag!=None:
+        Item_str+="components:"+serialize_tag(tag)+","#暂未处理tag
+    Item_str=Item_str.rstrip(",")+"}"
+    return None
+
+#组件键值转化
+def updata_dict_to_str_1(components_dict:dict):
+    components_str="["
+    for key,value in components_dict.items():
+        components_str+=key+"="+value+","
+    components_str=components_str.rstrip(",")+"]"
+    return components_str
 ##测试命令
 
 #例子1-可染色物品，及通用NBT
 print("测试1")
 s = '''{CanPlaceOn:["minecraft:ice","minecraft:mud"],CanDestroy:["minecraft:fern","minecraft:lava"],display:{Name:'[{"text":"233","color":"gold","bold":true,"italic":true,"underlined":true,"strikethrough":true,"obfuscated":true},{"text":"666777","font":"6","bold":true}]',Lore:['{"text":"112233","bold":true,"italic":true}'],color:1011},HideFlags:129,CustomModelData:12345678,Enchantments:[{id:"minecraft:protection",lvl:3s},{id:"minecraft:thorns",lvl:11s}],AttributeModifiers:[{AttributeName:"generic.max_health",Name:"generic.max_health",Amount:10,Operation:0,UUID:[I;317531815,114708043,-1774063036,1637657640]},{AttributeName:"generic.knockback_resistance",Name:"generic.knockback_resistance",Amount:23,Operation:1,UUID:[I;-1554795033,723864717,-1969707662,611632905],Slot:"mainhand"}]}'''
 #print(parse_nbt(s))
-print(item_nbt_updata("leather",parse_nbt(s)))
+print(updata_dict_to_str_1(item_nbt_updata_to_dict("leather",parse_nbt(s))))
 
 #测试2 - 书与笔 和 成书
 print("测试2")
 s = '{pages:["123\n123","213"]}'
 d = '{Trim:{material:"minecraft:gold",pattern:"minecraft:eye"}}'
 #print(parse_nbt(s))
-print(item_nbt_updata("writable_book",parse_nbt(s)))
+print(updata_dict_to_str_1(item_nbt_updata_to_dict("writable_book",parse_nbt(s))))
 #print(parse_nbt(d))
-print(item_nbt_updata("written_book",parse_nbt(d)))
+print(updata_dict_to_str_1(item_nbt_updata_to_dict("written_book",parse_nbt(d))))
 
 #测试3 - 磁石指针
 print("测试3")
 s = '{LodestoneDimension:"minecraft:overworld",LodestoneTracked:1b,LodestonePos:{X:1,Y:2,Z:3}}'
-print(item_nbt_updata("compass",parse_nbt(s)))
+print(updata_dict_to_str_1(item_nbt_updata_to_dict("compass",parse_nbt(s))))
 
 #测试4 - 烟火之星
 print("测试4")
 s = '{Explosion:{Type:1,Flicker:1b,Trail:1b,Colors:[I;5057023],FadeColors:[I;9895769]}}'
-print(item_nbt_updata("firework_star",parse_nbt(s)))
+print(updata_dict_to_str_1(item_nbt_updata_to_dict("firework_star",parse_nbt(s))))
 
 #测试5 - 烟花火箭
 print("测试5")
 s = '{Fireworks:{Flight:233b,Explosions:[{Type:1,Flicker:1b,Trail:1b,Colors:[I;7553279],FadeColors:[I;16770503]},{Type:0,Trail:1b}]}}'
-print(item_nbt_updata("firework_rocket",parse_nbt(s)))
+print(updata_dict_to_str_1(item_nbt_updata_to_dict("firework_rocket",parse_nbt(s))))
 
 #测试6 - 头颅
 print("测试6")
 s = '{SkullOwner:"xiao_qi_zi",BlockEntityTag:{note_block_sound:"minecraft:ambient.cave"}}'
-print(item_nbt_updata("player_head",parse_nbt(s)))
+print(updata_dict_to_str_1(item_nbt_updata_to_dict("player_head",parse_nbt(s))))
 
 #测试7 - 陶罐
 print("测试7")
 s = '{BlockEntityTag:{sherds:["minecraft:archer_pottery_sherd","minecraft:brick","minecraft:brick","minecraft:brick"]}}'
-print(item_nbt_updata("decorated_pot",parse_nbt(s)))
+print(updata_dict_to_str_1(item_nbt_updata_to_dict("decorated_pot",parse_nbt(s))))
 
 #测试8 - 弩
 print("测试8")
 s = '{RepairCost:233,Unbreakable:1b,Damage:3,ChargedProjectiles:[{id:"minecraft:firework_rocket",Count:1b,tag:{Fireworks:{Flight:233b,Explosions:[{Type:0}]}}},{id:"minecraft:arrow",Count:1b},{}],Charged:1b}'
-print(item_nbt_updata("crossbow",parse_nbt(s)))
+print(updata_dict_to_str_1(item_nbt_updata_to_dict("crossbow",parse_nbt(s))))
