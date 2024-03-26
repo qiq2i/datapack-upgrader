@@ -340,7 +340,7 @@ def Items_updata(components_dict: dict,value: nbtlib.tag.List):#收纳袋value:[
     try:
         bundle_contents_str="["
         for i in value:
-            bundle_contents_str+="{id:'"+i.get("id")+"',count:"+str(i.get("Count")+0)+",components:[]"+"},"
+            bundle_contents_str+=Item_Common_tags_updata(i)+","
         bundle_contents_str=bundle_contents_str.rstrip(",")+"]"
         components_dict["bundle_contents"]=bundle_contents_str
     except Exception:
