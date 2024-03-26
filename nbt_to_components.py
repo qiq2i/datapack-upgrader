@@ -329,13 +329,8 @@ def ChargedProjectiles_updata(components_dict: dict,value: nbtlib.tag.List):#val
         charged_projectiles_str="["
         for i in value:
             if i.get("id")!=None:
-                charged_projectiles_str+="{id:"+serialize_tag(i.get("id"))+","
-                if i.get("Count")!=None:
-                    charged_projectiles_str+="count:"+serialize_tag(i.get("Count"))+","
-                if i.get("tag")!=None:
-                    print(i.get("tag"))
-                    print("tag转组件暂未处理")
-                charged_projectiles_str=charged_projectiles_str.rstrip(",")+"},"
+                charged_projectiles_str+=Item_Common_tags_updata(i)
+                charged_projectiles_str+=","
         charged_projectiles_str=charged_projectiles_str.rstrip(",")+"]"
         components_dict["charged_projectiles"]=charged_projectiles_str
     except Exception:
@@ -675,7 +670,7 @@ def Fireworks_updata(components_dict: dict,Explosions: nbtlib.tag.Compound,Fligh
                 Flight_str = serialize_tag(Flight)
             fireworks_str+="flight_duration:"+Flight_str
         fireworks_str=fireworks_str.rstrip(",")+"}"
-        components_dict["fireworks="]=fireworks_str
+        components_dict["fireworks"]=fireworks_str
     except Exception:
         pass
     return components_dict
@@ -801,16 +796,16 @@ def BlockStateTag_updata(components_dict: dict,BlockStateTag: nbtlib.tag.Compoun
 def Item_Common_tags_updata(Item:nbtlib.tag.Compound):#变为'{id:xx,count:1b,components:物品堆叠组件}'
     Item_str="{"
     id=Item.get("id",None)
-    Count=Item.get("Id",None)
+    Count=Item.get("count",None)
     tag=Item.get("tag",None)#Compound
     if id!=None:
         Item_str+="id:"+serialize_tag(id)+","
     if Count!=None:
         Item_str+="count:"+serialize_tag(Count)+","
     if tag!=None:
-        Item_str+="components:"+serialize_tag(tag)+","#暂未处理tag
+        Item_str+="components:"+updata_dict_to_str_2(item_nbt_updata_to_dict(id,tag))+","#暂未处理tag
     Item_str=Item_str.rstrip(",")+"}"
-    return None
+    return Item_str
 
 #组件键值转化
 def updata_dict_to_str_1(components_dict:dict):
@@ -818,6 +813,12 @@ def updata_dict_to_str_1(components_dict:dict):
     for key,value in components_dict.items():
         components_str+=key+"="+value+","
     components_str=components_str.rstrip(",")+"]"
+    return components_str
+def updata_dict_to_str_2(components_dict:dict):
+    components_str="{"
+    for key,value in components_dict.items():
+        components_str+=key+":"+value+","
+    components_str=components_str.rstrip(",")+"}"
     return components_str
 ##测试命令
 
