@@ -879,4 +879,4 @@ print(updata_dict_to_str_1(item_nbt_updata_to_dict("bundle",parse_nbt(s))))
 #测试10 - 箱子
 print("测试10")
 s = '''{BlockEntityTag:{Items:[{Slot:2b,id:"minecraft:bow",Count:1b,tag:{Damage:3}},{Slot:9b,id:"minecraft:egg",Count:12b}]}}'''
-print(updata_dict_to_str_1(item_nbt_updata_to_dict("bundle",parse_nbt(s))))
+print(updata_dict_to_str_1(item_nbt_updata_to_dict("chest",parse_nbt(s))))
