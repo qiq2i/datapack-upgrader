@@ -6,7 +6,7 @@ from nbt_to_components import transfer  # 导入transfer函数
 root = tk.Tk()#创建主窗口
 
 #设置窗口属性
-root.title("物品NBT格式转components格式")#标题
+root.title("物品NBT格式转components格式 "+"0.1")#标题
 root.geometry("900x500")#大小
 
 #创建控件
@@ -23,7 +23,7 @@ Item_id.insert(tk.END, "stone")
 
 label_Item_id_tip1 = tk.Text(root, wrap='word',width=30,height=10)
 label_Item_id_tip1.grid(row=2, column=2)
-label_Item_id_tip1.insert(tk.END, "物品为成书written_book和书与笔writable_book时，必须写物品id。这是由于这两个物品的NBT有相同的部分，而转化为components时要进行区分。")
+label_Item_id_tip1.insert(tk.END, "物品为成书written_book和书与笔writable_book时，必须写物品id。这是由于这两个物品的NBT有相同的部分，而转化为components时要进行区分。\n\n物品NBT例子：\n{Damage:50}")
 label_Item_id_tip1.configure(cursor="arrow")  # 隐藏光标
 label_Item_id_tip1.config(highlightthickness=0)  # 隐藏高亮边框
 label_Item_id_tip1.config(selectbackground=root.cget("bg"))  # 设置选中文本背景色与窗口背景色一致
@@ -86,7 +86,7 @@ link_label_2.grid(row=6, column=2)
 
 name = tk.Label(root, text="小棋孜")
 name.grid(row=7, column=2)
-
+'''
 # 图标
 root.iconphoto(True, tk.PhotoImage(file='title.png'))
 # 创建一个图片对象
@@ -94,6 +94,6 @@ image = tk.PhotoImage(file="title.png")
 # 创建一个标签，并将其设置为显示图片
 label_png = tk.Label(root, image=image)
 label_png.grid(row=4, column=2)
-
+'''
 # 主循环，处理事件和保持窗口打开
 root.mainloop()
