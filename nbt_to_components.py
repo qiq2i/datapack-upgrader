@@ -197,7 +197,7 @@ def Enchantments_updata(components_dict: dict,value:nbtlib.tag.List,HideFlags:nb
         if bit == 1:
             components_dict["enchantments"]="{levels:"+levels_str+",show_in_tooltip:false}"
         else:
-            components_dict.append["enchantments"]="{levels:"+levels_str+"}"
+            components_dict["enchantments"]="{levels:"+levels_str+"}"
     return components_dict
 def StoredEnchantments_updata(components_dict: dict,value:nbtlib.tag.List,HideFlags:nbtlib.tag.Int):
     if value != None:
