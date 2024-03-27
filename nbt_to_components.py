@@ -152,7 +152,8 @@ def item_nbt_updata_to_dict(id: String,nbtlib_compound: nbtlib.tag.Compound): #�
     if 'display' in nbtlib_compound:
         del nbtlib_compound["display"]
     #剩余NBT置入custom_data中
-    components_dict["custom_data"]=serialize_tag(nbtlib_compound)
+    if serialize_tag(nbtlib_compound) != "{}":
+        components_dict["custom_data"]=serialize_tag(nbtlib_compound)
 
     return components_dict
 
@@ -828,7 +829,7 @@ def updata_dict_to_str_2(components_dict:dict):
 
 #例子1-可染色物品，及通用NBT
 print("测试1")
-s = '''{CanPlaceOn:["minecraft:ice","minecraft:mud"],CanDestroy:["minecraft:fern","minecraft:lava"],display:{Name:'[{"text":"233","color":"gold","bold":true,"italic":true,"underlined":true,"strikethrough":true,"obfuscated":true},{"text":"666777","font":"6","bold":true}]',Lore:['{"text":"112233","bold":true,"italic":true}'],color:1011},HideFlags:129,CustomModelData:12345678,Enchantments:[{id:"minecraft:protection",lvl:3s},{id:"minecraft:thorns",lvl:11s}],AttributeModifiers:[{AttributeName:"generic.max_health",Name:"generic.max_health",Amount:10,Operation:0,UUID:[I;317531815,114708043,-1774063036,1637657640]},{AttributeName:"generic.knockback_resistance",Name:"generic.knockback_resistance",Amount:23,Operation:1,UUID:[I;-1554795033,723864717,-1969707662,611632905],Slot:"mainhand"}]}'''
+s = '''{CanPlaceOn:["minecraft:ice","minecraft:mud"],CanDestroy:["minecraft:fern","minecraft:lava"],display:{Name:'[{"text":"233","color":"gold","bold":true,"italic":true,"underlined":true,"strikethrough":true,"obfuscated":true},{"text":"666777","font":"6","bold":true}]',Lore:['{"text":"112233","bold":true,"italic":true}'],color:1011},HideFlags:129,CustomModelData:12345678,Enchantments:[{id:"minecraft:protection",lvl:3s},{id:"minecraft:thorns",lvl:11s}],AttributeModifiers:[{AttributeName:"generic.max_health",Name:"generic.max_health",Amount:10,Operation:0,UUID:[I;317531815,114708043,-1774063036,1637657640]},{AttributeName:"generic.knockback_resistance",Name:"generic.knockback_resistance",Amount:23,Operation:1,UUID:[I;-1554795033,723864717,-1969707662,611632905],Slot:"mainhand"}],a:"abc"}'''
 #print(parse_nbt(s))
 print(updata_dict_to_str_1(item_nbt_updata_to_dict("leather",parse_nbt(s))))
 
