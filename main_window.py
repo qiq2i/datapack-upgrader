@@ -7,7 +7,7 @@ root = tk.Tk()#创建主窗口
 
 #设置窗口属性
 root.title("物品NBT格式转components格式")#标题
-root.geometry("900x400")#大小
+root.geometry("900x500")#大小
 
 #创建控件
 label = tk.Label(root, text="物品NBT格式转components格式")
@@ -86,5 +86,14 @@ link_label_2.grid(row=6, column=2)
 
 name = tk.Label(root, text="小棋孜")
 name.grid(row=7, column=2)
+
+# 图标
+root.iconphoto(True, tk.PhotoImage(file='title.png'))
+# 创建一个图片对象
+image = tk.PhotoImage(file="title.png")
+# 创建一个标签，并将其设置为显示图片
+label_png = tk.Label(root, image=image)
+label_png.grid(row=4, column=2)
+
 # 主循环，处理事件和保持窗口打开
 root.mainloop()
