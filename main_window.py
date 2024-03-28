@@ -87,6 +87,7 @@ link_label_2.grid(row=6, column=2)
 name = tk.Label(root, text="小棋孜")
 name.grid(row=7, column=2)
 
+'''
 # 图标
 root.iconphoto(True, tk.PhotoImage(file='title.png'))
 # 创建一个图片对象
@@ -94,6 +95,6 @@ image = tk.PhotoImage(file="title.png")
 # 创建一个标签，并将其设置为显示图片
 label_png = tk.Label(root, image=image)
 label_png.grid(row=4, column=2)
-
+'''
 # 主循环，处理事件和保持窗口打开
 root.mainloop()

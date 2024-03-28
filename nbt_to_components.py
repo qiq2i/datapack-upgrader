@@ -339,7 +339,7 @@ def ChargedProjectiles_updata(components_dict: dict,value: nbtlib.tag.List):#val
     return components_dict
 def Items_updata(components_dict: dict,id:String,value: nbtlib.tag.List):#收纳袋value:[]
     try:
-        if id == "bundle":#收纳袋
+        if id == "bundle" or id == "minecraft:bundle":#收纳袋
             bundle_contents_str="["
             for i in value:
                 bundle_contents_str+=Item_Common_tags_updata(i)+","
@@ -474,12 +474,12 @@ def Potion_updata(components_dict: dict,Potion: String,CustomPotionColor: nbtlib
 
 def pages_updata(components_dict: dict,id:nbtlib.tag.String,pages:nbtlib.tag.List,filtered_pages,title:nbtlib.tag.String,author:nbtlib.tag.String,generation:nbtlib.tag.Int,resolved:nbtlib.tag.Byte):#过滤页面暂未处理
     try:
-        if id == 'writable_book' or id == 'written_book':
+        if id == 'writable_book' or id == 'minecraft:writable_book' or id == 'written_book' or id == 'minecraft:written_book':
             if type(pages) is nbtlib.tag.List[String]:
                 pages_str="{pages:"+serialize_tag(pages)+","
             if type(pages) is nbtlib.tag.List[Compound]:
                 pages_str="{pages:"+serialize_tag(pages)+","
-        if id == 'written_book':
+        if id == 'written_book' or id == 'minecraft:written_book':
             if title != None:
                 pages_str+="title:'"+serialize_tag(title)+"',"
             if author != None:
