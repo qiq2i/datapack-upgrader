@@ -61,6 +61,7 @@ def transfer_bottom():
 get_inputs_button = ttk.Button(root, text="NBT转components", command=transfer_bottom)
 get_inputs_button.grid(row=3, column=1)
 
+# 复制按钮
 def copy_string_to_clipboard():
     # 需要复制的字符串
     target_string = Item_components.get('1.0', 'end')
@@ -70,6 +71,14 @@ def copy_string_to_clipboard():
 
 copy_button = ttk.Button(root, text="复制组件components", command=copy_string_to_clipboard)
 copy_button.grid(row=5, column=1)
+
+# 清除按钮
+def clear():
+    # 需要复制的字符串
+    Item_nbt.delete('1.0', 'end')
+
+clear_button = ttk.Button(root, text="清空物品nbt内容", command=clear)
+clear_button.grid(row=4, column=2)
 
 def open_url(url):
     import webbrowser
