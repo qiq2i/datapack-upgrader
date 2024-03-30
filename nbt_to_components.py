@@ -3,18 +3,10 @@ from nbtlib import serialize_tag#可以使用nbtlib将Nbt标记序列化为它�
 from nbtlib.tag import String, List, Compound, IntArray
 from nbtlib import parse_nbt, Path #NBT分析库 https://github.com/vberlier/nbtlib
 
-s = '{Damage:34,Unbreakable:1b,Enchantments:[{id:"minecraft:aqua_affinity",lvl:2s},{id:"minecraft:bane_of_arthropods",lvl:3s}]}'
-data = parse_nbt(s)
-#print(data)
-#print(data.get('Damage'))#获取 <class 'nbtlib.tag.Int'>，要取值则调用value()
-#print(data.pop('Damage'))#获取并移除
-#print(data)
-#print(data.get('Damage'))#不存在则返回None
-
-
 def item_nbt_updata_to_dict(id: String,nbtlib_compound: nbtlib.tag.Compound): #处理分析过的NBT(nbtlib_compound)，更新后每个指令存在
-    #components_list = []
+    #输入 物品ID(String) 和 被nbtlib解析后的nbt(nbtlib_compound)，输出 被更新成组件后的形式，格式为字典(dict)
     components_dict = {}
+
     #Damage
     if 'Damage' in nbtlib_compound:
         components_dict = Damage_updata(components_dict,nbtlib_compound.pop('Damage',None))
@@ -157,15 +149,15 @@ def item_nbt_updata_to_dict(id: String,nbtlib_compound: nbtlib.tag.Compound): #�
 
     return components_dict
 
-def Damage_updata(components_dict: dict,value:nbtlib.tag.Int):
+def Damage_updata(components_dict: dict,value:nbtlib.tag.Int):#输入字典components_dict(dict)和Damage的值(int)。更新Damage后，添加进字典components_dict后输出该字典。
     if value != None:
         components_dict["damage"] = serialize_tag(value)
     return components_dict
-def RepairCost_updata(components_dict: dict,value:nbtlib.tag.Int):
+def RepairCost_updata(components_dict: dict,value:nbtlib.tag.Int):#输入字典components_dict(dict)和RepairCost的值(int)。更新RepairCost后，添加进字典components_dict后输出该字典。
     if value != None:
         components_dict["repair_cost"] = serialize_tag(value)
     return components_dict
-def Unbreakable_updata(components_dict: dict,value,HideFlags:nbtlib.tag.Int):
+def Unbreakable_updata(components_dict: dict,value:nbtlib.tag.Byte,HideFlags:nbtlib.tag.Int):#输入字典components_dict(dict)和Unbreakable的值(byte)和HideFlags(int)。更新Unbreakable后，添加进字典components_dict后输出该字典。
     if value != None:
         if HideFlags == None:
             HideFlags=0
@@ -181,7 +173,7 @@ def Unbreakable_updata(components_dict: dict,value,HideFlags:nbtlib.tag.Int):
             else:
                 components_dict["unbreakable"]="{}"
     return components_dict
-def Enchantments_updata(components_dict: dict,value:nbtlib.tag.List,HideFlags:nbtlib.tag.Int):
+def Enchantments_updata(components_dict: dict,value:nbtlib.tag.List,HideFlags:nbtlib.tag.Int):#输入字典components_dict(dict)和Enchantments的值(list)和HideFlags(int)。更新Enchantments后，添加进字典components_dict后输出该字典。
     if value != None:
         levels_str= "{"
         for i in value:
@@ -199,7 +191,7 @@ def Enchantments_updata(components_dict: dict,value:nbtlib.tag.List,HideFlags:nb
         else:
             components_dict["enchantments"]="{levels:"+levels_str+"}"
     return components_dict
-def StoredEnchantments_updata(components_dict: dict,value:nbtlib.tag.List,HideFlags:nbtlib.tag.Int):
+def StoredEnchantments_updata(components_dict: dict,value:nbtlib.tag.List,HideFlags:nbtlib.tag.Int):#输入字典components_dict(dict)和StoredEnchantments的值(list)和HideFlags(int)。更新StoredEnchantments后，添加进字典components_dict后输出该字典。
     if value != None:
         levels_str= "{"
         for i in value:
@@ -217,19 +209,19 @@ def StoredEnchantments_updata(components_dict: dict,value:nbtlib.tag.List,HideFl
         else:
             components_dict["stored_enchantments"]="{levels:"+levels_str+"}"
     return components_dict
-def display_Name_updata(components_dict: dict,value: nbtlib.tag.String):
+def display_Name_updata(components_dict: dict,value: nbtlib.tag.String):#更新display.Name后，添加进字典components_dict后输出该字典。
     try:
         components_dict["custom_name"] = serialize_tag(value)
     except Exception:
         pass
     return components_dict
-def display_Lore_updata(components_dict: dict,value: nbtlib.tag.List):
+def display_Lore_updata(components_dict: dict,value: nbtlib.tag.List):#更新display.Lore后，添加进字典components_dict后输出该字典。
     try:
         components_dict["lore"]=serialize_tag(value)
     except Exception:
         pass
     return components_dict
-def CanDestroy_updata(components_dict: dict,value: nbtlib.tag.List,HideFlags: nbtlib.tag.Int):
+def CanDestroy_updata(components_dict: dict,value: nbtlib.tag.List,HideFlags: nbtlib.tag.Int):#更新CanDestroy后，添加进字典components_dict后输出该字典。
     try:
         if HideFlags == None:
             HideFlags=0
@@ -245,7 +237,7 @@ def CanDestroy_updata(components_dict: dict,value: nbtlib.tag.List,HideFlags: nb
     except Exception:
         pass
     return components_dict
-def CanPlaceOn_updata(components_dict: dict,value: nbtlib.tag.List,HideFlags: nbtlib.tag.Int):
+def CanPlaceOn_updata(components_dict: dict,value: nbtlib.tag.List,HideFlags: nbtlib.tag.Int):#更新CanPlaceOn后，添加进字典components_dict后输出该字典。
     try:
         if HideFlags == None:
             HideFlags=0
@@ -261,7 +253,7 @@ def CanPlaceOn_updata(components_dict: dict,value: nbtlib.tag.List,HideFlags: nb
     except Exception:
         pass
     return components_dict
-def display_color_updata(components_dict: dict,value: nbtlib.tag.Int,HideFlags: nbtlib.tag.Int):
+def display_color_updata(components_dict: dict,value: nbtlib.tag.Int,HideFlags: nbtlib.tag.Int):#更新display.color后，添加进字典components_dict后输出该字典。
     try:
         if HideFlags == None:
             HideFlags=0
@@ -277,7 +269,7 @@ def display_color_updata(components_dict: dict,value: nbtlib.tag.Int,HideFlags: 
     except Exception:
         pass
     return components_dict
-def AttributeModifiers_updata(components_dict: dict,value: nbtlib.tag.List,HideFlags: nbtlib.tag.Int):
+def AttributeModifiers_updata(components_dict: dict,value: nbtlib.tag.List,HideFlags: nbtlib.tag.Int):#更新AttributeModifiers后，添加进字典components_dict后输出该字典。
     #value [{},{}]
     try:
         components_str = "{modifiers:["
@@ -325,7 +317,7 @@ def AttributeModifiers_updata(components_dict: dict,value: nbtlib.tag.List,HideF
     except Exception:
         return components_dict
     return components_dict
-def ChargedProjectiles_updata(components_dict: dict,value: nbtlib.tag.List):#value为列表。
+def ChargedProjectiles_updata(components_dict: dict,value: nbtlib.tag.List):#更新ChargedProjectiles后，添加进字典components_dict后输出该字典。
     try:
         charged_projectiles_str="["
         for i in value:
@@ -337,25 +329,25 @@ def ChargedProjectiles_updata(components_dict: dict,value: nbtlib.tag.List):#val
     except Exception:
         pass
     return components_dict
-def Items_updata(components_dict: dict,id:String,value: nbtlib.tag.List):#收纳袋value:[]
+def Items_updata(components_dict: dict,id:String,value: nbtlib.tag.List):#更新Items后，添加进字典components_dict后输出该字典。
     try:
-        if id == "bundle" or id == "minecraft:bundle":#收纳袋
-            bundle_contents_str="["
-            for i in value:
-                bundle_contents_str+=Item_Common_tags_updata(i)+","
-            bundle_contents_str=bundle_contents_str.rstrip(",")+"]"
-            components_dict["bundle_contents"]=bundle_contents_str
+        #if id == "bundle" or id == "minecraft:bundle":#收纳袋
+        bundle_contents_str="["
+        for i in value:
+            bundle_contents_str+=Item_Common_tags_updata(i)+","
+        bundle_contents_str=bundle_contents_str.rstrip(",")+"]"
+        components_dict["bundle_contents"]=bundle_contents_str
     except Exception:
         pass
     return components_dict
-def display_MapColor_updata(components_dict: dict,value: nbtlib.tag.Int):
+def display_MapColor_updata(components_dict: dict,value: nbtlib.tag.Int):#更新display.MapColor后，添加进字典components_dict后输出该字典。
     try:
         components_dict["map_color="]+serialize_tag(value)
     except Exception:
         pass
     return components_dict
 
-def Decorations_updata(components_dict: dict,value: nbtlib.tag.List):
+def Decorations_updata(components_dict: dict,value: nbtlib.tag.List):#更新Decorations后，添加进字典components_dict后输出该字典。
     try:
         map_decorations_str = "{"
         for i in value:
@@ -441,21 +433,21 @@ def Decorations_updata(components_dict: dict,value: nbtlib.tag.List):
         pass
     return components_dict
 
-def map_updata(components_dict: dict,value: nbtlib.tag.Int):
+def map_updata(components_dict: dict,value: nbtlib.tag.Int):#更新map后，添加进字典components_dict后输出该字典。
     try:
         components_dict["map_id"]=serialize_tag(value)
     except Exception:
         pass
     return components_dict
 
-def CustomModelData_updata(components_dict: dict,value: nbtlib.tag.Int):
+def CustomModelData_updata(components_dict: dict,value: nbtlib.tag.Int):#更新CustomModelData后，添加进字典components_dict后输出该字典。
     try:
         components_dict["custom_model_data"]=serialize_tag(value)
     except Exception:
         pass
     return components_dict
 
-def Potion_updata(components_dict: dict,Potion: String,CustomPotionColor: nbtlib.tag.Int,custom_potion_effects: nbtlib.tag.List):
+def Potion_updata(components_dict: dict,Potion: String,CustomPotionColor: nbtlib.tag.Int,custom_potion_effects: nbtlib.tag.List):#更新Potion后，添加进字典components_dict后输出该字典。
     try:
         potion_contents_str = "{potion:'"+Potion+"',"
         try:
@@ -472,7 +464,7 @@ def Potion_updata(components_dict: dict,Potion: String,CustomPotionColor: nbtlib
         pass
     return components_dict
 
-def pages_updata(components_dict: dict,id:nbtlib.tag.String,pages:nbtlib.tag.List,filtered_pages,title:nbtlib.tag.String,author:nbtlib.tag.String,generation:nbtlib.tag.Int,resolved:nbtlib.tag.Byte):#过滤页面暂未处理
+def pages_updata(components_dict: dict,id:nbtlib.tag.String,pages:nbtlib.tag.List,filtered_pages,title:nbtlib.tag.String,author:nbtlib.tag.String,generation:nbtlib.tag.Int,resolved:nbtlib.tag.Byte):#更新pages后，添加进字典components_dict后输出该字典。#过滤页面暂未处理
     try:
         if id == 'writable_book' or id == 'minecraft:writable_book' or id == 'written_book' or id == 'minecraft:written_book':
             if type(pages) is nbtlib.tag.List[String]:
@@ -494,7 +486,7 @@ def pages_updata(components_dict: dict,id:nbtlib.tag.String,pages:nbtlib.tag.Lis
         pass
     return components_dict
 
-def Trim_updata(components_dict: dict,value: nbtlib.tag.Compound,HideFlags: nbtlib.tag.Int):
+def Trim_updata(components_dict: dict,value: nbtlib.tag.Compound,HideFlags: nbtlib.tag.Int):#更新Trim后，添加进字典components_dict后输出该字典。#过滤页面暂未处理
     try:
         if HideFlags == None:
             HideFlags=0
@@ -511,14 +503,14 @@ def Trim_updata(components_dict: dict,value: nbtlib.tag.Compound,HideFlags: nbtl
         pass
     return components_dict
 
-def effects_updata(components_dict: dict,value: nbtlib.tag.Compound):
+def effects_updata(components_dict: dict,value: nbtlib.tag.Compound):#更新effects后，添加进字典components_dict后输出该字典。#过滤页面暂未处理
     try:
         components_dict["suspicious_stew_effects"]=serialize_tag(value)
     except Exception:
         pass
     return components_dict
 
-def HideFlags_updata(components_dict: dict,HideFlags: nbtlib.tag.Int):
+def HideFlags_updata(components_dict: dict,HideFlags: nbtlib.tag.Int):#更新HideFlags后，添加进字典components_dict后输出该字典。#过滤页面暂未处理
     try:
         if HideFlags == None:
             HideFlags=0
@@ -535,21 +527,21 @@ def HideFlags_updata(components_dict: dict,HideFlags: nbtlib.tag.Int):
         pass
     return components_dict
 
-def DebugProperty_updata(components_dict: dict,value: nbtlib.tag.Compound):
+def DebugProperty_updata(components_dict: dict,value: nbtlib.tag.Compound):#更新DebugProperty后，添加进字典components_dict后输出该字典。#过滤页面暂未处理
     try:
         components_dict["debug_stick_state"]=serialize_tag(value)
     except Exception:
         pass
     return components_dict
 
-def EntityTag_updata(components_dict: dict,value: nbtlib.tag.Compound):
+def EntityTag_updata(components_dict: dict,value: nbtlib.tag.Compound):#更新EntityTag后，添加进字典components_dict后输出该字典。#过滤页面暂未处理
     try:
         components_dict["entity_data"]=serialize_tag(value)
     except Exception:
         pass
     return components_dict
 
-def bucket_entity_data_updata(components_dict: dict,NoAI:nbtlib.tag.Byte,Silent:nbtlib.tag.Byte,NoGravity:nbtlib.tag.Byte,Glowing:nbtlib.tag.Byte,Invulnerable:nbtlib.tag.Byte,Health:nbtlib.tag.Float,Age:nbtlib.tag.Int,Variant:nbtlib.tag.Int,HuntingCooldown:nbtlib.tag.Long,BucketVariantTag:nbtlib.tag.Int):
+def bucket_entity_data_updata(components_dict: dict,NoAI:nbtlib.tag.Byte,Silent:nbtlib.tag.Byte,NoGravity:nbtlib.tag.Byte,Glowing:nbtlib.tag.Byte,Invulnerable:nbtlib.tag.Byte,Health:nbtlib.tag.Float,Age:nbtlib.tag.Int,Variant:nbtlib.tag.Int,HuntingCooldown:nbtlib.tag.Long,BucketVariantTag:nbtlib.tag.Int):#更新bucket_entity_data后，添加进字典components_dict后输出该字典。
     try:
         bucket_entity_str="{"
         if NoAI != None:
@@ -579,21 +571,21 @@ def bucket_entity_data_updata(components_dict: dict,NoAI:nbtlib.tag.Byte,Silent:
         pass
     return components_dict
 
-def instrument_updata(components_dict: dict,value: nbtlib.tag.Compound):
+def instrument_updata(components_dict: dict,value: nbtlib.tag.Compound):#更新instrument后，添加进字典components_dict后输出该字典。
     try:
         components_dict["instrument"]=serialize_tag(value)
     except Exception:
         pass
     return components_dict
 
-def Recipes_updata(components_dict: dict,value: nbtlib.tag.List):
+def Recipes_updata(components_dict: dict,value: nbtlib.tag.List):#更新Recipes后，添加进字典components_dict后输出该字典。
     try:
         components_dict["recipes"]=serialize_tag(value)
     except Exception:
         pass
     return components_dict
 
-def Lodestone_updata(components_dict: dict,LodestoneDimension: nbtlib.tag.String,LodestonePos:nbtlib.tag.Compound,LodestoneTracked:nbtlib.tag.Byte):#MC目前未能识别，暂不处理
+def Lodestone_updata(components_dict: dict,LodestoneDimension: nbtlib.tag.String,LodestonePos:nbtlib.tag.Compound,LodestoneTracked:nbtlib.tag.Byte):#更新Lodestone后，添加进字典components_dict后输出该字典。   #MC目前未能识别，暂不处理  
     try:
         lodestone_target_str="{target:{"
         if LodestoneDimension!=None:
@@ -608,7 +600,7 @@ def Lodestone_updata(components_dict: dict,LodestoneDimension: nbtlib.tag.String
         pass
     return components_dict
 
-def Explosion_updata(components_dict: dict,Explosion: nbtlib.tag.Compound):
+def Explosion_updata(components_dict: dict,Explosion: nbtlib.tag.Compound):#更新Explosion后，添加进字典components_dict后输出该字典。
     try:
         firework_explosion_str="{"
         if Explosion.get("Type")!=None:
@@ -636,7 +628,7 @@ def Explosion_updata(components_dict: dict,Explosion: nbtlib.tag.Compound):
         pass
     return components_dict
 
-def Fireworks_updata(components_dict: dict,Explosions: nbtlib.tag.Compound,Flight:nbtlib.tag.Byte):
+def Fireworks_updata(components_dict: dict,Explosions: nbtlib.tag.Compound,Flight:nbtlib.tag.Byte):#更新Fireworks后，添加进字典components_dict后输出该字典。
     try:
         fireworks_str="{"
         if Explosions != None:
@@ -677,7 +669,7 @@ def Fireworks_updata(components_dict: dict,Explosions: nbtlib.tag.Compound,Fligh
         pass
     return components_dict
 
-def SkullOwner_updata(components_dict: dict,SkullOwner: nbtlib.tag.Compound):
+def SkullOwner_updata(components_dict: dict,SkullOwner: nbtlib.tag.Compound):#更新SkullOwner后，添加进字典components_dict后输出该字典。
     try:
         profile_str="{"
         if type(SkullOwner) is nbtlib.tag.String:
@@ -695,7 +687,7 @@ def SkullOwner_updata(components_dict: dict,SkullOwner: nbtlib.tag.Compound):
         pass
     return components_dict
 
-def BlockEntityTag_updata(components_dict: dict,id:String,BlockEntityTag: nbtlib.tag.Compound):
+def BlockEntityTag_updata(components_dict: dict,id:String,BlockEntityTag: nbtlib.tag.Compound):#更新BlockEntityTag后，添加进字典components_dict后输出该字典。
     try:
         if BlockEntityTag.get("note_block_sound")!=None:
             components_dict["note_block_sound"]=serialize_tag(BlockEntityTag.pop("note_block_sound"))
@@ -791,14 +783,14 @@ def BlockEntityTag_updata(components_dict: dict,id:String,BlockEntityTag: nbtlib
         pass
     return components_dict
 
-def BlockStateTag_updata(components_dict: dict,BlockStateTag: nbtlib.tag.Compound):
+def BlockStateTag_updata(components_dict: dict,BlockStateTag: nbtlib.tag.Compound):#更新BlockStateTag后，添加进字典components_dict后输出该字典。
     try:
         components_dict["block_state"]=serialize_tag(BlockStateTag)
     except Exception:
         pass
     return components_dict
 
-def Item_Common_tags_updata(Item:nbtlib.tag.Compound):#变为'{id:xx,count:1b,components:物品堆叠组件}'
+def Item_Common_tags_updata(Item:nbtlib.tag.Compound):#处理嵌套物品NBT，输入被nbtlib解析过的嵌套物品NBT格式，其字符串形式为'{id:"diamond_sword",Count:1,tag:{Damage:233}}'，输出为转化成嵌套物品的组件形式，如'{id:'diamond_sword',count:1,components:{damage:233}}'
     Item_str="{"
     id=Item.get("id",None)
     Count=Item.get("count",None)
@@ -813,13 +805,13 @@ def Item_Common_tags_updata(Item:nbtlib.tag.Compound):#变为'{id:xx,count:1b,co
     return Item_str
 
 #组件键值转化
-def updata_dict_to_str_1(components_dict:dict):
+def updata_dict_to_str_1(components_dict:dict):#将NBT格式更新完成后的字典components_dict组成MC命令可识别的写法，输出类型为String，也是最终结果。
     components_str="["
     for key,value in components_dict.items():
         components_str+=key+"="+value+","
     components_str=components_str.rstrip(",")+"]"
     return components_str
-def updata_dict_to_str_2(components_dict:dict):
+def updata_dict_to_str_2(components_dict:dict):#将NBT格式更新完成后的字典components_dict组成MC物品嵌套中可识别的写法，输出类型为String，也是最终结果。
     components_str="{"
     for key,value in components_dict.items():
         components_str+=key+":"+value+","
@@ -827,5 +819,11 @@ def updata_dict_to_str_2(components_dict:dict):
     return components_str
 
 #打包
-def transfer(id:String,nbt:String):
-    return updata_dict_to_str_1(item_nbt_updata_to_dict(id,parse_nbt(nbt)))
+def transfer(id:String,nbt:String,type=1):#输入 物品ID 和 物品NBT格式，根据type的数值来输出。
+    try:
+        if type ==1:#输出成MC命令可识别的components写法，输出类型为String。
+            return updata_dict_to_str_1(item_nbt_updata_to_dict(id,parse_nbt(nbt)))
+        else:#输出成MC物品嵌套中可识别的写法，输出类型为String。
+            return "components:"+updata_dict_to_str_2(item_nbt_updata_to_dict(id,parse_nbt(nbt)))
+    except Exception:
+        return updata_dict_to_str_1(item_nbt_updata_to_dict(id,parse_nbt(nbt)))
