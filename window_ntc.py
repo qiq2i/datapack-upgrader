@@ -36,12 +36,12 @@ Item_nbt.grid(row=2, column=1)
 
 # 输出
 label_Item_id = tk.Label(root, text="物品components：")
-label_Item_id.grid(row=4, column=0)
+label_Item_id.grid(row=5, column=0)
 Item_components = tk.Text(root,width=60,height=10)
-Item_components.grid(row=4, column=1)
+Item_components.grid(row=5, column=1)
 Item_components.insert(tk.END, "[]")
 # 点击转化
-def transfer_bottom():
+def transfer_bottom_1():
     try:
         id = Item_id.get('1.0', 'end')
     except Exception:
@@ -56,10 +56,27 @@ def transfer_bottom():
         components = "[]"
     Item_components.delete('1.0', 'end')  # 删除现有内容
     Item_components.insert(tk.END, components)  # 插入新内容
+def transfer_bottom_2():
+    try:
+        id = Item_id.get('1.0', 'end')
+    except Exception:
+        id = "air"
+    try:
+        nbt = Item_nbt.get('1.0', 'end')
+    except Exception:
+        nbt = "{}"
+    try:
+        components = transfer(id,nbt,2)
+    except Exception:
+        components = "components:{}"
+    Item_components.delete('1.0', 'end')  # 删除现有内容
+    Item_components.insert(tk.END, components)  # 插入新内容
 
 # 创建一个按钮，点击后获取两个输入框的内容
-get_inputs_button = ttk.Button(root, text="NBT转components", command=transfer_bottom)
-get_inputs_button.grid(row=3, column=1)
+get_inputs_button_1 = ttk.Button(root, text="NBT转components 外层物品格式[]", command=transfer_bottom_1)
+get_inputs_button_1.grid(row=3, column=1)
+get_inputs_button_2 = ttk.Button(root, text="NBT转components 物品堆叠格式(tag:{}替换)", command=transfer_bottom_2)
+get_inputs_button_2.grid(row=4, column=1)
 
 # 复制按钮
 def copy_string_to_clipboard():
@@ -70,7 +87,7 @@ def copy_string_to_clipboard():
     pyperclip.copy(target_string)
 
 copy_button = ttk.Button(root, text="复制组件components", command=copy_string_to_clipboard)
-copy_button.grid(row=5, column=1)
+copy_button.grid(row=6, column=1)
 
 # 清除按钮
 def clear():
@@ -87,14 +104,14 @@ def open_url(url):
 # 创建一个Label，其中包含网址文本，并绑定点击事件
 link_label_1 = tk.Label(root, text="点击进入:B站 https://space.bilibili.com/355336076")
 link_label_1.bind("<Button-1>", lambda event: open_url("https://space.bilibili.com/355336076"))
-link_label_1.grid(row=5, column=2)
+link_label_1.grid(row=6, column=2)
 
 link_label_2 = tk.Label(root, text="https://github.com/qiq2i/datapack-upgrader")
 link_label_2.bind("<Button-1>", lambda event: open_url("https://github.com/qiq2i/datapack-upgrader"))
-link_label_2.grid(row=6, column=2)
+link_label_2.grid(row=7, column=2)
 
 name = tk.Label(root, text="小棋孜")
-name.grid(row=7, column=2)
+name.grid(row=8, column=2)
 
 '''
 # 图标

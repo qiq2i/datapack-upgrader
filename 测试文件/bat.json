@@ -1,0 +1,321 @@
+{
+    "type": "minecraft:entity",
+    "pools": [
+      {
+        "rolls": 1,
+        "entries": [
+            {
+            "type": "minecraft:item",
+            "name": "minecraft:stone",
+            "weight": 20,
+            "functions": [
+              {
+                  "function": "set_nbt",
+                  "tag": "{qiq2i_clga1_bata1_item:1,qiq2i_clga1_bata1:1}"
+              }
+            ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:stone",
+              "weight": 20,
+              "functions": [
+                {
+                    "function": "set_nbt",
+                    "tag": "{qiq2i_clga1_bata1_item:2,qiq2i_clga1_bata1:1}"
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:stone",
+              "weight": 20,
+              "functions": [
+                {
+                    "function": "set_nbt",
+                    "tag": "{qiq2i_clga1_bata1_item:3,qiq2i_clga1_bata1:1}"
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:stone",
+              "weight": 20,
+              "functions": [
+                {
+                    "function": "set_nbt",
+                    "tag": "{qiq2i_clga1_bata1_item:4,qiq2i_clga1_bata1:1}"
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:stone",
+              "weight": 20,
+              "functions": [
+                {
+                    "function": "set_nbt",
+                    "tag": "{qiq2i_clga1_bata1_item:5,qiq2i_clga1_bata1:1}"
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:stone",
+              "weight": 20,
+              "functions": [
+                {
+                    "function": "set_nbt",
+                    "tag": "{qiq2i_clga1_bata1_item:6,qiq2i_clga1_bata1:1}"
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:stone",
+              "weight": 20,
+              "functions": [
+                {
+                    "function": "set_nbt",
+                    "tag": "{qiq2i_clga1_bata1_item:7,qiq2i_clga1_bata1:1}"
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:stone",
+              "weight": 20,
+              "functions": [
+                {
+                    "function": "set_nbt",
+                    "tag": "{qiq2i_clga1_bata1_item:8,qiq2i_clga1_bata1:1}"
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:stone",
+              "weight": 20,
+              "functions": [
+                {
+                    "function": "set_nbt",
+                    "tag": "{qiq2i_clga1_bata1_item:9,qiq2i_clga1_bata1:1}"
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:stone",
+              "weight": 20,
+              "functions": [
+                {
+                    "function": "set_nbt",
+                    "tag": "{qiq2i_clga1_bata1_item:10,qiq2i_clga1_bata1:1}"
+                }
+              ]
+            },
+            {
+                "type": "minecraft:item",
+                "name": "minecraft:iron_sword",
+                "weight": 20,
+                "functions": [
+                  {
+                    "function": "minecraft:enchant_with_levels",
+                    "levels" :{
+                        "min" : 19,
+                        "max" : 40
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:item",
+                "name": "minecraft:diamond_sword",
+                "weight": 20,
+                "functions": [
+                  {
+                    "function": "minecraft:enchant_with_levels",
+                    "levels" :{
+                        "min" : 19,
+                        "max" : 40
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:item",
+                "name": "minecraft:iron_chestplate",
+                "weight": 20,
+                "functions": [
+                  {
+                    "function": "minecraft:enchant_with_levels",
+                    "levels" :{
+                        "min" : 19,
+                        "max" : 40
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:item",
+                "name": "minecraft:iron_leggings",
+                "weight": 20,
+                "functions": [
+                  {
+                    "function": "minecraft:enchant_with_levels",
+                    "levels" :{
+                        "min" : 19,
+                        "max" : 40
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:item",
+                "name": "minecraft:iron_boots",
+                "weight": 20,
+                "functions": [
+                  {
+                    "function": "minecraft:enchant_with_levels",
+                    "levels" :{
+                        "min" : 19,
+                        "max" : 40
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:item",
+                "name": "minecraft:iron_helmet",
+                "weight": 20,
+                "functions": [
+                  {
+                    "function": "minecraft:enchant_with_levels",
+                    "levels" :{
+                        "min" : 19,
+                        "max" : 40
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:item",
+                "name": "minecraft:diamond_chestplate",
+                "weight": 20,
+                "functions": [
+                  {
+                    "function": "minecraft:enchant_with_levels",
+                    "levels" :{
+                        "min" : 19,
+                        "max" : 40
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:item",
+                "name": "minecraft:diamond_leggings",
+                "weight": 20,
+                "functions": [
+                  {
+                    "function": "minecraft:enchant_with_levels",
+                    "levels" :{
+                        "min" : 19,
+                        "max" : 40
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:item",
+                "name": "minecraft:diamond_boots",
+                "weight": 20,
+                "functions": [
+                  {
+                    "function": "minecraft:enchant_with_levels",
+                    "levels" :{
+                        "min" : 19,
+                        "max" : 40
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:item",
+                "name": "minecraft:diamond_helmet",
+                "weight": 20,
+                "functions": [
+                  {
+                    "function": "minecraft:enchant_with_levels",
+                    "levels" :{
+                        "min" : 19,
+                        "max" : 40
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:item",
+                "name": "minecraft:bow",
+                "weight": 20,
+                "functions": [
+                  {
+                    "function": "minecraft:enchant_with_levels",
+                    "levels" :{
+                        "min" : 19,
+                        "max" : 40
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:item",
+                "name": "minecraft:crossbow",
+                "weight": 20,
+                "functions": [
+                  {
+                    "function": "minecraft:enchant_with_levels",
+                    "levels" :{
+                        "min" : 19,
+                        "max" : 40
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:item",
+                "name": "minecraft:netherite_sword",
+                "weight": 20,
+                "functions": [
+                  {
+                    "function": "minecraft:enchant_with_levels",
+                    "levels" :{
+                        "min" : 19,
+                        "max" : 40
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "minecraft:item",
+                "name": "minecraft:enchanted_golden_apple",
+                "weight": 20,
+                "functions": [
+                  {
+                    "function": "minecraft:enchant_with_levels",
+                    "levels" :{
+                        "min" : 19,
+                        "max" : 40
+                    }
+                  }
+                ]
+              }
+        ],
+        "conditions": [
+          {
+            "condition": "minecraft:killed_by_player"
+          }
+        ]
+      }
+    ]
+  }
