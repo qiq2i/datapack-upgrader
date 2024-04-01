@@ -1,6 +1,6 @@
 import os
 import json
-import nbt_to_components
+from nbt_to_components import transfer
 
 # 指定目录路径
 directory_path = '测试文件'
@@ -22,8 +22,17 @@ def loot_updata(loot_dict:dict):
         for j in i.get("entries",[]):#打开entries列表
             Item_id = j.get("name","written_book")
             for k in j.get("functions",[]):#打开functions列表
-                if k.get('function','') == 'set_nbt':#是否是set_nbt函数，是的话，更新并替换成
-                    print(k.get('tag'))
-    return None
+                if k.get('function','') == 'set_nbt' or k.get('function','') == 'minecraft:set_nbt':#是否是set_nbt函数，是的话，更新并替换成
+                    k['function'] = 'set_components'
+                    k['components'] =(transfer(Item_id,k.pop('tag'),2))
+    return loot_dict
 
 print(loot_updata(json_data))
+
+# 指定要写入的JSON文件路径
+output_file_path = "output_file.json"
+
+# 使用 'w' (write) 模式打开或创建文件
+with open(output_file_path, "w", encoding="utf-8") as json_file:
+    # 使用 json.dump() 将字典写入文件
+    json.dump(loot_updata(json_data), json_file, ensure_ascii=False, indent=4)
