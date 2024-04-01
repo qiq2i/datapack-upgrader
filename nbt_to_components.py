@@ -1,6 +1,6 @@
 import nbtlib
 from nbtlib import serialize_tag#可以使用nbtlib将Nbt标记序列化为它们的文字表示形式。
-from nbtlib.tag import String, List, Compound, IntArray
+from nbtlib import Compound, String, Int, List, Byte, Double, Float, Long, Short, ByteArray, IntArray, LongArray
 from nbtlib import parse_nbt, Path #NBT分析库 https://github.com/vberlier/nbtlib
 
 def item_nbt_updata_to_dict(id: String,nbtlib_compound: nbtlib.tag.Compound): #处理分析过的NBT(nbtlib_compound)，更新后每个指令存在
@@ -803,6 +803,66 @@ def Item_Common_tags_updata(Item:nbtlib.tag.Compound):#处理嵌套物品NBT，�
         Item_str+="components:"+updata_dict_to_str_2(item_nbt_updata_to_dict(id,tag))+","#暂未处理tag
     Item_str=Item_str.rstrip(",")+"}"
     return Item_str
+
+#字典转化为nbtlib.tag.Compound
+def dict_to_compound(py_dict):
+    compound = Compound()
+
+    for key, value in py_dict.items():
+        # 根据 Python 值的类型，转换为相应的 NBT 标签类型
+        if isinstance(value, dict):
+            compound[key] = dict_to_compound(value)  # 递归处理嵌套的字典
+        elif isinstance(value, list):
+            compound_list = List()
+            for v in value:
+                compound_list.append(convert_to_nbt(v))  # 调用一个通用的转换函数处理列表元素
+            compound[key] = compound_list
+        elif isinstance(value, int):
+            compound[key] = Int(value)
+        elif isinstance(value, str):
+            compound[key] = String(value)
+        elif isinstance(value, bool):  # 注意：NBT 用 Byte 标签表示布尔值
+            compound[key] = Byte(int(value))
+        elif isinstance(value, float):
+            if abs(value) > (2 ** 53) / 2:  # 如果浮点数精度超过 Double，使用 Double 标签
+                compound[key] = Double(value)
+            else:
+                compound[key] = Float(value)
+        elif isinstance(value, bytes):
+            compound[key] = ByteArray(value)
+        elif isinstance(value, tuple) and len(value) == 2:  # 可能是坐标（x, y, z）元组
+            compound[key] = List[Long](value)
+        else:
+            raise TypeError(f"Unsupported type for key '{key}': {type(value)}")
+
+    return compound
+
+def convert_to_nbt(value):
+    """通用的转换函数，处理列表中的各种类型"""
+    if isinstance(value, dict):
+        return dict_to_compound(value)
+    elif isinstance(value, list):
+        compound_list = List()
+        for v in value:
+            compound_list.append(convert_to_nbt(v))
+        return compound_list
+    elif isinstance(value, int):
+        return Int(value)
+    elif isinstance(value, str):
+        return String(value)
+    elif isinstance(value, bool):  # 注意：NBT 用 Byte 标签表示布尔值
+        return Byte(int(value))
+    elif isinstance(value, float):
+        if abs(value) > (2 ** 53) / 2:  # 如果浮点数精度超过 Double，使用 Double 标签
+            return Double(value)
+        else:
+            return Float(value)
+    elif isinstance(value, bytes):
+        return ByteArray(value)
+    elif isinstance(value, tuple) and len(value) == 2:  # 可能是坐标（x, y, z）元组
+        return List[Long](value)
+    else:
+        raise TypeError(f"Unsupported type for value: {type(value)}")
 
 #组件键值转化
 def updata_dict_to_str_1(components_dict:dict):#将NBT格式更新完成后的字典components_dict组成MC命令可识别的写法，输出类型为String，也是最终结果。
