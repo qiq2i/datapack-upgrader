@@ -884,6 +884,6 @@ def transfer(id:String,nbt:String,type=1):#输入 物品ID 和 物品NBT格式�
         if type ==1:#输出成MC命令可识别的components写法，输出类型为String。
             return updata_dict_to_str_1(item_nbt_updata_to_dict(id,parse_nbt(nbt)))
         else:#输出成MC物品嵌套中可识别的写法，输出类型为String。
-            return "components:"+updata_dict_to_str_2(item_nbt_updata_to_dict(id,parse_nbt(nbt)))
+            return updata_dict_to_str_2(item_nbt_updata_to_dict(id,parse_nbt(nbt)))
     except Exception:
         return updata_dict_to_str_1(item_nbt_updata_to_dict(id,parse_nbt(nbt)))

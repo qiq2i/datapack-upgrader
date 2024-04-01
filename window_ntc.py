@@ -66,7 +66,7 @@ def transfer_bottom_2():
     except Exception:
         nbt = "{}"
     try:
-        components = transfer(id,nbt,2)
+        components = "components:"+transfer(id,nbt,2)
     except Exception:
         components = "components:{}"
     Item_components.delete('1.0', 'end')  # 删除现有内容
