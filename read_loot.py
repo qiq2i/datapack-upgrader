@@ -24,7 +24,7 @@ def loot_updata(loot_dict:dict):
             for k in j.get("functions",[]):#打开functions列表
                 if k.get('function','') == 'set_nbt' or k.get('function','') == 'minecraft:set_nbt':#是否是set_nbt函数，是的话，更新并替换成
                     k['function'] = 'set_components'
-                    k['components'] =(transfer(Item_id,k.pop('tag'),2))
+                    #k['components'] =(json.loads(transfer(Item_id,k.pop('tag'),2)))#json.loads为将嵌套字典字符串'{}'转化回字典
     return loot_dict
 
 print(loot_updata(json_data))
