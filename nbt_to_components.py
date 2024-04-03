@@ -278,7 +278,7 @@ def display_color_updata(components_dict: dict,value: nbtlib.tag.Int,HideFlags: 
         pass
     return components_dict
 def AttributeModifiers_updata(components_dict: dict,value: nbtlib.tag.List,HideFlags: nbtlib.tag.Int):#更新AttributeModifiers后，添加进字典components_dict后输出该字典。
-    #value [{},{}]
+    #value [{},{}]\
     try:
         #components_str = "{modifiers:["
         attribute_modifiers_dict = Compound({"modifiers":List[Compound]([])})
@@ -317,7 +317,8 @@ def AttributeModifiers_updata(components_dict: dict,value: nbtlib.tag.List,HideF
                 else:
                     pass
                 #print(i.get("Operation"))
-            attribute_modifiers_dict["attribute_modifiers"]["modifiers"].append(attribute_dict)
+            attribute_modifiers_dict["modifiers"].append(attribute_dict)
+            print(attribute_modifiers_dict)
                 
             #components_str=components_str.rstrip(",")+"},"
         #components_str=components_str.rstrip(",")
@@ -335,6 +336,7 @@ def AttributeModifiers_updata(components_dict: dict,value: nbtlib.tag.List,HideF
             #components_str+="]}"
             pass
         #components_dict["attribute_modifiers"] = components_str
+        print(attribute_modifiers_dict)
         components_dict["attribute_modifiers"] = attribute_modifiers_dict
     except Exception:
         return components_dict
@@ -658,12 +660,15 @@ def Lodestone_updata(components_dict: dict,LodestoneDimension: nbtlib.tag.String
             lodestone_target_dict["target"]["dimension"]=LodestoneDimension
         if LodestonePos!=None:
             #lodestone_target_str+="pos:["+serialize_tag(LodestonePos.get("X"))+","+serialize_tag(LodestonePos.get("Y"))+","+serialize_tag(LodestonePos.get("Z"))+"],"
-            lodestone_target_dict["target"]["pos"]=List[Float]([LodestonePos.get("X"),LodestonePos.get("Y"),LodestonePos.get("Z")])
+            #print(LodestonePos.get("X"))
+            lodestone_target_dict["target"]["pos"]=List[Int]([LodestonePos.get("X"),LodestonePos.get("Y"),LodestonePos.get("Z")])
+            #print(2)
         if LodestoneTracked!=None:
             #lodestone_target_str+="tracked:"+serialize_tag(LodestoneTracked)+","
             lodestone_target_dict["target"]["tracked"]=LodestoneTracked
         #lodestone_target_str=lodestone_target_str.rstrip(",")+"}}"
         #components_dict["lodestone_tracker"]=lodestone_target_str
+        print(lodestone_target_dict)
         components_dict["lodestone_tracker"]=lodestone_target_dict
     except Exception:
         pass
