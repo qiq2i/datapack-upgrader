@@ -318,7 +318,7 @@ def AttributeModifiers_updata(components_dict: dict,value: nbtlib.tag.List,HideF
                     pass
                 #print(i.get("Operation"))
             attribute_modifiers_dict["modifiers"].append(attribute_dict)
-            print(attribute_modifiers_dict)
+            #print(attribute_modifiers_dict)
                 
             #components_str=components_str.rstrip(",")+"},"
         #components_str=components_str.rstrip(",")
@@ -668,7 +668,7 @@ def Lodestone_updata(components_dict: dict,LodestoneDimension: nbtlib.tag.String
             lodestone_target_dict["target"]["tracked"]=LodestoneTracked
         #lodestone_target_str=lodestone_target_str.rstrip(",")+"}}"
         #components_dict["lodestone_tracker"]=lodestone_target_str
-        print(lodestone_target_dict)
+        #print(lodestone_target_dict)
         components_dict["lodestone_tracker"]=lodestone_target_dict
     except Exception:
         pass
