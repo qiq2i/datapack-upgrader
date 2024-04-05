@@ -998,6 +998,38 @@ def convert_to_nbt(value):
         return List[Long](value)
     else:
         raise TypeError(f"Unsupported type for value: {type(value)}")
+    
+def compound_to_dict(compound_tag):
+    result = {}
+    for key, value in compound_tag.items():
+        if isinstance(value, Compound):
+            result[key] = compound_to_dict(value)
+        elif isinstance(value, List):
+            if value is nbtlib.tag.Int:
+                result[key] = [v for v in value]
+            elif value is nbtlib.tag.String:
+                result[key] = [v for v in value]
+            elif value is nbtlib.tag.Byte:
+                result[key] = [v for v in value]
+            elif value is nbtlib.tag.Short:
+                result[key] = [v for v in value]
+            elif value is nbtlib.tag.Long:
+                result[key] = [v for v in value]
+            elif value is nbtlib.tag.Float:
+                result[key] = [v for v in value]
+            elif value is nbtlib.tag.Double:
+                result[key] = [v for v in value]
+            elif value is nbtlib.tag.ByteArray:
+                result[key] = [v for v in value]
+            elif value is nbtlib.tag.IntArray:
+                result[key] = [v for v in value]
+            elif value is nbtlib.tag.LongArray:
+                result[key] = [v for v in value]
+            else:
+                pass
+        else:
+            result[key] = value
+    return result
 
 #组件键值转化
 def updata_dict_to_str_1(components_dict:nbtlib.tag.Compound):#将NBT格式更新完成后的字典components_dict组成MC命令可识别的写法，输出类型为String，也是最终结果。
@@ -1019,8 +1051,10 @@ def transfer(id:String,nbt:String,type=1):#输入 物品ID 和 物品NBT格式�
     try:
         if type ==1:#输出成MC命令可识别的components写法，输出类型为String。
             return updata_dict_to_str_1(item_nbt_updata_to_Compound(id,parse_nbt(nbt)))
-        else:#输出成MC物品嵌套中可识别的写法，输出类型为String。
+        elif type ==2:#输出成MC物品嵌套中可识别的写法，输出类型为String。
             return updata_dict_to_str_2(item_nbt_updata_to_Compound(id,parse_nbt(nbt)))
+        elif type ==3:#输出成字典dict
+            return compound_to_dict(item_nbt_updata_to_Compound(id,parse_nbt(nbt)))
     except Exception:
         return updata_dict_to_str_1(item_nbt_updata_to_Compound(id,parse_nbt(nbt)))
 #print(serialize_tag(Compound({"abc":List[Int]([1,2,3])})))
