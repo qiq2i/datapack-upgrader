@@ -18,23 +18,27 @@ else:
     print(f"File '{file_name}' not found in directory '{directory_path}'.")'''
 
 def process_json_files(input_folder, output_folder):
-    if not os.path.exists(output_folder):#检测输出路径是否不存在，不存在则创建
-        os.makedirs(output_folder)
+    for dirpath, dirnames, filenames in os.walk(input_folder):
+        relative_dirpath = os.path.relpath(dirpath, input_folder)
 
-    for dirpath, _, filenames in os.walk(input_folder):#使用 os.walk 函数遍历输入文件夹及其所有子文件夹，找到所有以 .json 结尾的文件
+        # 如果需要在输出文件夹中创建对应的子目录
+        output_subdir = os.path.join(output_folder, relative_dirpath)
+        if not os.path.exists(output_subdir):
+            os.makedirs(output_subdir)
+
         for filename in filenames:
             if filename.endswith('.json'):
-                print(filename)
                 input_file_path = os.path.join(dirpath, filename)
-                output_file_path = os.path.join(output_folder, filename)
+                output_file_path = os.path.join(output_subdir, filename)
 
                 with open(input_file_path, 'r', encoding='utf-8') as input_file:
                     data_dict = json.load(input_file)
 
+                # 更新数据字典（此处假设您已定义了update_json函数）
                 updated_dict = loot_updata(data_dict)
 
-                with open(output_file_path, 'w', encoding='utf-8') as output_file:#创建输出文件的路径，与输入文件在同一相对路径下但在输出文件夹内
-                    json.dump(updated_dict, output_file, ensure_ascii=False, indent=4)#使用 json.dump 函数将更新后的字典写入输出文件，设置 ensure_ascii=False 以支持非ASCII字符，并使用 indent=4 进行格式化输出。
+                with open(output_file_path, 'w', encoding='utf-8') as output_file:
+                    json.dump(updated_dict, output_file, ensure_ascii=False, indent=4)
 
 def loot_updata(loot_dict:dict): #输入json文件的dict格式，输出修改后的dict格式。
     for i in loot_dict.get("pools",[]):#打开随机池pools列表
