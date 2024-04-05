@@ -24,10 +24,11 @@ def process_json_files(input_folder, output_folder):
     for dirpath, _, filenames in os.walk(input_folder):#使用 os.walk 函数遍历输入文件夹及其所有子文件夹，找到所有以 .json 结尾的文件
         for filename in filenames:
             if filename.endswith('.json'):
+                print(filename)
                 input_file_path = os.path.join(dirpath, filename)
                 output_file_path = os.path.join(output_folder, filename)
 
-                with open(input_file_path, 'r') as input_file:
+                with open(input_file_path, 'r', encoding='utf-8') as input_file:
                     data_dict = json.load(input_file)
 
                 updated_dict = loot_updata(data_dict)
