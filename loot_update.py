@@ -33,7 +33,7 @@ def process_json_files(input_folder, output_folder):
 
                 updated_dict = loot_updata(data_dict)
 
-                with open(output_file_path, 'w') as output_file:#创建输出文件的路径，与输入文件在同一相对路径下但在输出文件夹内
+                with open(output_file_path, 'w', encoding='utf-8') as output_file:#创建输出文件的路径，与输入文件在同一相对路径下但在输出文件夹内
                     json.dump(updated_dict, output_file, ensure_ascii=False, indent=4)#使用 json.dump 函数将更新后的字典写入输出文件，设置 ensure_ascii=False 以支持非ASCII字符，并使用 indent=4 进行格式化输出。
 
 def loot_updata(loot_dict:dict): #输入json文件的dict格式，输出修改后的dict格式。
