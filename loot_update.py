@@ -29,6 +29,8 @@ def loot_updata(loot_dict:dict): #输入json文件的dict格式，输出修改�
     for i in loot_dict.get("pools",[]):#打开随机池pools列表
         for j in i.get("entries",[]):#打开entries列表
             Item_id = j.get("name","written_book")
+            if j.get("type","") == "loot_table" or j.get("type","") == "minecraft:loot_table":#战利品表引用更新
+                j["value"]=j.pop("name","")
             for k in j.get("functions",[]):#打开functions列表
                 if k.get('function','') == 'set_nbt' or k.get('function','') == 'minecraft:set_nbt':#是否是set_nbt函数，是的话，更新并替换成
                     k['function'] = 'set_components'
