@@ -32,7 +32,9 @@ def loot_updata(loot_dict:dict): #输入json文件的dict格式，输出修改�
             for k in j.get("functions",[]):#打开functions列表
                 if k.get('function','') == 'set_nbt' or k.get('function','') == 'minecraft:set_nbt':#是否是set_nbt函数，是的话，更新并替换成
                     k['function'] = 'set_components'
-                    print(Item_id,k.get('tag'))
-                    print(nbt_to_components.transfer(Item_id,k.get('tag'),3))
                     k['components'] =(nbt_to_components.transfer(Item_id,k.pop('tag'),3))
+
+                if k.get('function','') == 'copy_nbt' or k.get('function','') == 'minecraft:copy_nbt':#是否是copy_nbt函数，是的话，更新并替换成
+                    k['function'] = 'copy_custom_data'
+                    #组件名称暂未处理
     return loot_dict
