@@ -37,4 +37,9 @@ def loot_updata(loot_dict:dict): #输入json文件的dict格式，输出修改�
                 if k.get('function','') == 'copy_nbt' or k.get('function','') == 'minecraft:copy_nbt':#是否是copy_nbt函数，是的话，更新并替换成
                     k['function'] = 'copy_custom_data'
                     #组件名称暂未处理
+
+                if k.get('function','') == 'set_attributes' or k.get('function','') == 'minecraft:set_attributes':
+                    operation_dict={"addition":"add_value","multiply_base":"add_multiplied_base,","multiply_total":"add_multiplied_total"}
+                    for l in k.get('modifiers',[]):
+                        l["operation"]=operation_dict[l.get('operation','')]
     return loot_dict
